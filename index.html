@@ -16,7 +16,7 @@
 
         body {
             font-family: 'Anuphan', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 50%, #ffffff 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -75,7 +75,7 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(90deg, #0ea5e9, #3b82f6);
+            background: linear-gradient(90deg, #1e3a8a, #dc2626);
             transform: scaleX(0);
             transition: transform 0.4s ease;
         }
@@ -92,7 +92,7 @@
         .card-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -100,13 +100,13 @@
             margin-bottom: 25px;
             font-size: 36px;
             color: white;
-            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.4);
             transition: all 0.3s ease;
         }
 
         .dashboard-card:hover .card-icon {
             transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.6);
+            box-shadow: 0 15px 40px rgba(30, 58, 138, 0.6);
         }
 
         .card-title {
@@ -141,7 +141,7 @@
             content: '✓';
             position: absolute;
             left: 0;
-            color: #0ea5e9;
+            color: #1e40af;
             font-weight: 700;
             font-size: 16px;
         }
@@ -149,7 +149,7 @@
         .card-button {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
             color: white;
             border: none;
             border-radius: 12px;
@@ -165,9 +165,9 @@
         }
 
         .card-button:hover {
-            background: linear-gradient(135deg, #0891b2, #2563eb);
+            background: linear-gradient(135deg, #1e40af, #2563eb);
             transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.5);
         }
 
         .card-button i {
@@ -250,33 +250,33 @@
 
         /* Personal Dashboard Accent Color */
         .dashboard-card.personal .card-icon {
-            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, #b91c1c, #dc2626);
+            box-shadow: 0 10px 30px rgba(185, 28, 28, 0.4);
         }
 
         .dashboard-card.personal:hover .card-icon {
-            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
+            box-shadow: 0 15px 40px rgba(185, 28, 28, 0.6);
         }
 
         .dashboard-card.personal .card-button {
-            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            background: linear-gradient(135deg, #b91c1c, #dc2626);
         }
 
         .dashboard-card.personal .card-button:hover {
-            background: linear-gradient(135deg, #7c3aed, #9333ea);
-            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, #991b1b, #b91c1c);
+            box-shadow: 0 8px 25px rgba(185, 28, 28, 0.5);
         }
 
         .dashboard-card.personal .card-features li::before {
-            color: #8b5cf6;
+            color: #dc2626;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fa-solid fa-hand-sparkles"></i> Hand Hygiene Monitoring System</h1>
-            <p>ระบบติดตามและวิเคราะห์คุณภาพการล้างมือด้วย AI</p>
+            <h1><i class="fa-solid fa-hospital-user"></i> ระบบติดตามคุณภาพการล้างมือ</h1>
+            <p>Hand Hygiene Monitoring System | Bangkok Hospital Phuket</p>
         </div>
 
         <div class="card-grid">
@@ -320,8 +320,8 @@
         </div>
 
         <div class="footer">
-            <p><i class="fa-solid fa-shield-virus"></i> Powered by AI-based Hand Hygiene Analysis | Version 7.1</p>
-            <p style="margin-top: 10px;">Bangkok Hospital Phuket © 2026</p>
+            <p><i class="fa-solid fa-shield-halved"></i> AI-based Hand Hygiene Analysis System | Version 7.1</p>
+            <p style="margin-top: 10px;"><strong>Bangkok Hospital Phuket</strong> © 2026</p>
         </div>
     </div>
 </body>
