@@ -99,6 +99,16 @@
             border-color: var(--primary-blue);
             color: var(--primary-blue);
         }
+        .btn-home {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+            font-weight: 800;
+        }
+        .btn-home:hover {
+            background: linear-gradient(135deg, #ea580c, #dc2626);
+            box-shadow: 0 8px 24px rgba(249, 115, 22, 0.6);
+        }
 
         /* Technical Disclaimer Bar */
         .disclaimer-top {
@@ -578,10 +588,10 @@
         <!-- Top Nav -->
         <nav class="top-nav">
             <div class="nav-actions">
-                <button class="btn btn-outline" onclick="location.href='index.html'"><i class="fa-solid fa-home"></i> หน้าหลัก</button>
                 <button class="btn btn-outline" id="copyBtn"><i class="fa-solid fa-link"></i> ลิงก์แชร์</button>
                 <button class="btn btn-share"><i class="fa-solid fa-file-export"></i> ส่งออกรายงาน</button>
             </div>
+            <button class="btn btn-home" onclick="location.href='index.html'"><i class="fa-solid fa-home"></i> หน้าหลัก</button>
         </nav>
 
         <!-- Header -->
