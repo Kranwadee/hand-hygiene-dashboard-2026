@@ -38,127 +38,239 @@
             box-sizing: border-box;
         }
 
+        /* =========================================
+           GLOBAL STYLES
+           ========================================= */
         body {
             font-family: 'Anuphan', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: var(--bg-canvas);
             color: var(--text-main);
-            padding: 20px;
-            min-height: 100vh;
+            padding: 15px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           LOGIN SCREEN STYLES (Red Theme)
+           ========================================= */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 30%, #f87171 70%, #fca5a5 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 9999;
+            overflow: hidden;
         }
 
-        .container {
-            max-width: 1400px;
-            width: 100%;
+        /* Animated Particles */
+        #loginScreen::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            animation: float 8s ease-in-out infinite;
         }
 
-        /* Login Screen */
+        #loginScreen::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+            bottom: -50px;
+            left: -50px;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
         .login-card {
-            background: white;
-            padding: 50px;
-            border-radius: 32px;
-            box-shadow: var(--shadow-xl);
-            max-width: 480px;
-            margin: 0 auto;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 36px;
+            color: white;
+            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         .login-card h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 32px;
-            color: var(--primary-blue);
-            margin-bottom: 10px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #dc2626;
+            margin-bottom: 8px;
+            text-align: center;
         }
 
         .login-card p {
-            color: var(--text-sub);
-            margin-bottom: 40px;
-            font-size: 15px;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
         .login-input {
             width: 100%;
-            padding: 18px 24px;
+            padding: 16px 20px;
             border: 2px solid #e2e8f0;
-            border-radius: 16px;
+            border-radius: 14px;
             font-size: 16px;
             font-family: 'Anuphan', sans-serif;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
+            background: #f8fafc;
         }
 
         .login-input:focus {
             outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+            border-color: #ef4444;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
         }
 
-        .btn-login {
+        .login-button {
             width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--primary-blue), #3b82f6);
+            padding: 16px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
             color: white;
             border: none;
-            border-radius: 16px;
+            border-radius: 14px;
             font-size: 16px;
             font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
             font-family: 'Anuphan', sans-serif;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
-        }
-
-        .demo-ids {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 12px;
-            font-size: 13px;
-            text-align: left;
-        }
-
-        .demo-ids strong {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--primary-blue);
-        }
-
-        .btn-home {
-            width: 100%;
-            padding: 14px 24px;
-            background: white;
-            border: 2px solid var(--primary-blue);
-            color: var(--primary-blue);
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-family: 'Anuphan', sans-serif;
-            margin-top: 20px;
+            gap: 10px;
         }
 
-        .btn-home:hover {
-            background: var(--primary-blue);
-            color: white;
+        .login-button:hover {
+            background: linear-gradient(135deg, #b91c1c, #dc2626);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+        }
+
+        .login-hint {
+            margin-top: 25px;
+            padding: 18px;
+            background: #fef2f2;
+            border-radius: 14px;
+            font-size: 13px;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            text-align: center;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 14px;
+            color: #dc2626;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #fecaca;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            background: #fef2f2;
+        }
+
+        .back-link:hover {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #dashboardContent {
+            display: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         /* Dashboard */
         .dashboard {
-            display: none;
+            display: block;
             animation: fadeIn 0.5s ease;
         }
 
@@ -1035,588 +1147,589 @@
 </head>
 
 <body>
-    <div class="container">
-        <!-- Login Screen -->
-        <div id="loginScreen" class="login-card">
-            <i class="fa-solid fa-hand-sparkles"
-                style="font-size: 64px; color: var(--primary-blue); margin-bottom: 20px;"></i>
-            <h1>ระบบดูข้อมูลส่วนบุคคล</h1>
-            <p>กรุณาระบุรหัสพนักงานเพื่อดูผลการล้างมือของคุณ</p>
 
-            <input type="text" id="employeeIdInput" class="login-input" placeholder="รหัสพนักงาน (เช่น EMP001)"
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <div class="login-icon">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <h1>Personal Dashboard</h1>
+            <p>เข้าสู่ระบบด้วย Employee ID เพื่อดูข้อมูลส่วนตัวของคุณ</p>
+
+            <div class="error-message" id="errorMessage">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>ไม่พบ Employee ID นี้ในระบบ กรุณาลองใหม่อีกครั้ง</span>
+            </div>
+
+            <input type="text" id="empIdInput" class="login-input" placeholder="Employee ID (เช่น EMP001)"
                 autocomplete="off">
 
-            <button class="btn-login" onclick="login()">
-                <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ
+            <button class="login-button" onclick="handleLogin()">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <span>เข้าสู่ระบบ</span>
             </button>
 
-            <div class="demo-ids">
-                <strong><i class="fa-solid fa-info-circle"></i> รหัสพนักงานตัวอย่าง (Demo):</strong>
-                <div style="color: var(--text-sub); line-height: 1.8;">
-                    • <code
-                        style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP001</code>
-                    - ทนงศักดิ์ ใจดี (ผ่านเกณฑ์)<br>
-                    • <code
-                        style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP002</code>
-                    - สมหญิง รักษ์ป่า (ไม่ผ่านเกณฑ์)<br>
-                    • <code
-                        style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP003</code>
-                    - วิชัย สุขสันต์ (ผ่านเกณฑ์)<br>
-                    • <code
-                        style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP004</code>
-                    - นภัสสร พัฒนากุล ⭐ (กำลังพัฒนา)
-                </div>
+            <div class="login-hint">
+                <i class="fa-solid fa-info-circle"></i>
+                <strong>Demo IDs:</strong> EMP001, EMP002, EMP003, EMP004, EMP005 (และอื่นๆ)
             </div>
 
-            <!-- Home Button -->
-            <button class="btn-home" onclick="location.href='index.html'">
-                <i class="fa-solid fa-home"></i> กลับหน้าหลัก
-            </button>
-        </div>
-
-        <!-- Dashboard Screen -->
-        <div id="dashboardScreen" class="dashboard">
-            <!-- Header -->
-            <div class="dashboard-header">
-                <div class="user-info">
-                    <h1 id="userName">กำลังโหลด...</h1>
-                    <p id="userDetails">รหัส: - | ตำแหน่ง: - | แผนก: -</p>
-                </div>
-                <div class="header-actions">
-                    <button class="btn-export" onclick="exportToPDF()">
-                        <i class="fa-solid fa-file-pdf"></i> Export PDF
-                    </button>
-                    <button class="btn-logout" onclick="logout()">
-                        <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
-                    </button>
-                    <button class="btn-export" onclick="location.href='index.html'"
-                        style="background: linear-gradient(135deg, #f97316, #ea580c); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);">
-                        <i class="fa-solid fa-home"></i> หน้าหลัก
-                    </button>
-                </div>
-            </div>
-
-            <!-- Comparison Section -->
-            <div class="comparison-card">
-                <h2 style="font-size: 20px; color: var(--primary-blue); margin-bottom: 10px;">
-                    <i class="fa-solid fa-users"></i> เทียบกับเพื่อนร่วมงาน
-                </h2>
-                <p style="font-size: 13px; color: var(--text-sub);">
-                    เปรียบเทียบผลงานของคุณกับค่าเฉลี่ยของแผนกและโรงพยาบาล</p>
-                <div class="comparison-stats">
-                    <div class="comparison-item">
-                        <div class="label">คะแนนของคุณ</div>
-                        <div class="value" id="yourScore">-</div>
-                    </div>
-                    <div class="comparison-item">
-                        <div class="label">เฉลี่ยแผนก</div>
-                        <div class="value" style="color: #6366f1;" id="deptAvg">-</div>
-                        <div class="diff" id="deptDiff">-</div>
-                    </div>
-                    <div class="comparison-item">
-                        <div class="label">เฉลี่ยโรงพยาบาล</div>
-                        <div class="value" style="color: #8b5cf6;" id="hospitalAvg">-</div>
-                        <div class="diff" id="hospitalDiff">-</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- History Table -->
-            <div class="calendar-heatmap">
-                <h2 style="font-size: 20px; color: var(--text-main); margin-bottom: 5px;">
-                    <i class="fa-solid fa-clock-rotate-left"></i> 5 ครั้งล่าสุด
-                </h2>
-                <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px;">
-                    บันทึกการสแกนล้างมือล่าสุดของคุณ
-                </p>
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                                <th
-                                    style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                    #</th>
-                                <th
-                                    style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                    วัน/เดือน/ปี</th>
-                                <th
-                                    style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                    เวลา</th>
-                                <th
-                                    style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                    หน้ามือ</th>
-                                <th
-                                    style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                    หลังมือ</th>
-                                <th
-                                    style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                    เฉลี่ย</th>
-                                <th
-                                    style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                    สถานะ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- KPI Cards -->
-            <div class="kpi-grid">
-                <div class="kpi-card neutral">
-                    <h3><i class="fa-solid fa-chart-line"></i> คะแนนเฉลี่ยรวม</h3>
-                    <div class="value" id="avgScore">-</div>
-                    <span class="status" id="passStatus">-</span>
-                </div>
-                <div class="kpi-card neutral">
-                    <h3><i class="fa-solid fa-hand-dots"></i> จำนวนครั้งที่สแกน</h3>
-                    <div class="value" id="totalScans">-</div>
-                </div>
-                <div class="kpi-card neutral">
-                    <h3><i class="fa-solid fa-trophy"></i> ครั้งที่ผ่านเกณฑ์</h3>
-                    <div class="value" id="passCount">-</div>
-                </div>
-                <div class="kpi-card neutral">
-                    <h3><i class="fa-solid fa-calendar-days"></i> ช่วงเวลา</h3>
-                    <div class="value" style="font-size: 16px; margin-top: 10px;" id="dateRange">-</div>
-                </div>
-            </div>
-
-            <!-- Main Content -->
-            <div class="content-grid">
-                <!-- Trend Chart -->
-                <div class="card">
-                    <h2><i class="fa-solid fa-chart-area"></i> แนวโน้มการล้างมือ</h2>
-                    <div class="chart-container">
-                        <canvas id="trendChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Zone Overview -->
-                <div class="card">
-                    <h2><i class="fa-solid fa-hand"></i> ภาพรวมพื้นที่เสี่ยง</h2>
-                    <div class="hand-visual">
-                        <div class="hand-view">
-                            <p style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 10px;">
-                                หน้ามือ</p>
-                            <svg id="frontHandSvg" class="hand-svg" viewBox="0 0 200 250">
-                                <defs>
-                                    <filter id="glow">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                                        <feMerge>
-                                            <feMergeNode in="coloredBlur" />
-                                            <feMergeNode in="SourceGraphic" />
-                                        </feMerge>
-                                    </filter>
-                                </defs>
-                                <path class="hand-path"
-                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                                <!-- Heat zones will be added by JavaScript -->
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-top: 10px;"
-                                id="frontScore">-</div>
-                        </div>
-                        <div class="hand-view">
-                            <p style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 10px;">
-                                หลังมือ</p>
-                            <svg id="backHandSvg" class="hand-svg" viewBox="0 0 200 250">
-                                <defs>
-                                    <filter id="glow2">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                                        <feMerge>
-                                            <feMergeNode in="coloredBlur" />
-                                            <feMergeNode in="SourceGraphic" />
-                                        </feMerge>
-                                    </filter>
-                                </defs>
-                                <path class="hand-path"
-                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                                <!-- Heat zones will be added by JavaScript -->
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-top: 10px;"
-                                id="backScore">-</div>
-                        </div>
-                    </div>
-                    <div
-                        style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 12px; font-size: 12px; text-align: center;">
-                        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 20px; height: 20px; background: #ef4444; border-radius: 50%; opacity: 0.9;">
-                                </div>
-                                <span style="color: var(--text-sub); font-weight: 600;">ต่ำกว่า 60%
-                                    (ต้องปรับปรุง)</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 20px; height: 20px; background: #f59e0b; border-radius: 50%; opacity: 0.7;">
-                                </div>
-                                <span style="color: var(--text-sub); font-weight: 600;">60-79% (พอใช้)</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div
-                                    style="width: 20px; height: 20px; background: #10b981; border-radius: 50%; opacity: 0.5;">
-                                </div>
-                                <span style="color: var(--text-sub); font-weight: 600;">80%+ (ดีเยี่ยม)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Top 3 Weak Zones -->
-            <div class="card">
-                <h2><i class="fa-solid fa-exclamation-triangle"></i> จุดที่ต้องปรับปรุง (3 อันดับแรก)</h2>
-                <div class="zones-grid" id="zonesGrid"></div>
-            </div>
-
-            <!-- AI Recommendations -->
-            <div class="recommendations">
-                <h2><i class="fa-solid fa-brain"></i> คำแนะนำจาก AI (Personalized Recommendations)</h2>
-                <div id="recommendationsContent"></div>
-            </div>
+            <a href="index.html" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                กลับหน้าหลัก
+            </a>
         </div>
     </div>
 
-    <script>
-        // Mock data สำหรับ 3 พนักงานตัวอย่าง
-        const mockEmployees = {
-            'EMP001': {
-                id: 'EMP001',
-                name: 'ทนงศักดิ์ ใจดี',
-                position: 'Registered Nurse',
-                department: 'SICU',
-                records: [
-                    { date: '30/10/2025', time: '10:09', front: 85, back: 88, zones: [92, 88, 85, 90, 84, 86, 89, 91, 87, 85, 88] },
-                    { date: '30/10/2025', time: '11:30', front: 82, back: 86, zones: [88, 85, 82, 87, 80, 84, 86, 88, 85, 82, 86] },
-                    { date: '30/10/2025', time: '14:15', front: 88, back: 91, zones: [94, 90, 88, 92, 86, 89, 91, 93, 89, 88, 91] },
-                    { date: '31/10/2025', time: '09:20', front: 84, back: 87, zones: [90, 86, 84, 88, 82, 85, 88, 90, 86, 84, 87] },
-                    { date: '31/10/2025', time: '12:45', front: 86, back: 89, zones: [92, 88, 86, 90, 84, 87, 89, 91, 88, 86, 89] },
-                    { date: '01/11/2025', time: '08:30', front: 87, back: 90, zones: [93, 89, 87, 91, 85, 88, 90, 92, 89, 87, 90] },
-                    { date: '01/11/2025', time: '13:15', front: 85, back: 88, zones: [91, 87, 85, 89, 83, 86, 88, 90, 87, 85, 88] },
-                ]
-            },
-            'EMP002': {
-                id: 'EMP002',
-                name: 'สมหญิง รักษ์ป่า',
-                position: 'Officer',
-                department: 'Ward 7A',
-                records: [
-                    { date: '30/10/2025', time: '10:31', front: 45, back: 52, zones: [55, 48, 45, 50, 42, 38, 44, 52, 48, 45, 50] },
-                    { date: '30/10/2025', time: '13:20', front: 48, back: 55, zones: [58, 52, 48, 53, 45, 40, 47, 55, 51, 48, 53] },
-                    { date: '30/10/2025', time: '15:40', front: 42, back: 48, zones: [52, 45, 42, 47, 38, 35, 41, 48, 44, 42, 47] },
-                    { date: '31/10/2025', time: '09:15', front: 50, back: 58, zones: [62, 55, 50, 56, 48, 43, 50, 58, 54, 50, 56] },
-                    { date: '31/10/2025', time: '14:30', front: 46, back: 53, zones: [57, 50, 46, 52, 44, 39, 46, 53, 49, 46, 52] },
-                    { date: '01/11/2025', time: '10:20', front: 44, back: 50, zones: [54, 47, 44, 49, 40, 36, 43, 50, 46, 44, 49] },
-                ]
-            },
-            'EMP003': {
-                id: 'EMP003',
-                name: 'วิชัย สุขสันต์',
-                position: 'Head of Department',
-                department: 'Operating Room',
-                records: [
-                    { date: '30/10/2025', time: '08:15', front: 92, back: 95, zones: [98, 94, 92, 96, 90, 93, 95, 97, 94, 92, 95] },
-                    { date: '30/10/2025', time: '11:45', front: 90, back: 93, zones: [96, 92, 90, 94, 88, 91, 93, 95, 92, 90, 93] },
-                    { date: '30/10/2025', time: '14:20', front: 94, back: 97, zones: [99, 96, 94, 98, 92, 95, 97, 99, 96, 94, 97] },
-                    { date: '31/10/2025', time: '09:00', front: 91, back: 94, zones: [97, 93, 91, 95, 89, 92, 94, 96, 93, 91, 94] },
-                    { date: '31/10/2025', time: '13:30', front: 93, back: 96, zones: [98, 95, 93, 97, 91, 94, 96, 98, 95, 93, 96] },
-                    { date: '01/11/2025', time: '08:45', front: 95, back: 98, zones: [100, 97, 95, 99, 93, 96, 98, 100, 97, 95, 98] },
-                    { date: '01/11/2025', time: '12:15', front: 92, back: 95, zones: [98, 94, 92, 96, 90, 93, 95, 97, 94, 92, 95] },
-                    { date: '01/11/2025', time: '16:00', front: 94, back: 97, zones: [99, 96, 94, 98, 92, 95, 97, 99, 96, 94, 97] },
-                ]
-            },
-            'EMP004': {
-                id: 'EMP004',
-                name: 'นภัสสร พัฒนากุล',
-                position: 'Registered Nurse',
-                department: 'Emergency Room',
-                records: [
-                    // สัปดาห์ที่ 1 - เริ่มต้นไม่ผ่าน
-                    { date: '28/10/2025', time: '08:15', front: 62, back: 68, zones: [70, 65, 62, 68, 58, 55, 64, 70, 66, 62, 68] },
-                    { date: '28/10/2025', time: '13:30', front: 68, back: 75, zones: [78, 72, 68, 75, 64, 60, 70, 78, 73, 68, 75] },
-                    { date: '29/10/2025', time: '09:00', front: 70, back: 74, zones: [76, 70, 70, 74, 66, 62, 72, 76, 72, 70, 74] },
-                    { date: '29/10/2025', time: '14:45', front: 75, back: 78, zones: [82, 76, 75, 78, 71, 68, 76, 82, 78, 75, 78] },
+    <!-- Dashboard Content -->
+    <div id="dashboardContent">
 
-                    // สัปดาห์ที่ 2 - เริ่มผ่านบ้าง
-                    { date: '30/10/2025', time: '08:30', front: 78, back: 76, zones: [80, 78, 78, 76, 74, 70, 78, 80, 77, 78, 76] },
-                    { date: '30/10/2025', time: '12:15', front: 82, back: 84, zones: [88, 82, 82, 84, 78, 75, 82, 88, 84, 82, 84] },
-                    { date: '30/10/2025', time: '16:20', front: 77, back: 79, zones: [82, 78, 77, 79, 73, 71, 78, 82, 79, 77, 79] },
-                    { date: '31/10/2025', time: '09:45', front: 84, back: 86, zones: [90, 85, 84, 86, 80, 78, 84, 90, 86, 84, 86] },
-                    { date: '31/10/2025', time: '14:00', front: 80, back: 78, zones: [84, 80, 80, 78, 76, 72, 80, 84, 79, 80, 78] },
+        <div class="container">
+            <div id="dashboardScreen" class="dashboard">
+                <!-- Header -->
+                <div class="dashboard-header">
+                    <div class="user-info">
+                        <h1 id="userName">กำลังโหลด...</h1>
+                        <p id="userDetails">รหัส: - | ตำแหน่ง: - | แผนก: -</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-export" onclick="exportToPDF()">
+                            <i class="fa-solid fa-file-pdf"></i> Export PDF
+                        </button>
+                        <button class="btn-logout" onclick="logout()">
+                            <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+                        </button>
+                        <button class="btn-export" onclick="location.href='index.html'"
+                            style="background: linear-gradient(135deg, #f97316, #ea580c); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);">
+                            <i class="fa-solid fa-home"></i> หน้าหลัก
+                        </button>
+                    </div>
+                </div>
 
-                    // สัปดาห์ที่ 3 - พัฒนาขึ้นชัดเจน
-                    { date: '01/11/2025', time: '08:00', front: 86, back: 88, zones: [92, 87, 86, 88, 82, 80, 86, 92, 88, 86, 88] },
-                    { date: '01/11/2025', time: '11:30', front: 83, back: 85, zones: [88, 84, 83, 85, 79, 77, 84, 88, 85, 83, 85] },
-                    { date: '01/11/2025', time: '15:45', front: 88, back: 91, zones: [94, 89, 88, 91, 85, 82, 89, 94, 91, 88, 91] },
-                    { date: '02/11/2025', time: '09:15', front: 85, back: 82, zones: [88, 85, 85, 82, 81, 78, 85, 88, 83, 85, 82] },
-                    { date: '02/11/2025', time: '13:00', front: 90, back: 92, zones: [96, 91, 90, 92, 87, 84, 91, 96, 92, 90, 92] },
-                ]
+                <!-- Comparison Section -->
+                <div class="comparison-card">
+                    <h2 style="font-size: 20px; color: var(--primary-blue); margin-bottom: 10px;">
+                        <i class="fa-solid fa-users"></i> เทียบกับเพื่อนร่วมงาน
+                    </h2>
+                    <p style="font-size: 13px; color: var(--text-sub);">
+                        เปรียบเทียบผลงานของคุณกับค่าเฉลี่ยของแผนกและโรงพยาบาล</p>
+                    <div class="comparison-stats">
+                        <div class="comparison-item">
+                            <div class="label">คะแนนของคุณ</div>
+                            <div class="value" id="yourScore">-</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="label">เฉลี่ยแผนก</div>
+                            <div class="value" style="color: #6366f1;" id="deptAvg">-</div>
+                            <div class="diff" id="deptDiff">-</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="label">เฉลี่ยโรงพยาบาล</div>
+                            <div class="value" style="color: #8b5cf6;" id="hospitalAvg">-</div>
+                            <div class="diff" id="hospitalDiff">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Table -->
+                <div class="calendar-heatmap">
+                    <h2 style="font-size: 20px; color: var(--text-main); margin-bottom: 5px;">
+                        <i class="fa-solid fa-clock-rotate-left"></i> 5 ครั้งล่าสุด
+                    </h2>
+                    <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px;">
+                        บันทึกการสแกนล้างมือล่าสุดของคุณ
+                    </p>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                    <th
+                                        style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                        #</th>
+                                    <th
+                                        style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                        วัน/เดือน/ปี</th>
+                                    <th
+                                        style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                        เวลา</th>
+                                    <th
+                                        style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                        หน้ามือ</th>
+                                    <th
+                                        style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                        หลังมือ</th>
+                                    <th
+                                        style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                        เฉลี่ย</th>
+                                    <th
+                                        style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                        สถานะ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card neutral">
+                        <h3><i class="fa-solid fa-chart-line"></i> คะแนนเฉลี่ยรวม</h3>
+                        <div class="value" id="avgScore">-</div>
+                        <span class="status" id="passStatus">-</span>
+                    </div>
+                    <div class="kpi-card neutral">
+                        <h3><i class="fa-solid fa-hand-dots"></i> จำนวนครั้งที่สแกน</h3>
+                        <div class="value" id="totalScans">-</div>
+                    </div>
+                    <div class="kpi-card neutral">
+                        <h3><i class="fa-solid fa-trophy"></i> ครั้งที่ผ่านเกณฑ์</h3>
+                        <div class="value" id="passCount">-</div>
+                    </div>
+                    <div class="kpi-card neutral">
+                        <h3><i class="fa-solid fa-calendar-days"></i> ช่วงเวลา</h3>
+                        <div class="value" style="font-size: 16px; margin-top: 10px;" id="dateRange">-</div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="content-grid">
+                    <!-- Trend Chart -->
+                    <div class="card">
+                        <h2><i class="fa-solid fa-chart-area"></i> แนวโน้มการล้างมือ</h2>
+                        <div class="chart-container">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Zone Overview -->
+                    <div class="card">
+                        <h2><i class="fa-solid fa-hand"></i> ภาพรวมพื้นที่เสี่ยง</h2>
+                        <div class="hand-visual">
+                            <div class="hand-view">
+                                <p
+                                    style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 10px;">
+                                    หน้ามือ</p>
+                                <svg id="frontHandSvg" class="hand-svg" viewBox="0 0 200 250">
+                                    <defs>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                                            <feMerge>
+                                                <feMergeNode in="coloredBlur" />
+                                                <feMergeNode in="SourceGraphic" />
+                                            </feMerge>
+                                        </filter>
+                                    </defs>
+                                    <path class="hand-path"
+                                        d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                                    <!-- Heat zones will be added by JavaScript -->
+                                </svg>
+                                <div style="font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-top: 10px;"
+                                    id="frontScore">-</div>
+                            </div>
+                            <div class="hand-view">
+                                <p
+                                    style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 10px;">
+                                    หลังมือ</p>
+                                <svg id="backHandSvg" class="hand-svg" viewBox="0 0 200 250">
+                                    <defs>
+                                        <filter id="glow2">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                                            <feMerge>
+                                                <feMergeNode in="coloredBlur" />
+                                                <feMergeNode in="SourceGraphic" />
+                                            </feMerge>
+                                        </filter>
+                                    </defs>
+                                    <path class="hand-path"
+                                        d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                                    <!-- Heat zones will be added by JavaScript -->
+                                </svg>
+                                <div style="font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-top: 10px;"
+                                    id="backScore">-</div>
+                            </div>
+                        </div>
+                        <div
+                            style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 12px; font-size: 12px; text-align: center;">
+                            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div
+                                        style="width: 20px; height: 20px; background: #ef4444; border-radius: 50%; opacity: 0.9;">
+                                    </div>
+                                    <span style="color: var(--text-sub); font-weight: 600;">ต่ำกว่า 60%
+                                        (ต้องปรับปรุง)</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div
+                                        style="width: 20px; height: 20px; background: #f59e0b; border-radius: 50%; opacity: 0.7;">
+                                    </div>
+                                    <span style="color: var(--text-sub); font-weight: 600;">60-79% (พอใช้)</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div
+                                        style="width: 20px; height: 20px; background: #10b981; border-radius: 50%; opacity: 0.5;">
+                                    </div>
+                                    <span style="color: var(--text-sub); font-weight: 600;">80%+ (ดีเยี่ยม)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top 3 Weak Zones -->
+                <div class="card">
+                    <h2><i class="fa-solid fa-exclamation-triangle"></i> จุดที่ต้องปรับปรุง (3 อันดับแรก)</h2>
+                    <div class="zones-grid" id="zonesGrid"></div>
+                </div>
+
+                <!-- AI Recommendations -->
+                <div class="recommendations">
+                    <h2><i class="fa-solid fa-brain"></i> คำแนะนำจาก AI (Personalized Recommendations)</h2>
+                    <div id="recommendationsContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Mock data สำหรับ 3 พนักงานตัวอย่าง
+            const mockEmployees = {
+                'EMP001': {
+                    id: 'EMP001',
+                    name: 'ทนงศักดิ์ ใจดี',
+                    position: 'Registered Nurse',
+                    department: 'SICU',
+                    records: [
+                        { date: '30/10/2025', time: '10:09', front: 85, back: 88, zones: [92, 88, 85, 90, 84, 86, 89, 91, 87, 85, 88] },
+                        { date: '30/10/2025', time: '11:30', front: 82, back: 86, zones: [88, 85, 82, 87, 80, 84, 86, 88, 85, 82, 86] },
+                        { date: '30/10/2025', time: '14:15', front: 88, back: 91, zones: [94, 90, 88, 92, 86, 89, 91, 93, 89, 88, 91] },
+                        { date: '31/10/2025', time: '09:20', front: 84, back: 87, zones: [90, 86, 84, 88, 82, 85, 88, 90, 86, 84, 87] },
+                        { date: '31/10/2025', time: '12:45', front: 86, back: 89, zones: [92, 88, 86, 90, 84, 87, 89, 91, 88, 86, 89] },
+                        { date: '01/11/2025', time: '08:30', front: 87, back: 90, zones: [93, 89, 87, 91, 85, 88, 90, 92, 89, 87, 90] },
+                        { date: '01/11/2025', time: '13:15', front: 85, back: 88, zones: [91, 87, 85, 89, 83, 86, 88, 90, 87, 85, 88] },
+                    ]
+                },
+                'EMP002': {
+                    id: 'EMP002',
+                    name: 'สมหญิง รักษ์ป่า',
+                    position: 'Officer',
+                    department: 'Ward 7A',
+                    records: [
+                        { date: '30/10/2025', time: '10:31', front: 45, back: 52, zones: [55, 48, 45, 50, 42, 38, 44, 52, 48, 45, 50] },
+                        { date: '30/10/2025', time: '13:20', front: 48, back: 55, zones: [58, 52, 48, 53, 45, 40, 47, 55, 51, 48, 53] },
+                        { date: '30/10/2025', time: '15:40', front: 42, back: 48, zones: [52, 45, 42, 47, 38, 35, 41, 48, 44, 42, 47] },
+                        { date: '31/10/2025', time: '09:15', front: 50, back: 58, zones: [62, 55, 50, 56, 48, 43, 50, 58, 54, 50, 56] },
+                        { date: '31/10/2025', time: '14:30', front: 46, back: 53, zones: [57, 50, 46, 52, 44, 39, 46, 53, 49, 46, 52] },
+                        { date: '01/11/2025', time: '10:20', front: 44, back: 50, zones: [54, 47, 44, 49, 40, 36, 43, 50, 46, 44, 49] },
+                    ]
+                },
+                'EMP003': {
+                    id: 'EMP003',
+                    name: 'วิชัย สุขสันต์',
+                    position: 'Head of Department',
+                    department: 'Operating Room',
+                    records: [
+                        { date: '30/10/2025', time: '08:15', front: 92, back: 95, zones: [98, 94, 92, 96, 90, 93, 95, 97, 94, 92, 95] },
+                        { date: '30/10/2025', time: '11:45', front: 90, back: 93, zones: [96, 92, 90, 94, 88, 91, 93, 95, 92, 90, 93] },
+                        { date: '30/10/2025', time: '14:20', front: 94, back: 97, zones: [99, 96, 94, 98, 92, 95, 97, 99, 96, 94, 97] },
+                        { date: '31/10/2025', time: '09:00', front: 91, back: 94, zones: [97, 93, 91, 95, 89, 92, 94, 96, 93, 91, 94] },
+                        { date: '31/10/2025', time: '13:30', front: 93, back: 96, zones: [98, 95, 93, 97, 91, 94, 96, 98, 95, 93, 96] },
+                        { date: '01/11/2025', time: '08:45', front: 95, back: 98, zones: [100, 97, 95, 99, 93, 96, 98, 100, 97, 95, 98] },
+                        { date: '01/11/2025', time: '12:15', front: 92, back: 95, zones: [98, 94, 92, 96, 90, 93, 95, 97, 94, 92, 95] },
+                        { date: '01/11/2025', time: '16:00', front: 94, back: 97, zones: [99, 96, 94, 98, 92, 95, 97, 99, 96, 94, 97] },
+                    ]
+                },
+                'EMP004': {
+                    id: 'EMP004',
+                    name: 'นภัสสร พัฒนากุล',
+                    position: 'Registered Nurse',
+                    department: 'Emergency Room',
+                    records: [
+                        // สัปดาห์ที่ 1 - เริ่มต้นไม่ผ่าน
+                        { date: '28/10/2025', time: '08:15', front: 62, back: 68, zones: [70, 65, 62, 68, 58, 55, 64, 70, 66, 62, 68] },
+                        { date: '28/10/2025', time: '13:30', front: 68, back: 75, zones: [78, 72, 68, 75, 64, 60, 70, 78, 73, 68, 75] },
+                        { date: '29/10/2025', time: '09:00', front: 70, back: 74, zones: [76, 70, 70, 74, 66, 62, 72, 76, 72, 70, 74] },
+                        { date: '29/10/2025', time: '14:45', front: 75, back: 78, zones: [82, 76, 75, 78, 71, 68, 76, 82, 78, 75, 78] },
+
+                        // สัปดาห์ที่ 2 - เริ่มผ่านบ้าง
+                        { date: '30/10/2025', time: '08:30', front: 78, back: 76, zones: [80, 78, 78, 76, 74, 70, 78, 80, 77, 78, 76] },
+                        { date: '30/10/2025', time: '12:15', front: 82, back: 84, zones: [88, 82, 82, 84, 78, 75, 82, 88, 84, 82, 84] },
+                        { date: '30/10/2025', time: '16:20', front: 77, back: 79, zones: [82, 78, 77, 79, 73, 71, 78, 82, 79, 77, 79] },
+                        { date: '31/10/2025', time: '09:45', front: 84, back: 86, zones: [90, 85, 84, 86, 80, 78, 84, 90, 86, 84, 86] },
+                        { date: '31/10/2025', time: '14:00', front: 80, back: 78, zones: [84, 80, 80, 78, 76, 72, 80, 84, 79, 80, 78] },
+
+                        // สัปดาห์ที่ 3 - พัฒนาขึ้นชัดเจน
+                        { date: '01/11/2025', time: '08:00', front: 86, back: 88, zones: [92, 87, 86, 88, 82, 80, 86, 92, 88, 86, 88] },
+                        { date: '01/11/2025', time: '11:30', front: 83, back: 85, zones: [88, 84, 83, 85, 79, 77, 84, 88, 85, 83, 85] },
+                        { date: '01/11/2025', time: '15:45', front: 88, back: 91, zones: [94, 89, 88, 91, 85, 82, 89, 94, 91, 88, 91] },
+                        { date: '02/11/2025', time: '09:15', front: 85, back: 82, zones: [88, 85, 85, 82, 81, 78, 85, 88, 83, 85, 82] },
+                        { date: '02/11/2025', time: '13:00', front: 90, back: 92, zones: [96, 91, 90, 92, 87, 84, 91, 96, 92, 90, 92] },
+                    ]
+                }
+            };
+
+            const zoneNames = [
+                'ปลายนิ้วมือ (Fingertips)',
+                'ระหว่างนิ้ว (Between Fingers)',
+                'ฝ่ามือ (Palm)',
+                'หลังมือ (Back of Hands)',
+                'นิ้วหัวแม่มือ (Thumbs)',
+                'ข้อมือ (Wrists)',
+                'เล็บมือ (Nails)',
+                'ฐานนิ้ว (Finger Base)',
+                'ข้อนิ้ว (Knuckles)',
+                'ด้านข้างมือ (Side of Hands)',
+                'บริเวณนิ้วก้อย (Pinky Area)'
+            ];
+
+            let currentUser = null;
+            let trendChart = null;
+
+            function login() {
+                const empId = document.getElementById('employeeIdInput').value.trim().toUpperCase();
+
+                if (!mockEmployees[empId]) {
+                    alert('❌ ไม่พบรหัสพนักงานนี้ กรุณาลองใหม่อีกครั้ง');
+                    return;
+                }
+
+                currentUser = mockEmployees[empId];
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardScreen').style.display = 'block';
+                loadDashboard();
             }
-        };
 
-        const zoneNames = [
-            'ปลายนิ้วมือ (Fingertips)',
-            'ระหว่างนิ้ว (Between Fingers)',
-            'ฝ่ามือ (Palm)',
-            'หลังมือ (Back of Hands)',
-            'นิ้วหัวแม่มือ (Thumbs)',
-            'ข้อมือ (Wrists)',
-            'เล็บมือ (Nails)',
-            'ฐานนิ้ว (Finger Base)',
-            'ข้อนิ้ว (Knuckles)',
-            'ด้านข้างมือ (Side of Hands)',
-            'บริเวณนิ้วก้อย (Pinky Area)'
-        ];
-
-        let currentUser = null;
-        let trendChart = null;
-
-        function login() {
-            const empId = document.getElementById('employeeIdInput').value.trim().toUpperCase();
-
-            if (!mockEmployees[empId]) {
-                alert('❌ ไม่พบรหัสพนักงานนี้ กรุณาลองใหม่อีกครั้ง');
-                return;
+            function logout() {
+                currentUser = null;
+                document.getElementById('loginScreen').style.display = 'block';
+                document.getElementById('dashboardScreen').style.display = 'none';
+                document.getElementById('employeeIdInput').value = '';
+                if (trendChart) {
+                    trendChart.destroy();
+                    trendChart = null;
+                }
             }
 
-            currentUser = mockEmployees[empId];
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboardScreen').style.display = 'block';
-            loadDashboard();
-        }
+            function loadDashboard() {
+                if (!currentUser) return;
 
-        function logout() {
-            currentUser = null;
-            document.getElementById('loginScreen').style.display = 'block';
-            document.getElementById('dashboardScreen').style.display = 'none';
-            document.getElementById('employeeIdInput').value = '';
-            if (trendChart) {
-                trendChart.destroy();
-                trendChart = null;
-            }
-        }
+                // Update header
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userDetails').textContent =
+                    `รหัส: ${currentUser.id} | ตำแหน่ง: ${currentUser.position} | แผนก: ${currentUser.department}`;
 
-        function loadDashboard() {
-            if (!currentUser) return;
+                // Calculate stats
+                const records = currentUser.records;
+                const totalScans = records.length;
 
-            // Update header
-            document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userDetails').textContent =
-                `รหัส: ${currentUser.id} | ตำแหน่ง: ${currentUser.position} | แผนก: ${currentUser.department}`;
+                let totalScore = 0;
+                let passCount = 0;
+                let frontTotal = 0;
+                let backTotal = 0;
+                const zoneAverages = Array(11).fill(0);
 
-            // Calculate stats
-            const records = currentUser.records;
-            const totalScans = records.length;
+                records.forEach(record => {
+                    const avg = (record.front + record.back) / 2;
+                    totalScore += avg;
+                    frontTotal += record.front;
+                    backTotal += record.back;
 
-            let totalScore = 0;
-            let passCount = 0;
-            let frontTotal = 0;
-            let backTotal = 0;
-            const zoneAverages = Array(11).fill(0);
+                    if (avg >= 80) passCount++;
 
-            records.forEach(record => {
-                const avg = (record.front + record.back) / 2;
-                totalScore += avg;
-                frontTotal += record.front;
-                backTotal += record.back;
-
-                if (avg >= 80) passCount++;
-
-                record.zones.forEach((score, idx) => {
-                    zoneAverages[idx] += score;
+                    record.zones.forEach((score, idx) => {
+                        zoneAverages[idx] += score;
+                    });
                 });
-            });
 
-            const avgScore = (totalScore / totalScans).toFixed(1);
-            const frontAvg = (frontTotal / totalScans).toFixed(1);
-            const backAvg = (backTotal / totalScans).toFixed(1);
+                const avgScore = (totalScore / totalScans).toFixed(1);
+                const frontAvg = (frontTotal / totalScans).toFixed(1);
+                const backAvg = (backTotal / totalScans).toFixed(1);
 
-            zoneAverages.forEach((sum, idx) => {
-                zoneAverages[idx] = (sum / totalScans).toFixed(1);
-            });
+                zoneAverages.forEach((sum, idx) => {
+                    zoneAverages[idx] = (sum / totalScans).toFixed(1);
+                });
 
-            // Update KPI cards
-            const avgScoreEl = document.getElementById('avgScore');
-            const kpiCard = avgScoreEl.closest('.kpi-card');
+                // Update KPI cards
+                const avgScoreEl = document.getElementById('avgScore');
+                const kpiCard = avgScoreEl.closest('.kpi-card');
 
-            avgScoreEl.textContent = avgScore + '%';
+                avgScoreEl.textContent = avgScore + '%';
 
-            if (avgScore >= 80) {
-                kpiCard.classList.add('pass');
-                kpiCard.classList.remove('fail', 'neutral');
-                document.getElementById('passStatus').textContent = '✓ ผ่านเกณฑ์';
-                document.getElementById('passStatus').parentElement.classList.add('pass');
-            } else {
-                kpiCard.classList.add('fail');
-                kpiCard.classList.remove('pass', 'neutral');
-                document.getElementById('passStatus').textContent = '✗ ต่ำกว่าเกณฑ์';
-                document.getElementById('passStatus').parentElement.classList.add('fail');
+                if (avgScore >= 80) {
+                    kpiCard.classList.add('pass');
+                    kpiCard.classList.remove('fail', 'neutral');
+                    document.getElementById('passStatus').textContent = '✓ ผ่านเกณฑ์';
+                    document.getElementById('passStatus').parentElement.classList.add('pass');
+                } else {
+                    kpiCard.classList.add('fail');
+                    kpiCard.classList.remove('pass', 'neutral');
+                    document.getElementById('passStatus').textContent = '✗ ต่ำกว่าเกณฑ์';
+                    document.getElementById('passStatus').parentElement.classList.add('fail');
+                }
+
+                document.getElementById('totalScans').textContent = totalScans;
+                document.getElementById('passCount').textContent = `${passCount}/${totalScans}`;
+                document.getElementById('dateRange').textContent =
+                    `${records[0].date} - ${records[records.length - 1].date}`;
+
+                document.getElementById('frontScore').textContent = frontAvg + '%';
+                document.getElementById('backScore').textContent = backAvg + '%';
+
+                // Render comparison
+                renderComparison(avgScore, currentUser.department);
+
+                // Render calendar
+                renderCalendar(records);
+
+                // Render hand heatmap
+                renderHandHeatmap(zoneAverages);
+
+                // Render zones
+                renderZones(zoneAverages);
+
+                // Render recommendations
+                renderRecommendations(avgScore, zoneAverages);
+
+                // Render trend chart
+                renderTrendChart(records);
             }
 
-            document.getElementById('totalScans').textContent = totalScans;
-            document.getElementById('passCount').textContent = `${passCount}/${totalScans}`;
-            document.getElementById('dateRange').textContent =
-                `${records[0].date} - ${records[records.length - 1].date}`;
+            function renderHandHeatmap(zoneAverages) {
+                // Define zone positions for front hand (11 zones)
+                const frontZones = [
+                    { x: 100, y: 10, r: 25, name: 'ปลายนิ้ว', idx: 0 },      // Fingertips
+                    { x: 105, y: 85, r: 30, name: 'ระหว่างนิ้ว', idx: 1 },    // Between fingers
+                    { x: 100, y: 150, r: 50, name: 'ฝ่ามือ', idx: 2 },        // Palm
+                    { x: 30, y: 100, r: 28, name: 'นิ้วโป้ง', idx: 4 },       // Thumb
+                    { x: 70, y: 200, r: 25, name: 'ข้อมือ', idx: 5 },         // Wrist
+                    { x: 50, y: 25, r: 20, name: 'เล็บ', idx: 6 },            // Nails
+                ];
 
-            document.getElementById('frontScore').textContent = frontAvg + '%';
-            document.getElementById('backScore').textContent = backAvg + '%';
+                const backZones = [
+                    { x: 100, y: 160, r: 55, name: 'หลังมือ', idx: 3 },       // Back of hand
+                    { x: 100, y: 80, r: 28, name: 'ซอกนิ้ว', idx: 1 },        // Between fingers back
+                    { x: 100, y: 15, r: 25, name: 'ข้อนิ้ว', idx: 8 },        // Knuckles
+                    { x: 70, y: 200, r: 25, name: 'ข้อมือ', idx: 5 },         // Wrist
+                    { x: 170, y: 180, r: 22, name: 'ด้านข้าง', idx: 9 },      // Side of hand
+                ];
 
-            // Render comparison
-            renderComparison(avgScore, currentUser.department);
+                // Clear existing heat zones and gradients
+                const frontSvg = document.getElementById('frontHandSvg');
+                const backSvg = document.getElementById('backHandSvg');
 
-            // Render calendar
-            renderCalendar(records);
+                // Remove old zones and defs
+                frontSvg.querySelectorAll('.heat-zone, .heat-gradient').forEach(el => el.remove());
+                backSvg.querySelectorAll('.heat-zone, .heat-gradient').forEach(el => el.remove());
 
-            // Render hand heatmap
-            renderHandHeatmap(zoneAverages);
+                // Get or create defs element for gradients
+                let frontDefs = frontSvg.querySelector('defs');
+                let backDefs = backSvg.querySelector('defs');
 
-            // Render zones
-            renderZones(zoneAverages);
+                // Add front hand zones with gradients
+                frontZones.forEach((zone, index) => {
+                    const score = parseFloat(zoneAverages[zone.idx]);
+                    const color = getHeatColor(score);
+                    const intensity = getHeatIntensity(score);
 
-            // Render recommendations
-            renderRecommendations(avgScore, zoneAverages);
+                    // Create unique gradient ID
+                    const gradientId = `frontGradient${index}`;
 
-            // Render trend chart
-            renderTrendChart(records);
-        }
-
-        function renderHandHeatmap(zoneAverages) {
-            // Define zone positions for front hand (11 zones)
-            const frontZones = [
-                { x: 100, y: 10, r: 25, name: 'ปลายนิ้ว', idx: 0 },      // Fingertips
-                { x: 105, y: 85, r: 30, name: 'ระหว่างนิ้ว', idx: 1 },    // Between fingers
-                { x: 100, y: 150, r: 50, name: 'ฝ่ามือ', idx: 2 },        // Palm
-                { x: 30, y: 100, r: 28, name: 'นิ้วโป้ง', idx: 4 },       // Thumb
-                { x: 70, y: 200, r: 25, name: 'ข้อมือ', idx: 5 },         // Wrist
-                { x: 50, y: 25, r: 20, name: 'เล็บ', idx: 6 },            // Nails
-            ];
-
-            const backZones = [
-                { x: 100, y: 160, r: 55, name: 'หลังมือ', idx: 3 },       // Back of hand
-                { x: 100, y: 80, r: 28, name: 'ซอกนิ้ว', idx: 1 },        // Between fingers back
-                { x: 100, y: 15, r: 25, name: 'ข้อนิ้ว', idx: 8 },        // Knuckles
-                { x: 70, y: 200, r: 25, name: 'ข้อมือ', idx: 5 },         // Wrist
-                { x: 170, y: 180, r: 22, name: 'ด้านข้าง', idx: 9 },      // Side of hand
-            ];
-
-            // Clear existing heat zones and gradients
-            const frontSvg = document.getElementById('frontHandSvg');
-            const backSvg = document.getElementById('backHandSvg');
-
-            // Remove old zones and defs
-            frontSvg.querySelectorAll('.heat-zone, .heat-gradient').forEach(el => el.remove());
-            backSvg.querySelectorAll('.heat-zone, .heat-gradient').forEach(el => el.remove());
-
-            // Get or create defs element for gradients
-            let frontDefs = frontSvg.querySelector('defs');
-            let backDefs = backSvg.querySelector('defs');
-
-            // Add front hand zones with gradients
-            frontZones.forEach((zone, index) => {
-                const score = parseFloat(zoneAverages[zone.idx]);
-                const color = getHeatColor(score);
-                const intensity = getHeatIntensity(score);
-
-                // Create unique gradient ID
-                const gradientId = `frontGradient${index}`;
-
-                // Create radial gradient
-                const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
-                gradient.setAttribute('id', gradientId);
-                gradient.setAttribute('class', 'heat-gradient');
-                gradient.innerHTML = `
+                    // Create radial gradient
+                    const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
+                    gradient.setAttribute('id', gradientId);
+                    gradient.setAttribute('class', 'heat-gradient');
+                    gradient.innerHTML = `
                     <stop offset="0%" style="stop-color:${color};stop-opacity:${intensity}" />
                     <stop offset="50%" style="stop-color:${color};stop-opacity:${intensity * 0.6}" />
                     <stop offset="100%" style="stop-color:${color};stop-opacity:0" />
                 `;
-                frontDefs.appendChild(gradient);
+                    frontDefs.appendChild(gradient);
 
-                // Create circle with gradient fill
-                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                circle.setAttribute('class', 'heat-zone');
-                circle.setAttribute('cx', zone.x);
-                circle.setAttribute('cy', zone.y);
-                circle.setAttribute('r', zone.r);
-                circle.setAttribute('fill', `url(#${gradientId})`);
-                circle.setAttribute('filter', 'url(#glow)');
+                    // Create circle with gradient fill
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('class', 'heat-zone');
+                    circle.setAttribute('cx', zone.x);
+                    circle.setAttribute('cy', zone.y);
+                    circle.setAttribute('r', zone.r);
+                    circle.setAttribute('fill', `url(#${gradientId})`);
+                    circle.setAttribute('filter', 'url(#glow)');
 
-                // Tooltip
-                const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-                title.textContent = `${zone.name}: ${score}%`;
-                circle.appendChild(title);
+                    // Tooltip
+                    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+                    title.textContent = `${zone.name}: ${score}%`;
+                    circle.appendChild(title);
 
-                frontSvg.appendChild(circle);
-            });
+                    frontSvg.appendChild(circle);
+                });
 
-            // Add back hand zones with gradients
-            backZones.forEach((zone, index) => {
-                const score = parseFloat(zoneAverages[zone.idx]);
-                const color = getHeatColor(score);
-                const intensity = getHeatIntensity(score);
+                // Add back hand zones with gradients
+                backZones.forEach((zone, index) => {
+                    const score = parseFloat(zoneAverages[zone.idx]);
+                    const color = getHeatColor(score);
+                    const intensity = getHeatIntensity(score);
 
-                // Create unique gradient ID
-                const gradientId = `backGradient${index}`;
+                    // Create unique gradient ID
+                    const gradientId = `backGradient${index}`;
 
-                // Create radial gradient
-                const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
-                gradient.setAttribute('id', gradientId);
-                gradient.setAttribute('class', 'heat-gradient');
-                gradient.innerHTML = `
+                    // Create radial gradient
+                    const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
+                    gradient.setAttribute('id', gradientId);
+                    gradient.setAttribute('class', 'heat-gradient');
+                    gradient.innerHTML = `
                     <stop offset="0%" style="stop-color:${color};stop-opacity:${intensity}" />
                     <stop offset="50%" style="stop-color:${color};stop-opacity:${intensity * 0.6}" />
                     <stop offset="100%" style="stop-color:${color};stop-opacity:0" />
                 `;
-                backDefs.appendChild(gradient);
+                    backDefs.appendChild(gradient);
 
-                // Create circle with gradient fill
-                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                circle.setAttribute('class', 'heat-zone');
-                circle.setAttribute('cx', zone.x);
-                circle.setAttribute('cy', zone.y);
-                circle.setAttribute('r', zone.r);
-                circle.setAttribute('fill', `url(#${gradientId})`);
-                circle.setAttribute('filter', 'url(#glow2)');
+                    // Create circle with gradient fill
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('class', 'heat-zone');
+                    circle.setAttribute('cx', zone.x);
+                    circle.setAttribute('cy', zone.y);
+                    circle.setAttribute('r', zone.r);
+                    circle.setAttribute('fill', `url(#${gradientId})`);
+                    circle.setAttribute('filter', 'url(#glow2)');
 
-                // Tooltip
-                const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-                title.textContent = `${zone.name}: ${score}%`;
-                circle.appendChild(title);
+                    // Tooltip
+                    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+                    title.textContent = `${zone.name}: ${score}%`;
+                    circle.appendChild(title);
 
-                backSvg.appendChild(circle);
-            });
-        }
+                    backSvg.appendChild(circle);
+                });
+            }
 
-        function getHeatColor(score) {
-            if (score >= 80) return '#10b981';  // Green
-            if (score >= 60) return '#f59e0b';  // Orange
-            return '#ef4444';                    // Red
-        }
+            function getHeatColor(score) {
+                if (score >= 80) return '#10b981';  // Green
+                if (score >= 60) return '#f59e0b';  // Orange
+                return '#ef4444';                    // Red
+            }
 
-        function getHeatIntensity(score) {
-            // Lower score = higher intensity (more visible)
-            if (score >= 80) return 0.4;   // Light for good areas
-            if (score >= 60) return 0.65;  // Medium for OK areas
-            return 0.85;                    // Strong for problem areas
-        }
+            function getHeatIntensity(score) {
+                // Lower score = higher intensity (more visible)
+                if (score >= 80) return 0.4;   // Light for good areas
+                if (score >= 60) return 0.65;  // Medium for OK areas
+                return 0.85;                    // Strong for problem areas
+            }
 
-        function renderZones(zoneAverages) {
-            const container = document.getElementById('zonesGrid');
-            container.innerHTML = '';
+            function renderZones(zoneAverages) {
+                const container = document.getElementById('zonesGrid');
+                container.innerHTML = '';
 
-            // แสดงแค่ 3 โซนที่แย่สุด
-            const zonesWithIndex = zoneAverages.map((score, idx) => ({ score: parseFloat(score), idx }));
-            zonesWithIndex.sort((a, b) => a.score - b.score);
-            const worst3 = zonesWithIndex.slice(0, 3);
+                // แสดงแค่ 3 โซนที่แย่สุด
+                const zonesWithIndex = zoneAverages.map((score, idx) => ({ score: parseFloat(score), idx }));
+                zonesWithIndex.sort((a, b) => a.score - b.score);
+                const worst3 = zonesWithIndex.slice(0, 3);
 
-            worst3.forEach(zone => {
-                const score = zone.score;
-                const rating = score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'poor';
-                const icon = score >= 80 ? '✓' : score >= 60 ? '!' : '✗';
+                worst3.forEach(zone => {
+                    const score = zone.score;
+                    const rating = score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'poor';
+                    const icon = score >= 80 ? '✓' : score >= 60 ? '!' : '✗';
 
-                const zoneEl = document.createElement('div');
-                zoneEl.className = `zone-item ${rating}`;
-                zoneEl.innerHTML = `
+                    const zoneEl = document.createElement('div');
+                    zoneEl.className = `zone-item ${rating}`;
+                    zoneEl.innerHTML = `
                     <div class="zone-icon">${icon}</div>
                     <div class="zone-info">
                         <h4>${zoneNames[zone.idx]}</h4>
@@ -1625,25 +1738,25 @@
                         </div>
                     </div>
                 `;
-                container.appendChild(zoneEl);
-            });
-        }
+                    container.appendChild(zoneEl);
+                });
+            }
 
-        function renderRecommendations(avgScore, zoneAverages) {
-            const container = document.getElementById('recommendationsContent');
+            function renderRecommendations(avgScore, zoneAverages) {
+                const container = document.getElementById('recommendationsContent');
 
-            // Find worst 3 zones
-            const zonesWithIndex = zoneAverages.map((score, idx) => ({ score, idx }));
-            zonesWithIndex.sort((a, b) => a.score - b.score);
-            const worstZones = zonesWithIndex.slice(0, 3);
+                // Find worst 3 zones
+                const zonesWithIndex = zoneAverages.map((score, idx) => ({ score, idx }));
+                zonesWithIndex.sort((a, b) => a.score - b.score);
+                const worstZones = zonesWithIndex.slice(0, 3);
 
-            // Check if showing improvement trend (for EMP004)
-            const isImproving = currentUser && currentUser.records.length >= 5 && checkImprovementTrend();
+                // Check if showing improvement trend (for EMP004)
+                const isImproving = currentUser && currentUser.records.length >= 5 && checkImprovementTrend();
 
-            let html = '';
+                let html = '';
 
-            if (avgScore >= 80) {
-                html = `
+                if (avgScore >= 80) {
+                    html = `
                     <div class="recommendation-item" style="border-left-color: var(--success);">
                         <h3 style="color: var(--success);">
                             <i class="fa-solid fa-circle-check"></i> ยอดเยี่ยม! คุณล้างมือได้ตามมาตรฐาน
@@ -1654,10 +1767,10 @@
                         </div>
                     </div>
                 `;
-            } else {
-                // Check if improving
-                if (isImproving) {
-                    html = `
+                } else {
+                    // Check if improving
+                    if (isImproving) {
+                        html = `
                         <div class="recommendation-item" style="border-left-color: #3b82f6;">
                             <h3 style="color: #3b82f6;">
                                 <i class="fa-solid fa-chart-line"></i> เยี่ยม! คุณกำลังพัฒนาอย่างต่อเนื่อง
@@ -1668,8 +1781,8 @@
                             </div>
                         </div>
                     `;
-                } else {
-                    html = `
+                    } else {
+                        html = `
                         <div class="recommendation-item">
                             <h3>
                                 <i class="fa-solid fa-triangle-exclamation"></i> ต้องปรับปรุง: คะแนนเฉลี่ยต่ำกว่าเกณฑ์
@@ -1680,13 +1793,13 @@
                             </div>
                         </div>
                     `;
+                    }
                 }
-            }
 
-            worstZones.forEach((zone, rank) => {
-                if (zone.score < 80) {
-                    const tips = getZoneTips(zone.idx);
-                    html += `
+                worstZones.forEach((zone, rank) => {
+                    if (zone.score < 80) {
+                        const tips = getZoneTips(zone.idx);
+                        html += `
                         <div class="recommendation-item">
                             <h3>
                                 <i class="fa-solid fa-exclamation-circle"></i> จุดที่ต้องให้ความสนใจ #${rank + 1}
@@ -1697,206 +1810,206 @@
                             </div>
                         </div>
                     `;
-                }
-            });
+                    }
+                });
 
-            container.innerHTML = html;
-        }
-
-        function checkImprovementTrend() {
-            // Check if recent scores are better than earlier scores
-            const records = currentUser.records;
-            const half = Math.floor(records.length / 2);
-
-            const firstHalfAvg = records.slice(0, half).reduce((sum, r) => sum + (r.front + r.back) / 2, 0) / half;
-            const secondHalfAvg = records.slice(half).reduce((sum, r) => sum + (r.front + r.back) / 2, 0) / (records.length - half);
-
-            // Improvement if second half is at least 5% better
-            return secondHalfAvg > firstHalfAvg + 5;
-        }
-
-        function getZoneTips(zoneIdx) {
-            const tips = [
-                'ถูปลายนิ้วในฝ่ามือของอีกข้างด้วยการหมุน เพื่อทำความสะอาดรอบเล็บ',
-                'ประสานนิ้วทั้ง 2 มือเข้าหากัน แล้วถูไปมา เพื่อทำความสะอาดซอกนิ้ว',
-                'ถูฝ่ามือด้วยหลังมือของอีกข้างหลายๆ ครั้ง เพื่อให้สบู่ทั่วถึง',
-                'ถูหลังมือด้วยฝ่ามือของอีกข้าง ให้ครอบคลุมทั้งหลังมือ',
-                'ใช้นิ้วมืออีกข้างโอบรอบนิ้วหัวแม่มือ แล้วหมุนถู เพื่อทำความสะอาดทุกด้าน',
-                'ถูข้อมือทั้ง 2 ข้างด้วยการหมุนไปรอบๆ ให้ครอบคลุมทั้งวง',
-                'ใช้เล็บมือข้างหนึ่งขีดเบาๆ บนฝ่ามืออีกข้าง เพื่อทำความสะอาดใต้เล็บ',
-                'ถูฐานนิ้วทุกนิ้วด้วยการสลับหมุนทั้ง 2 มือ',
-                'ถูข้อนิ้วด้วยการกำฝ่ามือข้างหนึ่งแล้วถูบนหลังมืออีกข้าง',
-                'ถูด้านข้างของมือทั้ง 2 ข้างให้ทั่วถึง โดยใช้ฝ่ามือของอีกข้างถู',
-                'ใช้ฝ่ามืออีกข้างโอบรอบนิ้วก้อย แล้วหมุนถู เพื่อทำความสะอาดทุกมุม'
-            ];
-            return tips[zoneIdx] || 'ให้ความสนใจพิเศษในการทำความสะอาดบริเวณนี้';
-        }
-
-        function renderTrendChart(records) {
-            const ctx = document.getElementById('trendChart').getContext('2d');
-
-            if (trendChart) {
-                trendChart.destroy();
+                container.innerHTML = html;
             }
 
-            const labels = records.map(r => `${r.date} ${r.time}`);
-            const scores = records.map(r => ((r.front + r.back) / 2).toFixed(1));
+            function checkImprovementTrend() {
+                // Check if recent scores are better than earlier scores
+                const records = currentUser.records;
+                const half = Math.floor(records.length / 2);
 
-            // Color points based on pass/fail
-            const pointColors = scores.map(score => parseFloat(score) >= 80 ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)');
+                const firstHalfAvg = records.slice(0, half).reduce((sum, r) => sum + (r.front + r.back) / 2, 0) / half;
+                const secondHalfAvg = records.slice(half).reduce((sum, r) => sum + (r.front + r.back) / 2, 0) / (records.length - half);
 
-            trendChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'คะแนนการล้างมือ (%)',
-                        data: scores,
-                        borderColor: 'rgb(14, 165, 233)',
-                        backgroundColor: 'rgba(14, 165, 233, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        fill: true,
-                        pointRadius: 7,
-                        pointBackgroundColor: pointColors,
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2,
-                        pointHoverRadius: 10
-                    }, {
-                        label: 'เกณฑ์ผ่าน (80%)',
-                        data: Array(records.length).fill(80),
-                        borderColor: 'rgb(16, 185, 129)',
-                        borderWidth: 2,
-                        borderDash: [10, 5],
-                        pointRadius: 0,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: { size: 12, weight: 'bold' },
-                                padding: 15
+                // Improvement if second half is at least 5% better
+                return secondHalfAvg > firstHalfAvg + 5;
+            }
+
+            function getZoneTips(zoneIdx) {
+                const tips = [
+                    'ถูปลายนิ้วในฝ่ามือของอีกข้างด้วยการหมุน เพื่อทำความสะอาดรอบเล็บ',
+                    'ประสานนิ้วทั้ง 2 มือเข้าหากัน แล้วถูไปมา เพื่อทำความสะอาดซอกนิ้ว',
+                    'ถูฝ่ามือด้วยหลังมือของอีกข้างหลายๆ ครั้ง เพื่อให้สบู่ทั่วถึง',
+                    'ถูหลังมือด้วยฝ่ามือของอีกข้าง ให้ครอบคลุมทั้งหลังมือ',
+                    'ใช้นิ้วมืออีกข้างโอบรอบนิ้วหัวแม่มือ แล้วหมุนถู เพื่อทำความสะอาดทุกด้าน',
+                    'ถูข้อมือทั้ง 2 ข้างด้วยการหมุนไปรอบๆ ให้ครอบคลุมทั้งวง',
+                    'ใช้เล็บมือข้างหนึ่งขีดเบาๆ บนฝ่ามืออีกข้าง เพื่อทำความสะอาดใต้เล็บ',
+                    'ถูฐานนิ้วทุกนิ้วด้วยการสลับหมุนทั้ง 2 มือ',
+                    'ถูข้อนิ้วด้วยการกำฝ่ามือข้างหนึ่งแล้วถูบนหลังมืออีกข้าง',
+                    'ถูด้านข้างของมือทั้ง 2 ข้างให้ทั่วถึง โดยใช้ฝ่ามือของอีกข้างถู',
+                    'ใช้ฝ่ามืออีกข้างโอบรอบนิ้วก้อย แล้วหมุนถู เพื่อทำความสะอาดทุกมุม'
+                ];
+                return tips[zoneIdx] || 'ให้ความสนใจพิเศษในการทำความสะอาดบริเวณนี้';
+            }
+
+            function renderTrendChart(records) {
+                const ctx = document.getElementById('trendChart').getContext('2d');
+
+                if (trendChart) {
+                    trendChart.destroy();
+                }
+
+                const labels = records.map(r => `${r.date} ${r.time}`);
+                const scores = records.map(r => ((r.front + r.back) / 2).toFixed(1));
+
+                // Color points based on pass/fail
+                const pointColors = scores.map(score => parseFloat(score) >= 80 ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)');
+
+                trendChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'คะแนนการล้างมือ (%)',
+                            data: scores,
+                            borderColor: 'rgb(14, 165, 233)',
+                            backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 7,
+                            pointBackgroundColor: pointColors,
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 10
+                        }, {
+                            label: 'เกณฑ์ผ่าน (80%)',
+                            data: Array(records.length).fill(80),
+                            borderColor: 'rgb(16, 185, 129)',
+                            borderWidth: 2,
+                            borderDash: [10, 5],
+                            pointRadius: 0,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: { size: 12, weight: 'bold' },
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                padding: 12,
+                                titleFont: { size: 13, weight: 'bold' },
+                                bodyFont: { size: 12 },
+                                callbacks: {
+                                    label: function (context) {
+                                        const score = context.parsed.y;
+                                        const status = score >= 80 ? '✓ ผ่าน' : '✗ ไม่ผ่าน';
+                                        return `คะแนน: ${score}% (${status})`;
+                                    }
+                                }
                             }
                         },
-                        tooltip: {
-                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                            padding: 12,
-                            titleFont: { size: 13, weight: 'bold' },
-                            bodyFont: { size: 12 },
-                            callbacks: {
-                                label: function (context) {
-                                    const score = context.parsed.y;
-                                    const status = score >= 80 ? '✓ ผ่าน' : '✗ ไม่ผ่าน';
-                                    return `คะแนน: ${score}% (${status})`;
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value + '%';
+                                    },
+                                    font: { size: 11 }
+                                },
+                                grid: {
+                                    color: 'rgba(226, 232, 240, 0.5)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    font: { size: 10 },
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                },
+                                grid: {
+                                    display: false
                                 }
                             }
                         }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                callback: function (value) {
-                                    return value + '%';
-                                },
-                                font: { size: 11 }
-                            },
-                            grid: {
-                                color: 'rgba(226, 232, 240, 0.5)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                font: { size: 10 },
-                                maxRotation: 45,
-                                minRotation: 45
-                            },
-                            grid: {
-                                display: false
-                            }
-                        }
                     }
+                });
+            }
+
+            // Comparison Function
+            function renderComparison(userScore, department) {
+                // Mock department and hospital averages
+                const deptAverages = {
+                    'SICU': 82.5,
+                    'Ward 7A': 75.2,
+                    'Operating Room': 91.3,
+                    'Emergency Room': 78.8
+                };
+                const hospitalAvg = 79.5;
+                const deptAvg = deptAverages[department] || 78.0;
+
+                document.getElementById('yourScore').textContent = userScore + '%';
+                document.getElementById('deptAvg').textContent = deptAvg + '%';
+                document.getElementById('hospitalAvg').textContent = hospitalAvg + '%';
+
+                // Calculate differences
+                const deptDiff = (userScore - deptAvg).toFixed(1);
+                const hospitalDiff = (userScore - hospitalAvg).toFixed(1);
+
+                const deptDiffEl = document.getElementById('deptDiff');
+                const hospitalDiffEl = document.getElementById('hospitalDiff');
+
+                if (deptDiff > 0) {
+                    deptDiffEl.textContent = `↑ สูงกว่า ${deptDiff}%`;
+                    deptDiffEl.className = 'diff positive';
+                } else if (deptDiff < 0) {
+                    deptDiffEl.textContent = `↓ ต่ำกว่า ${Math.abs(deptDiff)}%`;
+                    deptDiffEl.className = 'diff negative';
+                } else {
+                    deptDiffEl.textContent = '= เท่ากัน';
+                    deptDiffEl.className = 'diff';
                 }
-            });
-        }
 
-        // Comparison Function
-        function renderComparison(userScore, department) {
-            // Mock department and hospital averages
-            const deptAverages = {
-                'SICU': 82.5,
-                'Ward 7A': 75.2,
-                'Operating Room': 91.3,
-                'Emergency Room': 78.8
-            };
-            const hospitalAvg = 79.5;
-            const deptAvg = deptAverages[department] || 78.0;
-
-            document.getElementById('yourScore').textContent = userScore + '%';
-            document.getElementById('deptAvg').textContent = deptAvg + '%';
-            document.getElementById('hospitalAvg').textContent = hospitalAvg + '%';
-
-            // Calculate differences
-            const deptDiff = (userScore - deptAvg).toFixed(1);
-            const hospitalDiff = (userScore - hospitalAvg).toFixed(1);
-
-            const deptDiffEl = document.getElementById('deptDiff');
-            const hospitalDiffEl = document.getElementById('hospitalDiff');
-
-            if (deptDiff > 0) {
-                deptDiffEl.textContent = `↑ สูงกว่า ${deptDiff}%`;
-                deptDiffEl.className = 'diff positive';
-            } else if (deptDiff < 0) {
-                deptDiffEl.textContent = `↓ ต่ำกว่า ${Math.abs(deptDiff)}%`;
-                deptDiffEl.className = 'diff negative';
-            } else {
-                deptDiffEl.textContent = '= เท่ากัน';
-                deptDiffEl.className = 'diff';
+                if (hospitalDiff > 0) {
+                    hospitalDiffEl.textContent = `↑ สูงกว่า ${hospitalDiff}%`;
+                    hospitalDiffEl.className = 'diff positive';
+                } else if (hospitalDiff < 0) {
+                    hospitalDiffEl.textContent = `↓ ต่ำกว่า ${Math.abs(hospitalDiff)}%`;
+                    hospitalDiffEl.className = 'diff negative';
+                } else {
+                    hospitalDiffEl.textContent = '= เท่ากัน';
+                    hospitalDiffEl.className = 'diff';
+                }
             }
 
-            if (hospitalDiff > 0) {
-                hospitalDiffEl.textContent = `↑ สูงกว่า ${hospitalDiff}%`;
-                hospitalDiffEl.className = 'diff positive';
-            } else if (hospitalDiff < 0) {
-                hospitalDiffEl.textContent = `↓ ต่ำกว่า ${Math.abs(hospitalDiff)}%`;
-                hospitalDiffEl.className = 'diff negative';
-            } else {
-                hospitalDiffEl.textContent = '= เท่ากัน';
-                hospitalDiffEl.className = 'diff';
-            }
-        }
+            // Calendar Heatmap Function
+            function renderCalendar(records) {
+                const tbody = document.getElementById('historyTableBody');
+                tbody.innerHTML = '';
 
-        // Calendar Heatmap Function
-        function renderCalendar(records) {
-            const tbody = document.getElementById('historyTableBody');
-            tbody.innerHTML = '';
+                // Reverse to show latest first (แค่ 5 ครั้งล่าสุด)
+                const reversedRecords = [...records].reverse().slice(0, 5);
 
-            // Reverse to show latest first (แค่ 5 ครั้งล่าสุด)
-            const reversedRecords = [...records].reverse().slice(0, 5);
+                reversedRecords.forEach((record, index) => {
+                    const avgScore = ((record.front + record.back) / 2).toFixed(1);
+                    const isPassed = avgScore >= 80;
 
-            reversedRecords.forEach((record, index) => {
-                const avgScore = ((record.front + record.back) / 2).toFixed(1);
-                const isPassed = avgScore >= 80;
+                    // Format date
+                    const [day, month, year] = record.date.split('/');
+                    const shortYear = year.substring(2); // แปลง 2025 -> 25
+                    const dateStr = `${day}/${month}/${shortYear}`;
 
-                // Format date
-                const [day, month, year] = record.date.split('/');
-                const shortYear = year.substring(2); // แปลง 2025 -> 25
-                const dateStr = `${day}/${month}/${shortYear}`;
+                    const row = document.createElement('tr');
+                    row.style.borderBottom = '1px solid #f1f5f9';
+                    row.style.transition = 'all 0.2s ease';
+                    row.onmouseover = function () { this.style.background = '#f8fafc'; };
+                    row.onmouseout = function () { this.style.background = 'white'; };
 
-                const row = document.createElement('tr');
-                row.style.borderBottom = '1px solid #f1f5f9';
-                row.style.transition = 'all 0.2s ease';
-                row.onmouseover = function () { this.style.background = '#f8fafc'; };
-                row.onmouseout = function () { this.style.background = 'white'; };
-
-                row.innerHTML = `
+                    row.innerHTML = `
                     <td style="padding: 12px; font-size: 13px; color: var(--text-sub); font-weight: 600;">${reversedRecords.length - index}</td>
                     <td style="padding: 12px; font-size: 13px; color: var(--text-main); font-weight: 600;">${dateStr}</td>
                     <td style="padding: 12px; font-size: 13px; color: var(--text-sub);">${record.time}</td>
@@ -1917,79 +2030,167 @@
                     </td>
                 `;
 
-                tbody.appendChild(row);
-            });
-        }
-
-        // Export PDF Function
-        async function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-
-            // Add Thai font support (using default for now)
-            pdf.setFont('helvetica');
-
-            // Header
-            pdf.setFontSize(20);
-            pdf.setTextColor(14, 165, 233);
-            pdf.text('Hand Hygiene Report', 105, 20, { align: 'center' });
-
-            pdf.setFontSize(12);
-            pdf.setTextColor(100, 116, 139);
-            pdf.text(`Generated: ${new Date().toLocaleDateString('th-TH')}`, 105, 28, { align: 'center' });
-
-            // User Info
-            pdf.setFontSize(14);
-            pdf.setTextColor(15, 23, 42);
-            pdf.text(`Name: ${currentUser.name}`, 20, 45);
-            pdf.text(`ID: ${currentUser.id}`, 20, 52);
-            pdf.text(`Position: ${currentUser.position}`, 20, 59);
-            pdf.text(`Department: ${currentUser.department}`, 20, 66);
-
-            // Stats
-            pdf.setFontSize(16);
-            pdf.setTextColor(14, 165, 233);
-            pdf.text('Summary', 20, 80);
-
-            pdf.setFontSize(12);
-            pdf.setTextColor(15, 23, 42);
-            const avgScore = document.getElementById('avgScore').textContent;
-            const totalScans = document.getElementById('totalScans').textContent;
-            const passCount = document.getElementById('passCount').textContent;
-
-            pdf.text(`Average Score: ${avgScore}`, 20, 90);
-            pdf.text(`Total Scans: ${totalScans}`, 20, 97);
-            pdf.text(`Passed: ${passCount}`, 20, 104);
-            pdf.text(`Status: ${parseFloat(avgScore) >= 80 ? 'PASSED' : 'NEEDS IMPROVEMENT'}`, 20, 111);
-
-            // Recommendations
-            pdf.setFontSize(16);
-            pdf.setTextColor(139, 92, 246);
-            pdf.text('AI Recommendations', 20, 125);
-
-            pdf.setFontSize(10);
-            pdf.setTextColor(100, 116, 139);
-            const recommendations = document.getElementById('recommendationsContent').innerText.substring(0, 500);
-            const lines = pdf.splitTextToSize(recommendations, 170);
-            pdf.text(lines, 20, 135);
-
-            // Footer
-            pdf.setFontSize(8);
-            pdf.setTextColor(148, 163, 184);
-            pdf.text('Hand Hygiene Monitoring System - Personal Report', 105, 285, { align: 'center' });
-
-            pdf.save(`hand-hygiene-report-${currentUser.id}-${new Date().getTime()}.pdf`);
-
-            alert('✅ รายงาน PDF ถูกดาวน์โหลดเรียบร้อยแล้ว!');
-        }
-
-        // Allow Enter key to login
-        document.getElementById('employeeIdInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                login();
+                    tbody.appendChild(row);
+                });
             }
-        });
-    </script>
+
+            // Export PDF Function
+            async function exportToPDF() {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                // Add Thai font support (using default for now)
+                pdf.setFont('helvetica');
+
+                // Header
+                pdf.setFontSize(20);
+                pdf.setTextColor(14, 165, 233);
+                pdf.text('Hand Hygiene Report', 105, 20, { align: 'center' });
+
+                pdf.setFontSize(12);
+                pdf.setTextColor(100, 116, 139);
+                pdf.text(`Generated: ${new Date().toLocaleDateString('th-TH')}`, 105, 28, { align: 'center' });
+
+                // User Info
+                pdf.setFontSize(14);
+                pdf.setTextColor(15, 23, 42);
+                pdf.text(`Name: ${currentUser.name}`, 20, 45);
+                pdf.text(`ID: ${currentUser.id}`, 20, 52);
+                pdf.text(`Position: ${currentUser.position}`, 20, 59);
+                pdf.text(`Department: ${currentUser.department}`, 20, 66);
+
+                // Stats
+                pdf.setFontSize(16);
+                pdf.setTextColor(14, 165, 233);
+                pdf.text('Summary', 20, 80);
+
+                pdf.setFontSize(12);
+                pdf.setTextColor(15, 23, 42);
+                const avgScore = document.getElementById('avgScore').textContent;
+                const totalScans = document.getElementById('totalScans').textContent;
+                const passCount = document.getElementById('passCount').textContent;
+
+                pdf.text(`Average Score: ${avgScore}`, 20, 90);
+                pdf.text(`Total Scans: ${totalScans}`, 20, 97);
+                pdf.text(`Passed: ${passCount}`, 20, 104);
+                pdf.text(`Status: ${parseFloat(avgScore) >= 80 ? 'PASSED' : 'NEEDS IMPROVEMENT'}`, 20, 111);
+
+                // Recommendations
+                pdf.setFontSize(16);
+                pdf.setTextColor(139, 92, 246);
+                pdf.text('AI Recommendations', 20, 125);
+
+                pdf.setFontSize(10);
+                pdf.setTextColor(100, 116, 139);
+                const recommendations = document.getElementById('recommendationsContent').innerText.substring(0, 500);
+                const lines = pdf.splitTextToSize(recommendations, 170);
+                pdf.text(lines, 20, 135);
+
+                // Footer
+                pdf.setFontSize(8);
+                pdf.setTextColor(148, 163, 184);
+                pdf.text('Hand Hygiene Monitoring System - Personal Report', 105, 285, { align: 'center' });
+
+                pdf.save(`hand-hygiene-report-${currentUser.id}-${new Date().getTime()}.pdf`);
+
+                alert('✅ รายงาน PDF ถูกดาวน์โหลดเรียบร้อยแล้ว!');
+            }
+
+
+
+            // Login function
+            function handleLogin() {
+                const empId = document.getElementById('empIdInput').value.toUpperCase().trim();
+                const errorMessage = document.getElementById('errorMessage');
+
+                if (mockEmployees[empId]) {
+                    sessionStorage.setItem('personal_authenticated', 'true');
+                    sessionStorage.setItem('personal_empId', empId);
+                    sessionStorage.setItem('personal_login_time', new Date().toISOString());
+
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+
+                    // Load dashboard with employee data
+                    currentUser = mockEmployees[empId];
+                    loadDashboard(empId);
+                } else {
+                    errorMessage.style.display = 'flex';
+                    document.getElementById('empIdInput').value = '';
+                    document.getElementById('empIdInput').focus();
+                }
+            }
+
+            // Check authentication on page load
+            window.addEventListener('DOMContentLoaded', function () {
+                // Check for URL parameter (from drill-down)
+                const urlParams = new URLSearchParams(window.location.search);
+                const empIdParam = urlParams.get('empId');
+
+                if (empIdParam) {
+                    // Coming from IC Dashboard or Department Dashboard drill-down - bypass login
+                    const empIdUpper = empIdParam.toUpperCase();
+
+                    if (mockEmployees[empIdUpper]) {
+                        // Set session storage for this drill-down access
+                        sessionStorage.setItem('personal_authenticated', 'true');
+                        sessionStorage.setItem('personal_empId', empIdUpper);
+                        sessionStorage.setItem('personal_source', 'drilldown');
+                        sessionStorage.setItem('personal_login_time', new Date().toISOString());
+
+                        // Load the employee data
+                        currentUser = mockEmployees[empIdUpper];
+
+                        document.getElementById('loginScreen').style.display = 'none';
+                        document.getElementById('dashboardContent').style.display = 'block';
+
+                        // Load dashboard with employee data
+                        loadDashboard(empIdUpper);
+
+                        console.log('✓ Drill-down access detected for:', empIdUpper);
+                        return;
+                    }
+                }
+
+                // Normal authentication check
+                const isAuthenticated = sessionStorage.getItem('personal_authenticated');
+                if (isAuthenticated === 'true') {
+                    const empId = sessionStorage.getItem('personal_empId');
+
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+
+                    // Load dashboard with stored employee ID
+                    if (empId && mockEmployees[empId]) {
+                        currentUser = mockEmployees[empId];
+                        loadDashboard(empId);
+                    }
+                } else {
+                    document.getElementById('loginScreen').style.display = 'flex';
+                    document.getElementById('dashboardContent').style.display = 'none';
+                }
+            });
+
+            // Allow Enter key to login
+            document.addEventListener('DOMContentLoaded', function () {
+                const empIdInput = document.getElementById('empIdInput');
+                if (empIdInput) {
+                    empIdInput.addEventListener('keypress', function (e) {
+                        if (e.key === 'Enter') {
+                            handleLogin();
+                        }
+                    });
+                }
+            });
+
+            // Logout function (update existing if present)
+            function logout() {
+                sessionStorage.clear();
+                location.reload();
+            }
+
+        </script>
+    </div> <!-- Close dashboardContent -->
 </body>
 
 </html>
