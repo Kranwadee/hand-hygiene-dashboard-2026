@@ -13,6 +13,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+    <!-- Authentication Check -->
+    <script>
+        // Check if user is authenticated
+        (function () {
+            const isAuthenticated = sessionStorage.getItem('ic_authenticated');
+            if (isAuthenticated !== 'true') {
+                // Redirect to login page if not authenticated
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+
     <style>
         :root {
             --primary-blue: #0ea5e9;
@@ -981,8 +993,13 @@
                 <button class="btn btn-outline" id="copyBtn"><i class="fa-solid fa-link"></i> ลิงก์แชร์</button>
                 <button class="btn btn-share"><i class="fa-solid fa-file-export"></i> ส่งออกรายงาน</button>
             </div>
-            <button class="btn btn-home" onclick="location.href='index.html'"><i class="fa-solid fa-home"></i>
-                หน้าหลัก</button>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-outline" onclick="logout()" style="color: #dc2626; border-color: #fecaca;">
+                    <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+                </button>
+                <button class="btn btn-home" onclick="location.href='index.html'"><i class="fa-solid fa-home"></i>
+                    หน้าหลัก</button>
+            </div>
         </nav>
 
         <!-- Header -->
@@ -2148,6 +2165,13 @@
         }
         // Sample data for testing (30-31 October 2025)
         // ...existing code...
+
+        // Logout function
+        function logout() {
+            sessionStorage.removeItem('ic_authenticated');
+            sessionStorage.removeItem('ic_login_time');
+            window.location.href = 'login.html';
+        }
     </script>
 </body>
 
