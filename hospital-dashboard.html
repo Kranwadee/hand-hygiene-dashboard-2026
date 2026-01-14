@@ -13,17 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <!-- Authentication Check -->
-    <script>
-        // Check if user is authenticated
-        (function () {
-            const isAuthenticated = sessionStorage.getItem('ic_authenticated');
-            if (isAuthenticated !== 'true') {
-                // Redirect to login page if not authenticated
-                window.location.href = 'login.html';
-            }
-        })();
-    </script>
+
 
     <style>
         :root {
@@ -62,9 +52,217 @@
             overflow-x: hidden;
         }
 
-        .dashboard-container {
-            max-width: 1600px;
-            margin: 0 auto;
+        /* =========================================
+           LOGIN SCREEN STYLES (Blue Theme)
+           ========================================= */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 30%, #7dd3fc 70%, #bae6fd 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        /* Animated Particles */
+        #loginScreen::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        #loginScreen::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+            bottom: -50px;
+            left: -50px;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            max-width: 420px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 36px;
+            color: white;
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .login-card h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #0ea5e9;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .login-card p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 16px;
+            font-family: 'Anuphan', sans-serif;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Anuphan', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-button:hover {
+            background: linear-gradient(135deg, #0284c7, #0ea5e9);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.4);
+        }
+
+        .login-hint {
+            margin-top: 25px;
+            padding: 18px;
+            background: #eff6ff;
+            border-radius: 14px;
+            font-size: 13px;
+            color: #0369a1;
+            border: 1px solid #bfdbfe;
+            text-align: center;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 14px;
+            color: #0ea5e9;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #bfdbfe;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            background: #eff6ff;
+        }
+
+        .back-link:hover {
+            background: #dbeafe;
+            border-color: #38bdf8;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #dashboardContent {
+            display: none;
         }
 
         /* Nav & Action UI */
@@ -959,682 +1157,733 @@
 
 <body>
 
-    <div id="loading">
-        <div class="spinner"></div>
-        <p style="margin-top:20px; font-size: 16px;">กำลังโหลดระบบวิเคราะห์เชิงกลยุทธ์...</p>
-    </div>
-
-    <!-- Detail Modal -->
-    <div class="modal-overlay" id="detailModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-            <div style="margin-bottom: 30px;">
-                <p style="font-size: 14px; font-weight: 700; color: var(--primary-blue);">AUDIT DRILL-DOWN</p>
-                <h2 id="modalDeptName" style="font-size: 28px; font-family: 'Outfit';">ชื่อหน่วยงาน</h2>
-                <p style="font-size: 12px; color: var(--text-sub); margin-top: 5px;">* ข้อมูลคะแนนเบื้องต้นจากโมเดลทดสอบ
-                </p>
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <div class="login-icon">
+                <i class="fa-solid fa-shield-halved"></i>
             </div>
-            <div id="logsContainer"></div>
+            <h1>IC Dashboard Login</h1>
+            <p>กรุณาใส่รหัสผ่านเพื่อเข้าสู่ระบบ</p>
+
+            <div class="error-message" id="errorMessage">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง</span>
+            </div>
+
+            <input type="password" id="passwordInput" class="login-input" placeholder="รหัสผ่าน" autocomplete="off">
+
+            <button class="login-button" onclick="handleLogin()">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <span>เข้าสู่ระบบ</span>
+            </button>
+
+            <div class="login-hint">
+                <i class="fa-solid fa-info-circle"></i>
+                <strong>Demo:</strong> รหัสผ่านคือ <code
+                    style="background: #dbeafe; padding: 3px 10px; border-radius: 6px; font-weight: 700;">ic2026</code>
+            </div>
+
+            <a href="index.html" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                กลับหน้าหลัก
+            </a>
         </div>
     </div>
 
-    <div class="dashboard-container">
-        <!-- Technical Disclaimer -->
-        <div class="disclaimer-top">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <span>หมายเหตุทางเทคนิค: ข้อมูลเปอร์เซ็นต์ความสะอาดในระบบขณะนี้มีค่าต่ำกว่าปกติ เนื่องจากโมเดล AI
-                อยู่ในช่วงพัฒนาความแม่นยำ (Optimization Phase)
-                ข้อมูลนี้เหมาะสำหรับใช้เพื่อการทดสอบโครงสร้างระบบเท่านั้น</span>
+    <!-- Dashboard Content -->
+    <div id="dashboardContent">
+
+        <div id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top:20px; font-size: 16px;">กำลังโหลดระบบวิเคราะห์เชิงกลยุทธ์...</p>
         </div>
 
-        <!-- Top Nav -->
-        <nav class="top-nav">
-            <div class="nav-actions">
-                <button class="btn btn-outline" id="copyBtn"><i class="fa-solid fa-link"></i> ลิงก์แชร์</button>
-                <button class="btn btn-share"><i class="fa-solid fa-file-export"></i> ส่งออกรายงาน</button>
-            </div>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn btn-outline" onclick="logout()" style="color: #dc2626; border-color: #fecaca;">
-                    <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
-                </button>
-                <button class="btn btn-home" onclick="location.href='index.html'"><i class="fa-solid fa-home"></i>
-                    หน้าหลัก</button>
-            </div>
-        </nav>
-
-        <!-- Header -->
-        <header class="header-section">
-            <div class="header-content">
-                <h1>IC Dashboard - Infection Control</h1>
-                <p style="margin-top: 8px; font-size: 13px; opacity: 0.95;">สำหรับทีม Infection Control -
-                    ภาพรวมทั้งโรงพยาบาล พร้อม Drill-down ดูแต่ละแผนก</p>
-            </div>
-            <div style="text-align: right;">
-                <div style="font-weight: 700; font-size: 16px;">30-31 ตุลาคม 2568</div>
-                <div style="opacity: 0.8; font-size: 12px;">Development Build Ver 7.1</div>
-            </div>
-        </header>
-
-        <!-- KPI Row -->
-        <div class="kpi-row">
-            <div class="kpi-box">
-                <div class="kpi-label">ดัชนีสะอาดรวม (Overall Cleanliness Index)</div>
-                <div class="kpi-value" id="kpiOverall" style="color: var(--danger);">29.6%</div>
-            </div>
-            <div class="kpi-box">
-                <div class="kpi-label">อัตราการผ่านเกณฑ์ 80% (Pass Rate ≥80%)</div>
-                <div class="kpi-value" id="kpiCompliance">8.7%</div>
-            </div>
-            <div class="kpi-box">
-                <div class="kpi-label">ระดับดี (Good Level - 80-100%)</div>
-                <div class="kpi-value" id="kpiGood" style="color: var(--success);">2</div>
-                <div style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">หน่วยงาน</div>
-                <div style="font-size: 11px; color: var(--primary-blue); margin-top: 8px; font-weight: 700; cursor: pointer;"
-                    id="goodDeptsToggle">แตะเพื่อดู →</div>
-                <div id="goodDeptsList"
-                    style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
-                    <div style="font-size: 12px; line-height: 2; color: var(--text-main);">
-                        <div id="goodDeptContent"></div>
-                    </div>
+        <!-- Detail Modal -->
+        <div class="modal-overlay" id="detailModal">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                <div style="margin-bottom: 30px;">
+                    <p style="font-size: 14px; font-weight: 700; color: var(--primary-blue);">AUDIT DRILL-DOWN</p>
+                    <h2 id="modalDeptName" style="font-size: 28px; font-family: 'Outfit';">ชื่อหน่วยงาน</h2>
+                    <p style="font-size: 12px; color: var(--text-sub); margin-top: 5px;">*
+                        ข้อมูลคะแนนเบื้องต้นจากโมเดลทดสอบ
+                    </p>
                 </div>
+                <div id="logsContainer"></div>
             </div>
         </div>
 
-        <!-- Accordion Filter Section -->
-        <div style="margin-bottom: 20px;">
-            <div class="accordion-header" onclick="toggleAccordion()">
-                <h3>
-                    <i class="fa-solid fa-filter"></i> Advanced Filters & Results
-                </h3>
-                <i class="fa-solid fa-chevron-down accordion-toggle" id="accordionToggle"></i>
+        <div class="dashboard-container">
+            <!-- Technical Disclaimer -->
+            <div class="disclaimer-top">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>หมายเหตุทางเทคนิค: ข้อมูลเปอร์เซ็นต์ความสะอาดในระบบขณะนี้มีค่าต่ำกว่าปกติ เนื่องจากโมเดล AI
+                    อยู่ในช่วงพัฒนาความแม่นยำ (Optimization Phase)
+                    ข้อมูลนี้เหมาะสำหรับใช้เพื่อการทดสอบโครงสร้างระบบเท่านั้น</span>
             </div>
-            <div class="accordion-content" id="accordionContent">
-                <div
-                    style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; margin-bottom: 20px;">
-                    <div>
-                        <label
-                            style="font-weight: 700; font-size: 12px; color: var(--text-sub); margin-bottom: 8px; display: block;">วัน
-                            (Day)</label>
-                        <select id="filterDay"
-                            style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
-                            <option value="">- ทั้งหมด -</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label
-                            style="font-weight: 700; font-size: 12px; color: var(--text-sub); margin-bottom: 8px; display: block;">เดือน
-                            (Month)</label>
-                        <select id="filterMonth"
-                            style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
-                            <option value="">- ทั้งหมด -</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label
-                            style="font-weight: 700; font-size: 12px; color: var(--text-sub); margin-bottom: 8px; display: block;">ปี
-                            (Year)</label>
-                        <select id="filterYear"
-                            style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
-                            <option value="">- ทั้งหมด -</option>
-                        </select>
-                    </div>
-                </div>
 
-                <!-- Results Table (moved inside accordion) -->
-                <div style="border-top: 1px solid #e2e8f0; padding-top: 20px;">
-                    <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 15px; color: var(--text-main);">
-                        <i class="fa-solid fa-table" style="color: var(--primary-blue);"></i> ผลลัพธ์ (Results)
-                    </h4>
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background: #f8fafc;">
-                                    <th
-                                        style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
-                                        วันที่/เวลา</th>
-                                    <th
-                                        style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
-                                        ตำแหน่ง</th>
-                                    <th
-                                        style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
-                                        หน่วยงาน</th>
-                                    <th
-                                        style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
-                                        หน้ามือ</th>
-                                    <th
-                                        style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
-                                        หลังมือ</th>
-                                    <th
-                                        style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
-                                        เฉลี่ย</th>
-                                </tr>
-                            </thead>
-                            <tbody id="filterResults">
-                                <tr>
-                                    <td colspan="6" style="padding: 20px; text-align: center; color: var(--text-sub);">
-                                        เลือกเกณฑ์เพื่อแสดงผลลัพธ์</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <!-- Top Nav -->
+            <nav class="top-nav">
+                <div class="nav-actions">
+                    <button class="btn btn-outline" id="copyBtn"><i class="fa-solid fa-link"></i> ลิงก์แชร์</button>
+                    <button class="btn btn-share"><i class="fa-solid fa-file-export"></i> ส่งออกรายงาน</button>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-outline" onclick="logout()" style="color: #dc2626; border-color: #fecaca;">
+                        <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+                    </button>
+                    <button class="btn btn-home" onclick="location.href='index.html'"><i class="fa-solid fa-home"></i>
+                        หน้าหลัก</button>
+                </div>
+            </nav>
+
+            <!-- Header -->
+            <header class="header-section">
+                <div class="header-content">
+                    <h1>IC Dashboard - Infection Control</h1>
+                    <p style="margin-top: 8px; font-size: 13px; opacity: 0.95;">สำหรับทีม Infection Control -
+                        ภาพรวมทั้งโรงพยาบาล พร้อม Drill-down ดูแต่ละแผนก</p>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-weight: 700; font-size: 16px;">30-31 ตุลาคม 2568</div>
+                    <div style="opacity: 0.8; font-size: 12px;">Development Build Ver 7.1</div>
+                </div>
+            </header>
+
+            <!-- KPI Row -->
+            <div class="kpi-row">
+                <div class="kpi-box">
+                    <div class="kpi-label">ดัชนีสะอาดรวม (Overall Cleanliness Index)</div>
+                    <div class="kpi-value" id="kpiOverall" style="color: var(--danger);">29.6%</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-label">อัตราการผ่านเกณฑ์ 80% (Pass Rate ≥80%)</div>
+                    <div class="kpi-value" id="kpiCompliance">8.7%</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-label">ระดับดี (Good Level - 80-100%)</div>
+                    <div class="kpi-value" id="kpiGood" style="color: var(--success);">2</div>
+                    <div style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">หน่วยงาน</div>
+                    <div style="font-size: 11px; color: var(--primary-blue); margin-top: 8px; font-weight: 700; cursor: pointer;"
+                        id="goodDeptsToggle">แตะเพื่อดู →</div>
+                    <div id="goodDeptsList"
+                        style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                        <div style="font-size: 12px; line-height: 2; color: var(--text-main);">
+                            <div id="goodDeptContent"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- MAIN ROW -->
-        <div class="main-analysis-row">
-            <div class="chart-side">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin: 0;"><i
-                            class="fa-solid fa-chart-line" style="color: var(--primary-blue);"></i> แนวโน้มรายชั่วโมง
-                        <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Hourly Trend - Oct
-                            30-31)</span>
+            <!-- Accordion Filter Section -->
+            <div style="margin-bottom: 20px;">
+                <div class="accordion-header" onclick="toggleAccordion()">
+                    <h3>
+                        <i class="fa-solid fa-filter"></i> Advanced Filters & Results
                     </h3>
-                    <div style="display: flex; gap: 8px;">
-                        <button id="trendFilterAll"
-                            style="padding: 8px 16px; border-radius: 8px; border: 2px solid var(--primary-blue); background: var(--primary-blue); color: white; font-weight: 700; cursor: pointer; font-size: 12px;"
-                            onclick="updateTrendChart('all')">All</button>
-                        <button id="trendFilter30"
-                            style="padding: 8px 16px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: var(--primary-blue); font-weight: 700; cursor: pointer; font-size: 12px;"
-                            onclick="updateTrendChart('30')">30 ตุลาคม</button>
-                        <button id="trendFilter31"
-                            style="padding: 8px 16px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: var(--primary-blue); font-weight: 700; cursor: pointer; font-size: 12px;"
-                            onclick="updateTrendChart('31')">31 ตุลาคม</button>
+                    <i class="fa-solid fa-chevron-down accordion-toggle" id="accordionToggle"></i>
+                </div>
+                <div class="accordion-content" id="accordionContent">
+                    <div
+                        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; margin-bottom: 20px;">
+                        <div>
+                            <label
+                                style="font-weight: 700; font-size: 12px; color: var(--text-sub); margin-bottom: 8px; display: block;">วัน
+                                (Day)</label>
+                            <select id="filterDay"
+                                style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
+                                <option value="">- ทั้งหมด -</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                style="font-weight: 700; font-size: 12px; color: var(--text-sub); margin-bottom: 8px; display: block;">เดือน
+                                (Month)</label>
+                            <select id="filterMonth"
+                                style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
+                                <option value="">- ทั้งหมด -</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                style="font-weight: 700; font-size: 12px; color: var(--text-sub); margin-bottom: 8px; display: block;">ปี
+                                (Year)</label>
+                            <select id="filterYear"
+                                style="width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;">
+                                <option value="">- ทั้งหมด -</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Results Table (moved inside accordion) -->
+                    <div style="border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 15px; color: var(--text-main);">
+                            <i class="fa-solid fa-table" style="color: var(--primary-blue);"></i> ผลลัพธ์ (Results)
+                        </h4>
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th
+                                            style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
+                                            วันที่/เวลา</th>
+                                        <th
+                                            style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
+                                            ตำแหน่ง</th>
+                                        <th
+                                            style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
+                                            หน่วยงาน</th>
+                                        <th
+                                            style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
+                                            หน้ามือ</th>
+                                        <th
+                                            style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
+                                            หลังมือ</th>
+                                        <th
+                                            style="padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-sub); border-bottom: 2px solid #e2e8f0;">
+                                            เฉลี่ย</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="filterResults">
+                                    <tr>
+                                        <td colspan="6"
+                                            style="padding: 20px; text-align: center; color: var(--text-sub);">
+                                            เลือกเกณฑ์เพื่อแสดงผลลัพธ์</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div style="flex-grow: 1; position: relative;"><canvas id="trendChart"></canvas></div>
             </div>
 
-            <div class="hand-side" id="handContainer">
-                <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
-                        class="fa-solid fa-hand-dots" style="color: var(--primary-blue);"></i> วิเคราะห์พื้นที่เสี่ยง
-                    <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Risk Area Analysis - 11
-                        Zones)</span>
+            <!-- MAIN ROW -->
+            <div class="main-analysis-row">
+                <div class="chart-side">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin: 0;"><i
+                                class="fa-solid fa-chart-line" style="color: var(--primary-blue);"></i>
+                            แนวโน้มรายชั่วโมง
+                            <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Hourly Trend - Oct
+                                30-31)</span>
+                        </h3>
+                        <div style="display: flex; gap: 8px;">
+                            <button id="trendFilterAll"
+                                style="padding: 8px 16px; border-radius: 8px; border: 2px solid var(--primary-blue); background: var(--primary-blue); color: white; font-weight: 700; cursor: pointer; font-size: 12px;"
+                                onclick="updateTrendChart('all')">All</button>
+                            <button id="trendFilter30"
+                                style="padding: 8px 16px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: var(--primary-blue); font-weight: 700; cursor: pointer; font-size: 12px;"
+                                onclick="updateTrendChart('30')">30 ตุลาคม</button>
+                            <button id="trendFilter31"
+                                style="padding: 8px 16px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: var(--primary-blue); font-weight: 700; cursor: pointer; font-size: 12px;"
+                                onclick="updateTrendChart('31')">31 ตุลาคม</button>
+                        </div>
+                    </div>
+                    <div style="flex-grow: 1; position: relative;"><canvas id="trendChart"></canvas></div>
+                </div>
+
+                <div class="hand-side" id="handContainer">
+                    <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
+                            class="fa-solid fa-hand-dots" style="color: var(--primary-blue);"></i>
+                        วิเคราะห์พื้นที่เสี่ยง
+                        <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Risk Area Analysis -
+                            11
+                            Zones)</span>
+                    </h3>
+
+                    <div id="handTooltip">Zone: 0%</div>
+                    <div class="hand-viz-grid">
+                        <div class="hand-view">
+                            <p
+                                style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-blue);">
+                                หน้ามือ (Front - Palm)</p>
+                            <svg class="hand-svg" viewBox="0 0 200 250">
+                                <path class="hand-path"
+                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                                <circle class="heat-glow" cx="100" cy="170" r="40" fill="var(--danger)" id="heatPalm" />
+                                <circle class="interactive-zone" cx="100" cy="170" r="40" fill="transparent"
+                                    data-zone="Palm ฝ่ามือ" />
+                                <circle class="heat-glow" cx="60" cy="180" r="25" fill="var(--danger)" id="heatPaw" />
+                                <circle class="interactive-zone" cx="60" cy="180" r="25" fill="transparent"
+                                    data-zone="Paw อุ้งมือ" />
+                                <circle class="heat-glow" cx="25" cy="110" r="18" fill="var(--danger)"
+                                    id="heatThumbs" />
+                                <circle class="interactive-zone" cx="25" cy="110" r="18" fill="transparent"
+                                    data-zone="Thumbs นิ้วโป้ง" />
+                                <circle class="interactive-zone" cx="50" cy="30" r="18" fill="transparent"
+                                    data-zone="Pointer นิ้วชี้" />
+                                <circle class="interactive-zone" cx="100" cy="20" r="18" fill="transparent"
+                                    data-zone="Middle นิ้วกลาง" />
+                            </svg>
+                            <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">
+                                หน้ามือ
+                                (Front): <span id="frontAvgDisplay">31.4</span>%</div>
+                        </div>
+                        <div class="hand-view">
+                            <p
+                                style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-blue);">
+                                หลังมือ (Back - Backhand)</p>
+                            <svg class="hand-svg" viewBox="0 0 200 250">
+                                <path class="hand-path"
+                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                                <rect class="heat-glow" x="60" y="140" width="80" height="50" rx="20"
+                                    fill="var(--danger)" id="heatBackhand" />
+                                <rect class="interactive-zone" x="60" y="140" width="80" height="50" rx="20"
+                                    fill="transparent" data-zone="Backhand หลังมือ" />
+                                <rect class="heat-glow" x="75" y="85" width="50" height="15" rx="5" fill="var(--danger)"
+                                    id="heatBetween" />
+                                <rect class="interactive-zone" x="75" y="85" width="50" height="15" rx="5"
+                                    fill="transparent" data-zone="Between ซอกนิ้ว" />
+                                <circle class="heat-glow" cx="100" cy="15" r="20" fill="var(--danger)" id="heatNails" />
+                                <circle class="interactive-zone" cx="100" cy="15" r="20" fill="transparent"
+                                    data-zone="Nails เล็บ" />
+                                <circle class="interactive-zone" cx="180" cy="180" r="18" fill="transparent"
+                                    data-zone="Pinky นิ้วก้อย" />
+                            </svg>
+                            <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">
+                                หลังมือ
+                                (Back): <span id="backAvgDisplay">27.8</span>%</div>
+                        </div>
+                    </div>
+
+                    <!-- Legend - Moved below hand visualization -->
+                    <div
+                        style="background: #f8fafc; padding: 8px 12px; border-radius: 10px; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 15px; border: 1px solid #e2e8f0; flex-wrap: wrap;">
+                        <div
+                            style="font-size: 10px; font-weight: 700; color: var(--text-sub); text-transform: uppercase;">
+                            คำอธิบาย:</div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div
+                                style="width: 24px; height: 16px; background: var(--danger); border-radius: 4px; opacity: 0.9;">
+                            </div>
+                            <span style="font-size: 11px; font-weight: 600;">ไม่สะอาด (0-30%)</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div
+                                style="width: 24px; height: 16px; background: var(--warning); border-radius: 4px; opacity: 0.6;">
+                            </div>
+                            <span style="font-size: 11px; font-weight: 600;">ปานกลาง (30-70%)</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <div
+                                style="width: 24px; height: 16px; background: var(--success); border-radius: 4px; opacity: 0.3;">
+                            </div>
+                            <span style="font-size: 11px; font-weight: 600;">สะอาด (70-100%)</span>
+                        </div>
+                        <div style="border-left: 1px solid #e2e8f0; padding-left: 15px;">
+                            <span style="font-size: 10px; color: var(--text-sub); font-style: italic;"><i
+                                    class="fa-solid fa-hand-pointer"></i> Hover บนโซนเพื่อดูคะแนน</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Secondary Analytics Row -->
+            <div class="analytics-row-secondary">
+                <div class="card">
+                    <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
+                            class="fa-solid fa-chart-pie" style="color: var(--primary-blue);"></i>
+                        การกระจายคุณภาพล้างมือ
+                        <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Hand Hygiene Quality
+                            Distribution)</span>
+                    </h3>
+                    <div style="height: 250px;"><canvas id="positionChart"></canvas></div>
+                </div>
+                <div class="card">
+                    <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
+                            class="fa-solid fa-ranking-star" style="color: var(--primary-blue);"></i>
+                        การเปรียบเทียบประสิทธิภาพแผนก <span
+                            style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Department Performance
+                            Comparison)</span></h3>
+                    <div style="height: 320px;"><canvas id="hourChart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Ranking Table -->
+            <div class="table-section">
+                <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 25px;"><i
+                        class="fa-solid fa-ranking-star" style="color: var(--primary-blue);"></i> สรุปประสิทธิภาพแผนก
+                    <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Department Performance
+                        Summary)</span> <span
+                        style="font-size: 13px; color: var(--primary-blue); font-style: italic; font-weight: 700;">←
+                        คลิกแผนกเพื่อ Drill-down →</span>
                 </h3>
-
-                <div id="handTooltip">Zone: 0%</div>
-                <div class="hand-viz-grid">
-                    <div class="hand-view">
-                        <p style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-blue);">
-                            หน้ามือ (Front - Palm)</p>
-                        <svg class="hand-svg" viewBox="0 0 200 250">
-                            <path class="hand-path"
-                                d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                            <circle class="heat-glow" cx="100" cy="170" r="40" fill="var(--danger)" id="heatPalm" />
-                            <circle class="interactive-zone" cx="100" cy="170" r="40" fill="transparent"
-                                data-zone="Palm ฝ่ามือ" />
-                            <circle class="heat-glow" cx="60" cy="180" r="25" fill="var(--danger)" id="heatPaw" />
-                            <circle class="interactive-zone" cx="60" cy="180" r="25" fill="transparent"
-                                data-zone="Paw อุ้งมือ" />
-                            <circle class="heat-glow" cx="25" cy="110" r="18" fill="var(--danger)" id="heatThumbs" />
-                            <circle class="interactive-zone" cx="25" cy="110" r="18" fill="transparent"
-                                data-zone="Thumbs นิ้วโป้ง" />
-                            <circle class="interactive-zone" cx="50" cy="30" r="18" fill="transparent"
-                                data-zone="Pointer นิ้วชี้" />
-                            <circle class="interactive-zone" cx="100" cy="20" r="18" fill="transparent"
-                                data-zone="Middle นิ้วกลาง" />
-                        </svg>
-                        <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">หน้ามือ
-                            (Front): <span id="frontAvgDisplay">31.4</span>%</div>
-                    </div>
-                    <div class="hand-view">
-                        <p style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-blue);">
-                            หลังมือ (Back - Backhand)</p>
-                        <svg class="hand-svg" viewBox="0 0 200 250">
-                            <path class="hand-path"
-                                d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                            <rect class="heat-glow" x="60" y="140" width="80" height="50" rx="20" fill="var(--danger)"
-                                id="heatBackhand" />
-                            <rect class="interactive-zone" x="60" y="140" width="80" height="50" rx="20"
-                                fill="transparent" data-zone="Backhand หลังมือ" />
-                            <rect class="heat-glow" x="75" y="85" width="50" height="15" rx="5" fill="var(--danger)"
-                                id="heatBetween" />
-                            <rect class="interactive-zone" x="75" y="85" width="50" height="15" rx="5"
-                                fill="transparent" data-zone="Between ซอกนิ้ว" />
-                            <circle class="heat-glow" cx="100" cy="15" r="20" fill="var(--danger)" id="heatNails" />
-                            <circle class="interactive-zone" cx="100" cy="15" r="20" fill="transparent"
-                                data-zone="Nails เล็บ" />
-                            <circle class="interactive-zone" cx="180" cy="180" r="18" fill="transparent"
-                                data-zone="Pinky นิ้วก้อย" />
-                        </svg>
-                        <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">หลังมือ
-                            (Back): <span id="backAvgDisplay">27.8</span>%</div>
-                    </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>แผนก</th>
+                                <th>Logs</th>
+                                <th>เฉลี่ย</th>
+                                <th class="mobile-hide">หน้ามือ</th>
+                                <th class="mobile-hide">หลังมือ</th>
+                                <th>สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody"></tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Legend - Moved below hand visualization -->
-                <div
-                    style="background: #f8fafc; padding: 8px 12px; border-radius: 10px; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 15px; border: 1px solid #e2e8f0; flex-wrap: wrap;">
-                    <div style="font-size: 10px; font-weight: 700; color: var(--text-sub); text-transform: uppercase;">
-                        คำอธิบาย:</div>
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <div
-                            style="width: 24px; height: 16px; background: var(--danger); border-radius: 4px; opacity: 0.9;">
-                        </div>
-                        <span style="font-size: 11px; font-weight: 600;">ไม่สะอาด (0-30%)</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <div
-                            style="width: 24px; height: 16px; background: var(--warning); border-radius: 4px; opacity: 0.6;">
-                        </div>
-                        <span style="font-size: 11px; font-weight: 600;">ปานกลาง (30-70%)</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <div
-                            style="width: 24px; height: 16px; background: var(--success); border-radius: 4px; opacity: 0.3;">
-                        </div>
-                        <span style="font-size: 11px; font-weight: 600;">สะอาด (70-100%)</span>
-                    </div>
-                    <div style="border-left: 1px solid #e2e8f0; padding-left: 15px;">
-                        <span style="font-size: 10px; color: var(--text-sub); font-style: italic;"><i
-                                class="fa-solid fa-hand-pointer"></i> Hover บนโซนเพื่อดูคะแนน</span>
-                    </div>
+            <!-- Deep Dive Insight Bar -->
+            <div class="bottom-insight-bar">
+                <div class="insight-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="insight-text">
+                    <b>Accuracy Note:</b> คะแนนความสะอาดที่ปรากฏต่ำกว่าปกติ (เฉลี่ย 29.6%) เกิดจากโมเดล AI
+                    ยังอยู่ในขั้นตอนปรับจูนความแม่นยำ (Calibration Phase) ทำให้มีการประเมินผิดพลาดในบางกรณี
+                    <b>ข้อมูลนี้ควรใช้เพื่อการทดสอบโครงสร้างระบบเท่านั้น</b>
                 </div>
             </div>
         </div>
 
-        <!-- Secondary Analytics Row -->
-        <div class="analytics-row-secondary">
-            <div class="card">
-                <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
-                        class="fa-solid fa-chart-pie" style="color: var(--primary-blue);"></i> การกระจายคุณภาพล้างมือ
-                    <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Hand Hygiene Quality
-                        Distribution)</span>
-                </h3>
-                <div style="height: 250px;"><canvas id="positionChart"></canvas></div>
-            </div>
-            <div class="card">
-                <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
-                        class="fa-solid fa-ranking-star" style="color: var(--primary-blue);"></i>
-                    การเปรียบเทียบประสิทธิภาพแผนก <span
-                        style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Department Performance
-                        Comparison)</span></h3>
-                <div style="height: 320px;"><canvas id="hourChart"></canvas></div>
-            </div>
-        </div>
+        <script>
+            let csvData = [];
+            let trendChartInstance = null;
 
-        <!-- Ranking Table -->
-        <div class="table-section">
-            <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 25px;"><i
-                    class="fa-solid fa-ranking-star" style="color: var(--primary-blue);"></i> สรุปประสิทธิภาพแผนก <span
-                    style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Department Performance
-                    Summary)</span> <span
-                    style="font-size: 13px; color: var(--primary-blue); font-style: italic; font-weight: 700;">←
-                    คลิกแผนกเพื่อ Drill-down →</span></h3>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>แผนก</th>
-                            <th>Logs</th>
-                            <th>เฉลี่ย</th>
-                            <th class="mobile-hide">หน้ามือ</th>
-                            <th class="mobile-hide">หลังมือ</th>
-                            <th>สถานะ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboardBody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Deep Dive Insight Bar -->
-        <div class="bottom-insight-bar">
-            <div class="insight-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div class="insight-text">
-                <b>Accuracy Note:</b> คะแนนความสะอาดที่ปรากฏต่ำกว่าปกติ (เฉลี่ย 29.6%) เกิดจากโมเดล AI
-                ยังอยู่ในขั้นตอนปรับจูนความแม่นยำ (Calibration Phase) ทำให้มีการประเมินผิดพลาดในบางกรณี
-                <b>ข้อมูลนี้ควรใช้เพื่อการทดสอบโครงสร้างระบบเท่านั้น</b>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let csvData = [];
-        let trendChartInstance = null;
-
-        // Sample data for testing (30-31 October 2025)
+            // Sample data for testing (30-31 October 2025)
 
 
-        // Load CSV data
-        function loadCSVData() {
-            csvData = [
-                { Timestamp: "30/10/2025 10:09", Position: "Officer", Department_Or_Company: "International Services", Result_Front: "0", Result_Back: "37.12" },
-                { Timestamp: "30/10/2025 10:15", Position: "Head of Department", Department_Or_Company: "Ear Nose Throat", Result_Front: "0", Result_Back: "29.18" },
-                { Timestamp: "30/10/2025 10:18", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "44.02" },
-                { Timestamp: "30/10/2025 10:31", Position: "Registered Nurse", Department_Or_Company: "Ward 7A", Result_Front: "0.86", Result_Back: "100" },
-                { Timestamp: "30/10/2025 10:33", Position: "PN", Department_Or_Company: "Ward 7A", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 10:36", Position: "Officer", Department_Or_Company: "IPUs 3", Result_Front: "0", Result_Back: "25.14" },
-                { Timestamp: "30/10/2025 10:37", Position: "PN", Department_Or_Company: "Health Promotion", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 10:41", Position: "Officer", Department_Or_Company: "Medical Informatics Developmen", Result_Front: "2.26", Result_Back: "81.71" },
-                { Timestamp: "30/10/2025 10:42", Position: "PN", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 10:44", Position: "Registered Nurse", Department_Or_Company: "Ward 6B", Result_Front: "76.38", Result_Back: "29.64" },
-                { Timestamp: "30/10/2025 10:45", Position: "Registered Nurse", Department_Or_Company: "Ward 6B", Result_Front: "76.38", Result_Back: "29.64" },
-                { Timestamp: "30/10/2025 10:48", Position: "Officer", Department_Or_Company: "Human Resources Development", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 10:50", Position: "Officer", Department_Or_Company: "Human Resources Development", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 10:52", Position: "Trainee", Department_Or_Company: "Hr", Result_Front: "90.07", Result_Back: "97.21" },
-                { Timestamp: "30/10/2025 10:54", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "21.64" },
-                { Timestamp: "30/10/2025 10:56", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "32.19", Result_Back: "0" },
-                { Timestamp: "30/10/2025 11:09", Position: "Officer", Department_Or_Company: "Safety Occupational Health&Env", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 11:11", Position: "Officer", Department_Or_Company: "Safety Occupational Health&Env", Result_Front: "100", Result_Back: "0" },
-                { Timestamp: "30/10/2025 11:23", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "15.27" },
-                { Timestamp: "30/10/2025 11:27", Position: "Head of Department", Department_Or_Company: "SICU", Result_Front: "96.44", Result_Back: "0" },
-                { Timestamp: "30/10/2025 11:31", Position: "PN", Department_Or_Company: "Ward 7A", Result_Front: "10.13", Result_Back: "13.83" },
-                { Timestamp: "30/10/2025 11:33", Position: "PN", Department_Or_Company: "Ward 7B", Result_Front: "99.6", Result_Back: "100" },
-                { Timestamp: "30/10/2025 11:35", Position: "Officer", Department_Or_Company: "Customer Services", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 11:37", Position: "Officer", Department_Or_Company: "Neurology", Result_Front: "0", Result_Back: "36.51" },
-                { Timestamp: "30/10/2025 11:43", Position: "Officer", Department_Or_Company: "Admission", Result_Front: "42.14", Result_Back: "0" },
-                { Timestamp: "30/10/2025 11:44", Position: "Officer", Department_Or_Company: "Admission", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 11:46", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "30/10/2025 11:50", Position: "N/A", Department_Or_Company: "Unknown", Result_Front: "7.5", Result_Back: "0" },
-                { Timestamp: "30/10/2025 11:51", Position: "Manager/Asst. Mgr", Department_Or_Company: "Quality Center", Result_Front: "0", Result_Back: "78.92" },
-                { Timestamp: "30/10/2025 11:54", Position: "Officer", Department_Or_Company: "Dermatology & Cosmetic Surgery", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 12:04", Position: "Technician", Department_Or_Company: "Neurology", Result_Front: "81.06", Result_Back: "100" },
-                { Timestamp: "30/10/2025 13:04", Position: "Officer", Department_Or_Company: "Neurology", Result_Front: "94.96", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:08", Position: "PN", Department_Or_Company: "Spine Clinic", Result_Front: "94.51", Result_Back: "12.69" },
-                { Timestamp: "30/10/2025 13:11", Position: "ช่าง", Department_Or_Company: "Unknown", Result_Front: "26.13", Result_Back: "53.45" },
-                { Timestamp: "30/10/2025 13:12", Position: "ช่าง", Department_Or_Company: "Unknown", Result_Front: "1.82", Result_Back: "41.39" },
-                { Timestamp: "30/10/2025 13:14", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "34.49", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:15", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "100", Result_Back: "89.8" },
-                { Timestamp: "30/10/2025 13:16", Position: "Technician", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "17.98" },
-                { Timestamp: "30/10/2025 13:17", Position: "PN", Department_Or_Company: "Pediatrics", Result_Front: "0", Result_Back: "94.38" },
-                { Timestamp: "30/10/2025 13:19", Position: "Officer", Department_Or_Company: "Outreach Clinic", Result_Front: "28.12", Result_Back: "60.83" },
-                { Timestamp: "30/10/2025 13:20", Position: "Registered Nurse", Department_Or_Company: "BPK-Canal Clinic", Result_Front: "0", Result_Back: "4.82" },
-                { Timestamp: "30/10/2025 13:22", Position: "Registered Nurse", Department_Or_Company: "Hemodialysis", Result_Front: "35.68", Result_Back: "96.83" },
-                { Timestamp: "30/10/2025 13:23", Position: "Officer", Department_Or_Company: "Business Development", Result_Front: "0", Result_Back: "12.38" },
-                { Timestamp: "30/10/2025 13:25", Position: "Registered Nurse", Department_Or_Company: "Neurology", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:27", Position: "PN", Department_Or_Company: "Orthopedic Surgery", Result_Front: "0", Result_Back: "24.42" },
-                { Timestamp: "30/10/2025 13:28", Position: "Registered Nurse", Department_Or_Company: "Spine Clinic", Result_Front: "100", Result_Back: "100" },
-                { Timestamp: "30/10/2025 13:30", Position: "Asst. Medical Staff", Department_Or_Company: "Dispatch Center", Result_Front: "0", Result_Back: "48.58" },
-                { Timestamp: "30/10/2025 13:34", Position: "Registered Nurse", Department_Or_Company: "Ear Nose Throat", Result_Front: "43.36", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:37", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "29.61", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:38", Position: "ช่าง", Department_Or_Company: "Unknown", Result_Front: "11.58", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:39", Position: "ช่าง", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:41", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:43", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "87.77" },
-                { Timestamp: "30/10/2025 13:44", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "97.75", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:45", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:46", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "23.23" },
-                { Timestamp: "30/10/2025 13:48", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "43.35", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:50", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "12.27", Result_Back: "30.36" },
-                { Timestamp: "30/10/2025 13:51", Position: "Registered Nurse", Department_Or_Company: "Eye Center", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "30/10/2025 13:52", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "18.45", Result_Back: "16.66" },
-                { Timestamp: "30/10/2025 13:53", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:53", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "7", Result_Back: "100" },
-                { Timestamp: "30/10/2025 13:54", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 13:58", Position: "Registered Nurse", Department_Or_Company: "Dermatology & Cosmetic Surgery", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:00", Position: "Patient Assistant", Department_Or_Company: "Dermatology & Cosmetic Surgery", Result_Front: "37.1", Result_Back: "37.49" },
-                { Timestamp: "30/10/2025 14:02", Position: "โภชนการ", Department_Or_Company: "Unknown", Result_Front: "100", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:03", Position: "โภชนการ", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "39.01" },
-                { Timestamp: "30/10/2025 14:04", Position: "PN", Department_Or_Company: "Operating Room", Result_Front: "97.14", Result_Back: "28.29" },
-                { Timestamp: "30/10/2025 14:06", Position: "PN", Department_Or_Company: "Eye Center", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:07", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "31.77", Result_Back: "100" },
-                { Timestamp: "30/10/2025 14:08", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "9.99" },
-                { Timestamp: "30/10/2025 14:10", Position: "Asst. Medical Staff", Department_Or_Company: "Imaging", Result_Front: "19.56", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:11", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "99.82" },
-                { Timestamp: "30/10/2025 14:17", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:18", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:20", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "97.06", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:21", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "45.96", Result_Back: "100" },
-                { Timestamp: "30/10/2025 14:23", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "45.42", Result_Back: "92.19" },
-                { Timestamp: "30/10/2025 14:24", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "30/10/2025 14:26", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "30/10/2025 14:28", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:29", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:30", Position: "Asst. Medical Staff", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "96.75" },
-                { Timestamp: "30/10/2025 14:31", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "93.84", Result_Back: "27.01" },
-                { Timestamp: "30/10/2025 14:33", Position: "Registered Nurse", Department_Or_Company: "Imaging", Result_Front: "4.58", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:35", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "20.14", Result_Back: "28" },
-                { Timestamp: "30/10/2025 14:36", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "42.69", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:37", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "76.63", Result_Back: "82.91" },
-                { Timestamp: "30/10/2025 14:39", Position: "Officer", Department_Or_Company: "Nursing Staff Organization", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:40", Position: "Officer", Department_Or_Company: "Nursing Staff Organization", Result_Front: "0", Result_Back: "98.75" },
-                { Timestamp: "30/10/2025 14:42", Position: "Officer", Department_Or_Company: "Medical Record", Result_Front: "0", Result_Back: "45.4" },
-                { Timestamp: "30/10/2025 14:43", Position: "Registered Nurse", Department_Or_Company: "Ward 3B", Result_Front: "0", Result_Back: "92.45" },
-                { Timestamp: "30/10/2025 14:45", Position: "PN", Department_Or_Company: "Ward 3B", Result_Front: "23.61", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:46", Position: "Officer", Department_Or_Company: "Labour Room", Result_Front: "42.51", Result_Back: "100" },
-                { Timestamp: "30/10/2025 14:47", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "10.72", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:48", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "97.63" },
-                { Timestamp: "30/10/2025 14:50", Position: "Registered Nurse", Department_Or_Company: "Imaging", Result_Front: "25.24", Result_Back: "100" },
-                { Timestamp: "30/10/2025 14:51", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "97.07", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:52", Position: "Officer", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 14:54", Position: "Head of Department", Department_Or_Company: "Nursery", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 15:07", Position: "PN", Department_Or_Company: "Eye Center", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "30/10/2025 15:08", Position: "Officer", Department_Or_Company: "Quality Center", Result_Front: "42.5", Result_Back: "17.49" },
-                { Timestamp: "30/10/2025 15:13", Position: "ฟู้ดเฮาส์", Department_Or_Company: "Unknown", Result_Front: "21.09", Result_Back: "100" },
-                { Timestamp: "30/10/2025 15:17", Position: "Registered Nurse", Department_Or_Company: "Supervisor Office", Result_Front: "70.09", Result_Back: "0" },
-                { Timestamp: "30/10/2025 15:21", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "1.58" },
-                { Timestamp: "30/10/2025 15:28", Position: "Asst. Medical Staff", Department_Or_Company: "Imaging", Result_Front: "4.02", Result_Back: "93.52" },
-                { Timestamp: "30/10/2025 15:35", Position: "Technician", Department_Or_Company: "IPUs 3", Result_Front: "0", Result_Back: "78.45" },
-                { Timestamp: "30/10/2025 15:46", Position: "ฟู้ดเฮาส์", Department_Or_Company: "Unknown", Result_Front: "25.41", Result_Back: "21.15" },
-                { Timestamp: "30/10/2025 15:47", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "30/10/2025 15:49", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "24.99", Result_Back: "0" },
-                { Timestamp: "30/10/2025 15:54", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "26.42", Result_Back: "38.04" },
-                { Timestamp: "30/10/2025 15:59", Position: "Officer", Department_Or_Company: "Dental", Result_Front: "8.67", Result_Back: "3.08" },
-                { Timestamp: "30/10/2025 16:04", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:35", Position: "Officer", Department_Or_Company: "Admission", Result_Front: "4.34", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:38", Position: "PN", Department_Or_Company: "Intensive Care Unit", Result_Front: "12.11", Result_Back: "23.5" },
-                { Timestamp: "31/10/2025 8:38", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:39", Position: "Registered Nurse", Department_Or_Company: "Labour Room", Result_Front: "0", Result_Back: "87.75" },
-                { Timestamp: "31/10/2025 8:39", Position: "Registered Nurse", Department_Or_Company: "Ward 8A", Result_Front: "0", Result_Back: "93.24" },
-                { Timestamp: "31/10/2025 8:40", Position: "PN", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "31/10/2025 8:41", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:41", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "29.62", Result_Back: "100" },
-                { Timestamp: "31/10/2025 8:41", Position: "Officer", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "33.81" },
-                { Timestamp: "31/10/2025 8:42", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:42", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "24.8", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:43", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "31/10/2025 8:43", Position: "Registered Nurse", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:43", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "39.34", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:44", Position: "PN", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:45", Position: "PN", Department_Or_Company: "SICU", Result_Front: "98.45", Result_Back: "31.97" },
-                { Timestamp: "31/10/2025 8:45", Position: "PN", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "49" },
-                { Timestamp: "31/10/2025 8:46", Position: "PN", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "30.94" },
-                { Timestamp: "31/10/2025 8:46", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:47", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:47", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "22.14" },
-                { Timestamp: "31/10/2025 8:48", Position: "Registered Nurse", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:49", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:50", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "98.46", Result_Back: "50.7" },
-                { Timestamp: "31/10/2025 8:50", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "31/10/2025 8:51", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "31.84", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:51", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "38.47", Result_Back: "58" },
-                { Timestamp: "31/10/2025 8:51", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:52", Position: "Officer", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:52", Position: "Registered Nurse", Department_Or_Company: "Imaging", Result_Front: "93.06", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:53", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:54", Position: "Registered Nurse", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:54", Position: "Registered Nurse", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 8:55", Position: "Officer", Department_Or_Company: "Inventory", Result_Front: "0", Result_Back: "1.18" },
-                { Timestamp: "31/10/2025 8:58", Position: "Manager/Asst. Mgr", Department_Or_Company: "Accounting and Finance", Result_Front: "99.55", Result_Back: "19.79" },
-                { Timestamp: "31/10/2025 9:05", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "98.98" },
-                { Timestamp: "31/10/2025 9:17", Position: "Manager/Asst. Mgr", Department_Or_Company: "Simulation Training", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 9:21", Position: "Registered Nurse", Department_Or_Company: "Ward 8B", Result_Front: "94.82", Result_Back: "27.83" },
-                { Timestamp: "31/10/2025 9:34", Position: "PN", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 9:37", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "10.69" },
-                { Timestamp: "31/10/2025 9:41", Position: "Patient Assistant", Department_Or_Company: "Health Promotion", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "31/10/2025 9:43", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "30.89", Result_Back: "98" },
-                { Timestamp: "31/10/2025 9:46", Position: "Asst. Medical Staff", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 9:47", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "80.64" },
-                { Timestamp: "31/10/2025 9:57", Position: "PN", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "39.05" },
-                { Timestamp: "31/10/2025 9:59", Position: "Asst. Medical Staff", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "73.66" },
-                { Timestamp: "31/10/2025 10:02", Position: "Pharmacist", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 10:03", Position: "Patient Assistant", Department_Or_Company: "Health Promotion", Result_Front: "38.8", Result_Back: "0" },
-                { Timestamp: "31/10/2025 10:05", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 10:07", Position: "PN", Department_Or_Company: "Operating Room", Result_Front: "94.78", Result_Back: "0" },
-                { Timestamp: "31/10/2025 10:10", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "18.34", Result_Back: "94.83" },
-                { Timestamp: "31/10/2025 10:11", Position: "Pharmacist", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "31/10/2025 10:13", Position: "Asst. Medical Staff", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "13.39" },
-                { Timestamp: "31/10/2025 10:15", Position: "Head of Department", Department_Or_Company: "Urology", Result_Front: "40.8", Result_Back: "0" },
-                { Timestamp: "31/10/2025 10:17", Position: "Officer", Department_Or_Company: "Inventory", Result_Front: "0", Result_Back: "54.38" },
-                { Timestamp: "31/10/2025 10:23", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "28.85", Result_Back: "0" },
-                { Timestamp: "31/10/2025 10:27", Position: "Asst. Medical Staff", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "96.03" },
-                { Timestamp: "31/10/2025 10:31", Position: "Pharmacist", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "96.67" },
-                { Timestamp: "31/10/2025 10:34", Position: "Officer", Department_Or_Company: "Health Promotion", Result_Front: "77.23", Result_Back: "100" },
-                { Timestamp: "31/10/2025 10:44", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "30.47", Result_Back: "17.37" },
-                { Timestamp: "31/10/2025 10:46", Position: "Asst. Medical Staff", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 10:47", Position: "Manager/Asst. Mgr", Department_Or_Company: "Strategic Management", Result_Front: "17.02", Result_Back: "13.75" },
-                { Timestamp: "31/10/2025 10:50", Position: "Educator Nurse", Department_Or_Company: "Nursing Staff Organization", Result_Front: "38.46", Result_Back: "0" },
-                { Timestamp: "31/10/2025 10:52", Position: "PN", Department_Or_Company: "Emergency", Result_Front: "31.21", Result_Back: "0" },
-                { Timestamp: "31/10/2025 11:03", Position: "Officer", Department_Or_Company: "Health Promotion", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 11:05", Position: "Registered Nurse", Department_Or_Company: "Colorectal Disease Institute", Result_Front: "47.63", Result_Back: "100" },
-                { Timestamp: "31/10/2025 11:12", Position: "Registered Nurse", Department_Or_Company: "Nursery", Result_Front: "0", Result_Back: "94.56" },
-                { Timestamp: "31/10/2025 11:13", Position: "Patient Assistant", Department_Or_Company: "Health Promotion", Result_Front: "92.05", Result_Back: "97.64" },
-                { Timestamp: "31/10/2025 11:18", Position: "Asst. Medical Staff", Department_Or_Company: "Dispatch Center", Result_Front: "0", Result_Back: "25.64" },
-                { Timestamp: "31/10/2025 11:20", Position: "Registered Nurse", Department_Or_Company: "Dispatch Center", Result_Front: "23.04", Result_Back: "0" },
-                { Timestamp: "31/10/2025 11:23", Position: "Patient Assistant", Department_Or_Company: "Colorectal Disease Institute", Result_Front: "15.22", Result_Back: "36.33" },
-                { Timestamp: "31/10/2025 11:25", Position: "Registered Nurse", Department_Or_Company: "Labour Room", Result_Front: "38.04", Result_Back: "100" },
-                { Timestamp: "31/10/2025 11:27", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "4.54", Result_Back: "82.62" },
-                { Timestamp: "31/10/2025 11:28", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "32.52" },
-                { Timestamp: "31/10/2025 11:33", Position: "Officer", Department_Or_Company: "Business Development", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 11:34", Position: "Registered Nurse", Department_Or_Company: "Dispatch Center", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "31/10/2025 11:36", Position: "PN", Department_Or_Company: "Nursery", Result_Front: "100", Result_Back: "99.07" },
-                { Timestamp: "31/10/2025 11:38", Position: "Manager/Asst. Mgr", Department_Or_Company: "Corporate Communication & Bran", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 11:44", Position: "Patient Assistant", Department_Or_Company: "Operating Room", Result_Front: "52.94", Result_Back: "81.56" },
-                { Timestamp: "31/10/2025 11:52", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 12:04", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "31.7" },
-                { Timestamp: "31/10/2025 13:01", Position: "Manager/Asst. Mgr", Department_Or_Company: "Accounting and Finance", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 13:13", Position: "Officer", Department_Or_Company: "Human Resources Management", Result_Front: "0", Result_Back: "44.13" },
-                { Timestamp: "31/10/2025 13:15", Position: "Officer", Department_Or_Company: "Human Resources Management", Result_Front: "16.53", Result_Back: "0" },
-                { Timestamp: "31/10/2025 13:21", Position: "Registered Nurse", Department_Or_Company: "Ward 5B", Result_Front: "17.42", Result_Back: "92.63" },
-                { Timestamp: "31/10/2025 13:23", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "29.02" },
-                { Timestamp: "31/10/2025 13:25", Position: "Registered Nurse", Department_Or_Company: "Ward 5B", Result_Front: "92.84", Result_Back: "0" },
-                { Timestamp: "31/10/2025 13:32", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "29.76" },
-                { Timestamp: "31/10/2025 13:35", Position: "Technician", Department_Or_Company: "Sport Medicine Center", Result_Front: "38.56", Result_Back: "0" },
-                { Timestamp: "31/10/2025 13:38", Position: "PN", Department_Or_Company: "Health Promotion", Result_Front: "0", Result_Back: "93.37" },
-                { Timestamp: "31/10/2025 13:42", Position: "Officer", Department_Or_Company: "Corporate & Social Security Ma", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 13:44", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "91.43", Result_Back: "0" },
-                { Timestamp: "31/10/2025 13:49", Position: "Officer", Department_Or_Company: "Creative Multimedia", Result_Front: "92.7", Result_Back: "71.02" },
-                { Timestamp: "31/10/2025 13:51", Position: "Officer", Department_Or_Company: "Creative Multimedia", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "31/10/2025 13:52", Position: "PN", Department_Or_Company: "Dermatology & Cosmetic Surgery", Result_Front: "0", Result_Back: "36.36" },
-                { Timestamp: "31/10/2025 13:54", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "13.3" },
-                { Timestamp: "31/10/2025 13:57", Position: "Head of Department", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 14:13", Position: "Officer", Department_Or_Company: "Digital Marketing", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 14:14", Position: "Registered Nurse", Department_Or_Company: "BWC Phuket", Result_Front: "14.23", Result_Back: "100" },
-                { Timestamp: "31/10/2025 14:18", Position: "Registered Nurse", Department_Or_Company: "Cardiac Care Unit", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 14:22", Position: "Technician", Department_Or_Company: "IPUs 3", Result_Front: "33.56", Result_Back: "0" },
-                { Timestamp: "31/10/2025 14:25", Position: "Head of Department", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 14:31", Position: "Officer", Department_Or_Company: "BDMS Wellness Clinic Laguna Ph", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "31/10/2025 14:36", Position: "Registered Nurse", Department_Or_Company: "Medicine Unit", Result_Front: "5.76", Result_Back: "0" },
-                { Timestamp: "31/10/2025 14:40", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "95.75", Result_Back: "0" },
-                { Timestamp: "31/10/2025 14:58", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 15:00", Position: "Head of Department", Department_Or_Company: "Referral Marketing", Result_Front: "92.11", Result_Back: "77.83" },
-                { Timestamp: "31/10/2025 15:01", Position: "Manager/Asst. Mgr", Department_Or_Company: "Imaging", Result_Front: "38.74", Result_Back: "31.07" },
-                { Timestamp: "31/10/2025 15:02", Position: "Manager/Asst. Mgr", Department_Or_Company: "Digital Marketing", Result_Front: "22.63", Result_Back: "14.73" },
-                { Timestamp: "31/10/2025 15:05", Position: "Manager/Asst. Mgr", Department_Or_Company: "IPUs 6", Result_Front: "100", Result_Back: "100" },
-                { Timestamp: "31/10/2025 15:12", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "29.25" },
-                { Timestamp: "31/10/2025 15:16", Position: "Nurse Coordinator", Department_Or_Company: "Orthopedic Surgery", Result_Front: "0", Result_Back: "100" },
-                { Timestamp: "31/10/2025 15:18", Position: "PN", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 15:23", Position: "Registered Nurse", Department_Or_Company: "Spine Clinic", Result_Front: "0", Result_Back: "9.19" },
-                { Timestamp: "31/10/2025 15:24", Position: "Asst. Medical Staff", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 15:26", Position: "Deputy Director/Sr. Mgr", Department_Or_Company: "Hospital Director Office", Result_Front: "10.01", Result_Back: "100" },
-                { Timestamp: "31/10/2025 15:28", Position: "Deputy Director/Sr. Mgr", Department_Or_Company: "Hospital Director Office", Result_Front: "10.01", Result_Back: "100" },
-                { Timestamp: "31/10/2025 15:30", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 15:32", Position: "PN", Department_Or_Company: "Ward 3B", Result_Front: "0", Result_Back: "84.08" },
-                { Timestamp: "31/10/2025 15:34", Position: "Registered Nurse", Department_Or_Company: "Urology", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 15:38", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 15:40", Position: "PN", Department_Or_Company: "Nursery", Result_Front: "0", Result_Back: "0" },
-                { Timestamp: "31/10/2025 15:41", Position: "Officer", Department_Or_Company: "Medical Informatics Developmen", Result_Front: "0", Result_Back: "22.37" },
-                { Timestamp: "31/10/2025 15:42", Position: "Patient Assistant", Department_Or_Company: "Urology", Result_Front: "0", Result_Back: "89.44" },
-                { Timestamp: "31/10/2025 15:43", Position: "Registered Nurse", Department_Or_Company: "Urology", Result_Front: "21.95", Result_Back: "45.3" },
-                { Timestamp: "31/10/2025 15:51", Position: "Officer", Department_Or_Company: "Dispatch Center", Result_Front: "100", Result_Back: "77.32" },
-                { Timestamp: "31/10/2025 16:00", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "82.89" }
-            ];
-            console.log('Embedded data loaded:', csvData.length, 'records');
-            populateFilters();
-            setupFilterListeners();
+            // Load CSV data
+            function loadCSVData() {
+                csvData = [
+                    { Timestamp: "30/10/2025 10:09", Position: "Officer", Department_Or_Company: "International Services", Result_Front: "0", Result_Back: "37.12" },
+                    { Timestamp: "30/10/2025 10:15", Position: "Head of Department", Department_Or_Company: "Ear Nose Throat", Result_Front: "0", Result_Back: "29.18" },
+                    { Timestamp: "30/10/2025 10:18", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "44.02" },
+                    { Timestamp: "30/10/2025 10:31", Position: "Registered Nurse", Department_Or_Company: "Ward 7A", Result_Front: "0.86", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 10:33", Position: "PN", Department_Or_Company: "Ward 7A", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 10:36", Position: "Officer", Department_Or_Company: "IPUs 3", Result_Front: "0", Result_Back: "25.14" },
+                    { Timestamp: "30/10/2025 10:37", Position: "PN", Department_Or_Company: "Health Promotion", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 10:41", Position: "Officer", Department_Or_Company: "Medical Informatics Developmen", Result_Front: "2.26", Result_Back: "81.71" },
+                    { Timestamp: "30/10/2025 10:42", Position: "PN", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 10:44", Position: "Registered Nurse", Department_Or_Company: "Ward 6B", Result_Front: "76.38", Result_Back: "29.64" },
+                    { Timestamp: "30/10/2025 10:45", Position: "Registered Nurse", Department_Or_Company: "Ward 6B", Result_Front: "76.38", Result_Back: "29.64" },
+                    { Timestamp: "30/10/2025 10:48", Position: "Officer", Department_Or_Company: "Human Resources Development", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 10:50", Position: "Officer", Department_Or_Company: "Human Resources Development", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 10:52", Position: "Trainee", Department_Or_Company: "Hr", Result_Front: "90.07", Result_Back: "97.21" },
+                    { Timestamp: "30/10/2025 10:54", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "21.64" },
+                    { Timestamp: "30/10/2025 10:56", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "32.19", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 11:09", Position: "Officer", Department_Or_Company: "Safety Occupational Health&Env", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 11:11", Position: "Officer", Department_Or_Company: "Safety Occupational Health&Env", Result_Front: "100", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 11:23", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "15.27" },
+                    { Timestamp: "30/10/2025 11:27", Position: "Head of Department", Department_Or_Company: "SICU", Result_Front: "96.44", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 11:31", Position: "PN", Department_Or_Company: "Ward 7A", Result_Front: "10.13", Result_Back: "13.83" },
+                    { Timestamp: "30/10/2025 11:33", Position: "PN", Department_Or_Company: "Ward 7B", Result_Front: "99.6", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 11:35", Position: "Officer", Department_Or_Company: "Customer Services", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 11:37", Position: "Officer", Department_Or_Company: "Neurology", Result_Front: "0", Result_Back: "36.51" },
+                    { Timestamp: "30/10/2025 11:43", Position: "Officer", Department_Or_Company: "Admission", Result_Front: "42.14", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 11:44", Position: "Officer", Department_Or_Company: "Admission", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 11:46", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 11:50", Position: "N/A", Department_Or_Company: "Unknown", Result_Front: "7.5", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 11:51", Position: "Manager/Asst. Mgr", Department_Or_Company: "Quality Center", Result_Front: "0", Result_Back: "78.92" },
+                    { Timestamp: "30/10/2025 11:54", Position: "Officer", Department_Or_Company: "Dermatology & Cosmetic Surgery", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 12:04", Position: "Technician", Department_Or_Company: "Neurology", Result_Front: "81.06", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 13:04", Position: "Officer", Department_Or_Company: "Neurology", Result_Front: "94.96", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:08", Position: "PN", Department_Or_Company: "Spine Clinic", Result_Front: "94.51", Result_Back: "12.69" },
+                    { Timestamp: "30/10/2025 13:11", Position: "ช่าง", Department_Or_Company: "Unknown", Result_Front: "26.13", Result_Back: "53.45" },
+                    { Timestamp: "30/10/2025 13:12", Position: "ช่าง", Department_Or_Company: "Unknown", Result_Front: "1.82", Result_Back: "41.39" },
+                    { Timestamp: "30/10/2025 13:14", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "34.49", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:15", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "100", Result_Back: "89.8" },
+                    { Timestamp: "30/10/2025 13:16", Position: "Technician", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "17.98" },
+                    { Timestamp: "30/10/2025 13:17", Position: "PN", Department_Or_Company: "Pediatrics", Result_Front: "0", Result_Back: "94.38" },
+                    { Timestamp: "30/10/2025 13:19", Position: "Officer", Department_Or_Company: "Outreach Clinic", Result_Front: "28.12", Result_Back: "60.83" },
+                    { Timestamp: "30/10/2025 13:20", Position: "Registered Nurse", Department_Or_Company: "BPK-Canal Clinic", Result_Front: "0", Result_Back: "4.82" },
+                    { Timestamp: "30/10/2025 13:22", Position: "Registered Nurse", Department_Or_Company: "Hemodialysis", Result_Front: "35.68", Result_Back: "96.83" },
+                    { Timestamp: "30/10/2025 13:23", Position: "Officer", Department_Or_Company: "Business Development", Result_Front: "0", Result_Back: "12.38" },
+                    { Timestamp: "30/10/2025 13:25", Position: "Registered Nurse", Department_Or_Company: "Neurology", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:27", Position: "PN", Department_Or_Company: "Orthopedic Surgery", Result_Front: "0", Result_Back: "24.42" },
+                    { Timestamp: "30/10/2025 13:28", Position: "Registered Nurse", Department_Or_Company: "Spine Clinic", Result_Front: "100", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 13:30", Position: "Asst. Medical Staff", Department_Or_Company: "Dispatch Center", Result_Front: "0", Result_Back: "48.58" },
+                    { Timestamp: "30/10/2025 13:34", Position: "Registered Nurse", Department_Or_Company: "Ear Nose Throat", Result_Front: "43.36", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:37", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "29.61", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:38", Position: "ช่าง", Department_Or_Company: "Unknown", Result_Front: "11.58", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:39", Position: "ช่าง", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:41", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:43", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "87.77" },
+                    { Timestamp: "30/10/2025 13:44", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "97.75", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:45", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:46", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "23.23" },
+                    { Timestamp: "30/10/2025 13:48", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "43.35", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:50", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "12.27", Result_Back: "30.36" },
+                    { Timestamp: "30/10/2025 13:51", Position: "Registered Nurse", Department_Or_Company: "Eye Center", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 13:52", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "18.45", Result_Back: "16.66" },
+                    { Timestamp: "30/10/2025 13:53", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:53", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "7", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 13:54", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 13:58", Position: "Registered Nurse", Department_Or_Company: "Dermatology & Cosmetic Surgery", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:00", Position: "Patient Assistant", Department_Or_Company: "Dermatology & Cosmetic Surgery", Result_Front: "37.1", Result_Back: "37.49" },
+                    { Timestamp: "30/10/2025 14:02", Position: "โภชนการ", Department_Or_Company: "Unknown", Result_Front: "100", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:03", Position: "โภชนการ", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "39.01" },
+                    { Timestamp: "30/10/2025 14:04", Position: "PN", Department_Or_Company: "Operating Room", Result_Front: "97.14", Result_Back: "28.29" },
+                    { Timestamp: "30/10/2025 14:06", Position: "PN", Department_Or_Company: "Eye Center", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:07", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "31.77", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 14:08", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "9.99" },
+                    { Timestamp: "30/10/2025 14:10", Position: "Asst. Medical Staff", Department_Or_Company: "Imaging", Result_Front: "19.56", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:11", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "99.82" },
+                    { Timestamp: "30/10/2025 14:17", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:18", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:20", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "97.06", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:21", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "45.96", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 14:23", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "45.42", Result_Back: "92.19" },
+                    { Timestamp: "30/10/2025 14:24", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 14:26", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 14:28", Position: "แม่บ้าน", Department_Or_Company: "Unknown", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:29", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:30", Position: "Asst. Medical Staff", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "96.75" },
+                    { Timestamp: "30/10/2025 14:31", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "93.84", Result_Back: "27.01" },
+                    { Timestamp: "30/10/2025 14:33", Position: "Registered Nurse", Department_Or_Company: "Imaging", Result_Front: "4.58", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:35", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "20.14", Result_Back: "28" },
+                    { Timestamp: "30/10/2025 14:36", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "42.69", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:37", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "76.63", Result_Back: "82.91" },
+                    { Timestamp: "30/10/2025 14:39", Position: "Officer", Department_Or_Company: "Nursing Staff Organization", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:40", Position: "Officer", Department_Or_Company: "Nursing Staff Organization", Result_Front: "0", Result_Back: "98.75" },
+                    { Timestamp: "30/10/2025 14:42", Position: "Officer", Department_Or_Company: "Medical Record", Result_Front: "0", Result_Back: "45.4" },
+                    { Timestamp: "30/10/2025 14:43", Position: "Registered Nurse", Department_Or_Company: "Ward 3B", Result_Front: "0", Result_Back: "92.45" },
+                    { Timestamp: "30/10/2025 14:45", Position: "PN", Department_Or_Company: "Ward 3B", Result_Front: "23.61", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:46", Position: "Officer", Department_Or_Company: "Labour Room", Result_Front: "42.51", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 14:47", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "10.72", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:48", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "97.63" },
+                    { Timestamp: "30/10/2025 14:50", Position: "Registered Nurse", Department_Or_Company: "Imaging", Result_Front: "25.24", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 14:51", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "97.07", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:52", Position: "Officer", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 14:54", Position: "Head of Department", Department_Or_Company: "Nursery", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 15:07", Position: "PN", Department_Or_Company: "Eye Center", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 15:08", Position: "Officer", Department_Or_Company: "Quality Center", Result_Front: "42.5", Result_Back: "17.49" },
+                    { Timestamp: "30/10/2025 15:13", Position: "ฟู้ดเฮาส์", Department_Or_Company: "Unknown", Result_Front: "21.09", Result_Back: "100" },
+                    { Timestamp: "30/10/2025 15:17", Position: "Registered Nurse", Department_Or_Company: "Supervisor Office", Result_Front: "70.09", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 15:21", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "1.58" },
+                    { Timestamp: "30/10/2025 15:28", Position: "Asst. Medical Staff", Department_Or_Company: "Imaging", Result_Front: "4.02", Result_Back: "93.52" },
+                    { Timestamp: "30/10/2025 15:35", Position: "Technician", Department_Or_Company: "IPUs 3", Result_Front: "0", Result_Back: "78.45" },
+                    { Timestamp: "30/10/2025 15:46", Position: "ฟู้ดเฮาส์", Department_Or_Company: "Unknown", Result_Front: "25.41", Result_Back: "21.15" },
+                    { Timestamp: "30/10/2025 15:47", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 15:49", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "24.99", Result_Back: "0" },
+                    { Timestamp: "30/10/2025 15:54", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "26.42", Result_Back: "38.04" },
+                    { Timestamp: "30/10/2025 15:59", Position: "Officer", Department_Or_Company: "Dental", Result_Front: "8.67", Result_Back: "3.08" },
+                    { Timestamp: "30/10/2025 16:04", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:35", Position: "Officer", Department_Or_Company: "Admission", Result_Front: "4.34", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:38", Position: "PN", Department_Or_Company: "Intensive Care Unit", Result_Front: "12.11", Result_Back: "23.5" },
+                    { Timestamp: "31/10/2025 8:38", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:39", Position: "Registered Nurse", Department_Or_Company: "Labour Room", Result_Front: "0", Result_Back: "87.75" },
+                    { Timestamp: "31/10/2025 8:39", Position: "Registered Nurse", Department_Or_Company: "Ward 8A", Result_Front: "0", Result_Back: "93.24" },
+                    { Timestamp: "31/10/2025 8:40", Position: "PN", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 8:41", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:41", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "29.62", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 8:41", Position: "Officer", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "33.81" },
+                    { Timestamp: "31/10/2025 8:42", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:42", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "24.8", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:43", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 8:43", Position: "Registered Nurse", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:43", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "39.34", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:44", Position: "PN", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:45", Position: "PN", Department_Or_Company: "SICU", Result_Front: "98.45", Result_Back: "31.97" },
+                    { Timestamp: "31/10/2025 8:45", Position: "PN", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "49" },
+                    { Timestamp: "31/10/2025 8:46", Position: "PN", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "30.94" },
+                    { Timestamp: "31/10/2025 8:46", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:47", Position: "Registered Nurse", Department_Or_Company: "SICU", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:47", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "22.14" },
+                    { Timestamp: "31/10/2025 8:48", Position: "Registered Nurse", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:49", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:50", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "98.46", Result_Back: "50.7" },
+                    { Timestamp: "31/10/2025 8:50", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 8:51", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "31.84", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:51", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "38.47", Result_Back: "58" },
+                    { Timestamp: "31/10/2025 8:51", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:52", Position: "Officer", Department_Or_Company: "Dental", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:52", Position: "Registered Nurse", Department_Or_Company: "Imaging", Result_Front: "93.06", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:53", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:54", Position: "Registered Nurse", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:54", Position: "Registered Nurse", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 8:55", Position: "Officer", Department_Or_Company: "Inventory", Result_Front: "0", Result_Back: "1.18" },
+                    { Timestamp: "31/10/2025 8:58", Position: "Manager/Asst. Mgr", Department_Or_Company: "Accounting and Finance", Result_Front: "99.55", Result_Back: "19.79" },
+                    { Timestamp: "31/10/2025 9:05", Position: "Registered Nurse", Department_Or_Company: "Intensive Care Unit", Result_Front: "0", Result_Back: "98.98" },
+                    { Timestamp: "31/10/2025 9:17", Position: "Manager/Asst. Mgr", Department_Or_Company: "Simulation Training", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 9:21", Position: "Registered Nurse", Department_Or_Company: "Ward 8B", Result_Front: "94.82", Result_Back: "27.83" },
+                    { Timestamp: "31/10/2025 9:34", Position: "PN", Department_Or_Company: "Ward 8B", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 9:37", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "10.69" },
+                    { Timestamp: "31/10/2025 9:41", Position: "Patient Assistant", Department_Or_Company: "Health Promotion", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 9:43", Position: "Asst. Medical Staff", Department_Or_Company: "Dental", Result_Front: "30.89", Result_Back: "98" },
+                    { Timestamp: "31/10/2025 9:46", Position: "Asst. Medical Staff", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 9:47", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "80.64" },
+                    { Timestamp: "31/10/2025 9:57", Position: "PN", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "39.05" },
+                    { Timestamp: "31/10/2025 9:59", Position: "Asst. Medical Staff", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "73.66" },
+                    { Timestamp: "31/10/2025 10:02", Position: "Pharmacist", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 10:03", Position: "Patient Assistant", Department_Or_Company: "Health Promotion", Result_Front: "38.8", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 10:05", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 10:07", Position: "PN", Department_Or_Company: "Operating Room", Result_Front: "94.78", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 10:10", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "18.34", Result_Back: "94.83" },
+                    { Timestamp: "31/10/2025 10:11", Position: "Pharmacist", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 10:13", Position: "Asst. Medical Staff", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "13.39" },
+                    { Timestamp: "31/10/2025 10:15", Position: "Head of Department", Department_Or_Company: "Urology", Result_Front: "40.8", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 10:17", Position: "Officer", Department_Or_Company: "Inventory", Result_Front: "0", Result_Back: "54.38" },
+                    { Timestamp: "31/10/2025 10:23", Position: "Staff", Department_Or_Company: "Operating Room", Result_Front: "28.85", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 10:27", Position: "Asst. Medical Staff", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "96.03" },
+                    { Timestamp: "31/10/2025 10:31", Position: "Pharmacist", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "96.67" },
+                    { Timestamp: "31/10/2025 10:34", Position: "Officer", Department_Or_Company: "Health Promotion", Result_Front: "77.23", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 10:44", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "30.47", Result_Back: "17.37" },
+                    { Timestamp: "31/10/2025 10:46", Position: "Asst. Medical Staff", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 10:47", Position: "Manager/Asst. Mgr", Department_Or_Company: "Strategic Management", Result_Front: "17.02", Result_Back: "13.75" },
+                    { Timestamp: "31/10/2025 10:50", Position: "Educator Nurse", Department_Or_Company: "Nursing Staff Organization", Result_Front: "38.46", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 10:52", Position: "PN", Department_Or_Company: "Emergency", Result_Front: "31.21", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 11:03", Position: "Officer", Department_Or_Company: "Health Promotion", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 11:05", Position: "Registered Nurse", Department_Or_Company: "Colorectal Disease Institute", Result_Front: "47.63", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 11:12", Position: "Registered Nurse", Department_Or_Company: "Nursery", Result_Front: "0", Result_Back: "94.56" },
+                    { Timestamp: "31/10/2025 11:13", Position: "Patient Assistant", Department_Or_Company: "Health Promotion", Result_Front: "92.05", Result_Back: "97.64" },
+                    { Timestamp: "31/10/2025 11:18", Position: "Asst. Medical Staff", Department_Or_Company: "Dispatch Center", Result_Front: "0", Result_Back: "25.64" },
+                    { Timestamp: "31/10/2025 11:20", Position: "Registered Nurse", Department_Or_Company: "Dispatch Center", Result_Front: "23.04", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 11:23", Position: "Patient Assistant", Department_Or_Company: "Colorectal Disease Institute", Result_Front: "15.22", Result_Back: "36.33" },
+                    { Timestamp: "31/10/2025 11:25", Position: "Registered Nurse", Department_Or_Company: "Labour Room", Result_Front: "38.04", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 11:27", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "4.54", Result_Back: "82.62" },
+                    { Timestamp: "31/10/2025 11:28", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "32.52" },
+                    { Timestamp: "31/10/2025 11:33", Position: "Officer", Department_Or_Company: "Business Development", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 11:34", Position: "Registered Nurse", Department_Or_Company: "Dispatch Center", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 11:36", Position: "PN", Department_Or_Company: "Nursery", Result_Front: "100", Result_Back: "99.07" },
+                    { Timestamp: "31/10/2025 11:38", Position: "Manager/Asst. Mgr", Department_Or_Company: "Corporate Communication & Bran", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 11:44", Position: "Patient Assistant", Department_Or_Company: "Operating Room", Result_Front: "52.94", Result_Back: "81.56" },
+                    { Timestamp: "31/10/2025 11:52", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 12:04", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "31.7" },
+                    { Timestamp: "31/10/2025 13:01", Position: "Manager/Asst. Mgr", Department_Or_Company: "Accounting and Finance", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 13:13", Position: "Officer", Department_Or_Company: "Human Resources Management", Result_Front: "0", Result_Back: "44.13" },
+                    { Timestamp: "31/10/2025 13:15", Position: "Officer", Department_Or_Company: "Human Resources Management", Result_Front: "16.53", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 13:21", Position: "Registered Nurse", Department_Or_Company: "Ward 5B", Result_Front: "17.42", Result_Back: "92.63" },
+                    { Timestamp: "31/10/2025 13:23", Position: "Technician", Department_Or_Company: "Imaging", Result_Front: "0", Result_Back: "29.02" },
+                    { Timestamp: "31/10/2025 13:25", Position: "Registered Nurse", Department_Or_Company: "Ward 5B", Result_Front: "92.84", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 13:32", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "29.76" },
+                    { Timestamp: "31/10/2025 13:35", Position: "Technician", Department_Or_Company: "Sport Medicine Center", Result_Front: "38.56", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 13:38", Position: "PN", Department_Or_Company: "Health Promotion", Result_Front: "0", Result_Back: "93.37" },
+                    { Timestamp: "31/10/2025 13:42", Position: "Officer", Department_Or_Company: "Corporate & Social Security Ma", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 13:44", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "91.43", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 13:49", Position: "Officer", Department_Or_Company: "Creative Multimedia", Result_Front: "92.7", Result_Back: "71.02" },
+                    { Timestamp: "31/10/2025 13:51", Position: "Officer", Department_Or_Company: "Creative Multimedia", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 13:52", Position: "PN", Department_Or_Company: "Dermatology & Cosmetic Surgery", Result_Front: "0", Result_Back: "36.36" },
+                    { Timestamp: "31/10/2025 13:54", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "13.3" },
+                    { Timestamp: "31/10/2025 13:57", Position: "Head of Department", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 14:13", Position: "Officer", Department_Or_Company: "Digital Marketing", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 14:14", Position: "Registered Nurse", Department_Or_Company: "BWC Phuket", Result_Front: "14.23", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 14:18", Position: "Registered Nurse", Department_Or_Company: "Cardiac Care Unit", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 14:22", Position: "Technician", Department_Or_Company: "IPUs 3", Result_Front: "33.56", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 14:25", Position: "Head of Department", Department_Or_Company: "Pharmacy", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 14:31", Position: "Officer", Department_Or_Company: "BDMS Wellness Clinic Laguna Ph", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 14:36", Position: "Registered Nurse", Department_Or_Company: "Medicine Unit", Result_Front: "5.76", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 14:40", Position: "Pharmacist", Department_Or_Company: "IPD Pharmacy", Result_Front: "95.75", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 14:58", Position: "Officer", Department_Or_Company: "Patient Escort", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 15:00", Position: "Head of Department", Department_Or_Company: "Referral Marketing", Result_Front: "92.11", Result_Back: "77.83" },
+                    { Timestamp: "31/10/2025 15:01", Position: "Manager/Asst. Mgr", Department_Or_Company: "Imaging", Result_Front: "38.74", Result_Back: "31.07" },
+                    { Timestamp: "31/10/2025 15:02", Position: "Manager/Asst. Mgr", Department_Or_Company: "Digital Marketing", Result_Front: "22.63", Result_Back: "14.73" },
+                    { Timestamp: "31/10/2025 15:05", Position: "Manager/Asst. Mgr", Department_Or_Company: "IPUs 6", Result_Front: "100", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 15:12", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "29.25" },
+                    { Timestamp: "31/10/2025 15:16", Position: "Nurse Coordinator", Department_Or_Company: "Orthopedic Surgery", Result_Front: "0", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 15:18", Position: "PN", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 15:23", Position: "Registered Nurse", Department_Or_Company: "Spine Clinic", Result_Front: "0", Result_Back: "9.19" },
+                    { Timestamp: "31/10/2025 15:24", Position: "Asst. Medical Staff", Department_Or_Company: "IPD Pharmacy", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 15:26", Position: "Deputy Director/Sr. Mgr", Department_Or_Company: "Hospital Director Office", Result_Front: "10.01", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 15:28", Position: "Deputy Director/Sr. Mgr", Department_Or_Company: "Hospital Director Office", Result_Front: "10.01", Result_Back: "100" },
+                    { Timestamp: "31/10/2025 15:30", Position: "Registered Nurse", Department_Or_Company: "Operating Room", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 15:32", Position: "PN", Department_Or_Company: "Ward 3B", Result_Front: "0", Result_Back: "84.08" },
+                    { Timestamp: "31/10/2025 15:34", Position: "Registered Nurse", Department_Or_Company: "Urology", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 15:38", Position: "Registered Nurse", Department_Or_Company: "Anesthetic", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 15:40", Position: "PN", Department_Or_Company: "Nursery", Result_Front: "0", Result_Back: "0" },
+                    { Timestamp: "31/10/2025 15:41", Position: "Officer", Department_Or_Company: "Medical Informatics Developmen", Result_Front: "0", Result_Back: "22.37" },
+                    { Timestamp: "31/10/2025 15:42", Position: "Patient Assistant", Department_Or_Company: "Urology", Result_Front: "0", Result_Back: "89.44" },
+                    { Timestamp: "31/10/2025 15:43", Position: "Registered Nurse", Department_Or_Company: "Urology", Result_Front: "21.95", Result_Back: "45.3" },
+                    { Timestamp: "31/10/2025 15:51", Position: "Officer", Department_Or_Company: "Dispatch Center", Result_Front: "100", Result_Back: "77.32" },
+                    { Timestamp: "31/10/2025 16:00", Position: "Registered Nurse", Department_Or_Company: "Emergency", Result_Front: "0", Result_Back: "82.89" }
+                ];
+                console.log('Embedded data loaded:', csvData.length, 'records');
+                populateFilters();
+                setupFilterListeners();
 
-            try {
-                calculateRealData();
-                console.log('Real data calculated:', realData);
-                updateTrendChart('all'); // Initialize trend chart with all data
-                updateUI(realData); // Initialize other charts
-                console.log('All charts initialized successfully');
-            } catch (error) {
-                console.error('Error initializing dashboard:', error);
-            }
-        }
-
-        function populateFilters() {
-            // Populate day select (1-31)
-            const daySelect = document.getElementById('filterDay');
-            for (let i = 1; i <= 31; i++) {
-                const option = document.createElement('option');
-                option.value = String(i).padStart(2, '0');
-                option.textContent = i;
-                daySelect.appendChild(option);
+                try {
+                    calculateRealData();
+                    console.log('Real data calculated:', realData);
+                    updateTrendChart('all'); // Initialize trend chart with all data
+                    updateUI(realData); // Initialize other charts
+                    console.log('All charts initialized successfully');
+                } catch (error) {
+                    console.error('Error initializing dashboard:', error);
+                }
             }
 
-            // Populate month select (1-12)
-            const monthSelect = document.getElementById('filterMonth');
-            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            for (let i = 1; i <= 12; i++) {
-                const option = document.createElement('option');
-                option.value = String(i).padStart(2, '0');
-                option.textContent = i + ' (' + monthNames[i - 1] + ')';
-                monthSelect.appendChild(option);
+            function populateFilters() {
+                // Populate day select (1-31)
+                const daySelect = document.getElementById('filterDay');
+                for (let i = 1; i <= 31; i++) {
+                    const option = document.createElement('option');
+                    option.value = String(i).padStart(2, '0');
+                    option.textContent = i;
+                    daySelect.appendChild(option);
+                }
+
+                // Populate month select (1-12)
+                const monthSelect = document.getElementById('filterMonth');
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                for (let i = 1; i <= 12; i++) {
+                    const option = document.createElement('option');
+                    option.value = String(i).padStart(2, '0');
+                    option.textContent = i + ' (' + monthNames[i - 1] + ')';
+                    monthSelect.appendChild(option);
+                }
+
+                // Populate year select (2025-2026)
+                const yearSelect = document.getElementById('filterYear');
+                for (let i = 2025; i <= 2026; i++) {
+                    const option = document.createElement('option');
+                    option.value = String(i);
+                    option.textContent = i + ' (พ.ศ.' + (i + 543) + ')';
+                    yearSelect.appendChild(option);
+                }
+
+                console.log('Total CSV records loaded:', csvData.length);
             }
 
-            // Populate year select (2025-2026)
-            const yearSelect = document.getElementById('filterYear');
-            for (let i = 2025; i <= 2026; i++) {
-                const option = document.createElement('option');
-                option.value = String(i);
-                option.textContent = i + ' (พ.ศ.' + (i + 543) + ')';
-                yearSelect.appendChild(option);
+            function setupFilterListeners() {
+                document.getElementById('filterDay').addEventListener('change', applyFilter);
+                document.getElementById('filterMonth').addEventListener('change', applyFilter);
+                document.getElementById('filterYear').addEventListener('change', applyFilter);
             }
 
-            console.log('Total CSV records loaded:', csvData.length);
-        }
+            function applyFilter() {
+                const day = document.getElementById('filterDay').value;
+                const month = document.getElementById('filterMonth').value;
+                const year = document.getElementById('filterYear').value;
 
-        function setupFilterListeners() {
-            document.getElementById('filterDay').addEventListener('change', applyFilter);
-            document.getElementById('filterMonth').addEventListener('change', applyFilter);
-            document.getElementById('filterYear').addEventListener('change', applyFilter);
-        }
+                // Require all three filters to be selected
+                if (!day || !month || !year) {
+                    displayResults([]);
+                    return;
+                }
 
-        function applyFilter() {
-            const day = document.getElementById('filterDay').value;
-            const month = document.getElementById('filterMonth').value;
-            const year = document.getElementById('filterYear').value;
+                let filtered = csvData.filter(row => {
+                    if (!row.Timestamp) return false;
+                    const [date] = row.Timestamp.split(' ');
+                    const [d, m, y] = date.split('/');
 
-            // Require all three filters to be selected
-            if (!day || !month || !year) {
-                displayResults([]);
-                return;
+                    // If filter is selected, apply it; otherwise show all
+                    if (day && d !== day) return false;
+                    if (month && m !== month) return false;
+                    if (year && y !== year) return false;
+                    return true;
+                });
+
+                displayResults(filtered);
             }
 
-            let filtered = csvData.filter(row => {
-                if (!row.Timestamp) return false;
-                const [date] = row.Timestamp.split(' ');
-                const [d, m, y] = date.split('/');
+            function displayResults(data) {
+                const tbody = document.getElementById('filterResults');
 
-                // If filter is selected, apply it; otherwise show all
-                if (day && d !== day) return false;
-                if (month && m !== month) return false;
-                if (year && y !== year) return false;
-                return true;
-            });
+                console.log('displayResults - data count:', data.length);
 
-            displayResults(filtered);
-        }
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: var(--text-sub);">เลือกเกณฑ์เพื่อแสดงผลลัพธ์</td></tr>';
+                    return;
+                }
 
-        function displayResults(data) {
-            const tbody = document.getElementById('filterResults');
+                tbody.innerHTML = data.map(row => {
+                    const frontVal = parseFloat(row.Result_Front) || 0;
+                    const backVal = parseFloat(row.Result_Back) || 0;
+                    const avg = ((frontVal + backVal) / 2).toFixed(1);
 
-            console.log('displayResults - data count:', data.length);
-
-            if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: var(--text-sub);">เลือกเกณฑ์เพื่อแสดงผลลัพธ์</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = data.map(row => {
-                const frontVal = parseFloat(row.Result_Front) || 0;
-                const backVal = parseFloat(row.Result_Back) || 0;
-                const avg = ((frontVal + backVal) / 2).toFixed(1);
-
-                return `
+                    return `
                     <tr style="border-bottom: 1px solid #f1f5f9;">
                         <td style="padding: 12px; font-size: 13px;">${row.Timestamp}</td>
                         <td style="padding: 12px; font-size: 13px;">${row.Position}</td>
@@ -1644,251 +1893,251 @@
                         <td style="padding: 12px; font-size: 13px; font-weight: 700; color: ${avg >= 80 ? 'var(--success)' : 'var(--danger)'};">${avg}%</td>
                     </tr>
                 `;
-            }).join('');
-        }
-        let realData = {};
-
-        function calculateRealData() {
-            if (csvData.length === 0) return;
-
-            // Filter data for 30-31 October 2025
-            const filteredData = csvData.filter(row => {
-                if (!row.Timestamp) return false;
-                const [date] = row.Timestamp.split(' ');
-                const [d, m, y] = date.split('/');
-                return (d === '30' || d === '31') && m === '10' && y === '2025';
-            });
-
-            // Calculate overall statistics
-            let totalFront = 0, totalBack = 0, totalCount = 0;
-            let passCount = 0;
-            const deptMap = {};
-            const positionMap = {};
-            const hourlyMap = {};
-            const logs = {};
-
-            filteredData.forEach(row => {
-                const front = parseFloat(row.Result_Front) || 0;
-                const back = parseFloat(row.Result_Back) || 0;
-                const avg = (front + back) / 2;
-                totalFront += front;
-                totalBack += back;
-                totalCount++;
-                if (avg >= 80) passCount++;
-
-                const dept = row.Department_Or_Company || 'Unknown';
-                const pos = row.Position || 'Unknown';
-                const time = row.Timestamp ? row.Timestamp.split(' ')[1] : '00:00';
-                const hour = time.split(':')[0];
-
-                // Department stats
-                if (!deptMap[dept]) deptMap[dept] = { count: 0, frontSum: 0, backSum: 0, records: [] };
-                deptMap[dept].count++;
-                deptMap[dept].frontSum += front;
-                deptMap[dept].backSum += back;
-                deptMap[dept].records.push({ time: row.Timestamp, pos, f: front.toFixed(1), b: back.toFixed(1), avg: avg.toFixed(1) });
-
-                // Position stats
-                if (!positionMap[pos]) positionMap[pos] = { count: 0, total: 0 };
-                positionMap[pos].count++;
-                positionMap[pos].total += avg;
-
-                // Hourly stats
-                if (!hourlyMap[hour]) hourlyMap[hour] = { count: 0, total: 0 };
-                hourlyMap[hour].count++;
-                hourlyMap[hour].total += avg;
-            });
-
-            // Build leaderboard
-            const leaderboard = Object.keys(deptMap).map(dept => {
-                const d = deptMap[dept];
-                const avg = ((d.frontSum + d.backSum) / (d.count * 2)).toFixed(1);
-                const f = (d.frontSum / d.count).toFixed(1);
-                const b = (d.backSum / d.count).toFixed(1);
-                return {
-                    name: dept,
-                    count: d.count,
-                    avg: parseFloat(avg),
-                    f: parseFloat(f),
-                    b: parseFloat(b),
-                    s: avg >= 80 ? "ผ่าน" : avg >= 50 ? "ตก" : "วิกฤต"
-                };
-            }).sort((a, b) => b.avg - a.avg);
-
-            // Build position data - การกระจายคุณภาพล้างมือ (ดี/ปกติ/วิกฤต)
-            let goodCount = 0, normalCount = 0, criticalCount = 0;
-            leaderboard.forEach(item => {
-                if (item.avg >= 80) goodCount++;
-                else if (item.avg >= 50) normalCount++;
-                else criticalCount++;
-            });
-            const posLabels = ['ดีมาก (80-100%)', 'ปกติ (50-79%)', 'วิกฤต (<50%)'];
-            const posValues = [goodCount, normalCount, criticalCount];
-
-            // Build comparison data - การเปรียบเทียบประสิทธิภาพแผนก (Top 3 vs Bottom 3)
-            const topDepts = leaderboard.slice(0, 3);
-            const bottomDepts = leaderboard.slice(-3).reverse();
-            const gapLabels = [...topDepts.map(d => d.name), ...bottomDepts.map(d => d.name)];
-            const gapValues = [...topDepts.map(d => d.avg), ...bottomDepts.map(d => d.avg)];
-
-            // Build logs object for ALL departments
-            leaderboard.forEach(item => {
-                logs[item.name] = deptMap[item.name].records.map(r => ({
-                    time: r.time,
-                    pos: r.pos,
-                    f: r.f + '%',
-                    b: r.b + '%',
-                    avg: r.avg + '%'
-                }));
-            });
-
-            const overall = totalCount > 0 ? ((totalFront + totalBack) / (totalCount * 2)).toFixed(1) : 0;
-            const compliance = totalCount > 0 ? ((passCount / totalCount) * 100).toFixed(1) : 0;
-            const frontAvg = totalCount > 0 ? (totalFront / totalCount).toFixed(1) : 0;
-            const backAvg = totalCount > 0 ? (totalBack / totalCount).toFixed(1) : 0;
-
-            // Generate hours list (08-17 only)
-            const hours = Array.from({ length: 10 }, (_, i) => String(i + 8).padStart(2, '0'));
-
-            realData = {
-                overall: parseFloat(overall),
-                compliance: parseFloat(compliance),
-                front: parseFloat(frontAvg),
-                back: parseFloat(backAvg),
-                topDept: leaderboard[0] ? leaderboard[0].name : "N/A",
-                riskDept: leaderboard[leaderboard.length - 1] ? leaderboard[leaderboard.length - 1].name : "N/A",
-                trendLabels: hours.map(h => h.padStart(2, '0') + ':00'),
-                trendValues: hours.map(h => {
-                    const hKey = parseInt(h);
-                    return hourlyMap[hKey] ? parseFloat((hourlyMap[hKey].total / hourlyMap[hKey].count).toFixed(1)) : 0;
-                }),
-                complianceDistribution: [goodCount, normalCount, criticalCount],
-                gapLabels: gapLabels,
-                gapValues: gapValues,
-                leaderboard,
-                logs,
-                zoneScores: {
-                    "Palm ฝ่ามือ": frontAvg + "%",
-                    "Paw อุ้งมือ": frontAvg + "%",
-                    "Thumbs นิ้วโป้ง": frontAvg + "%",
-                    "Pointer นิ้วชี้": frontAvg + "%",
-                    "Middle นิ้วกลาง": frontAvg + "%",
-                    "Wrist ข้อมือ": overall + "%",
-                    "Backhand หลังมือ": backAvg + "%",
-                    "Between ซอกนิ้ว": backAvg + "%",
-                    "Nails เล็บ": backAvg + "%",
-                    "Pinky นิ้วก้อย": backAvg + "%"
-                }
-            };
-
-            console.log('✓ Real data calculated:', realData);
-        }
-
-        const tooltip = document.getElementById('handTooltip');
-        document.querySelectorAll('.interactive-zone').forEach(zone => {
-            zone.addEventListener('mouseenter', (e) => {
-                const name = e.target.getAttribute('data-zone');
-                tooltip.innerHTML = `${name}: <span style="color:var(--danger)">${realData.zoneScores[name]}</span>`;
-                tooltip.style.display = 'block';
-            });
-            zone.addEventListener('mousemove', (e) => {
-                const rect = document.getElementById('handContainer').getBoundingClientRect();
-                tooltip.style.left = (e.clientX - rect.left) + 'px';
-                tooltip.style.top = (e.clientY - rect.top) + 'px';
-            });
-            zone.addEventListener('mouseleave', () => tooltip.style.display = 'none');
-        });
-
-        function openDetailModal(deptName) {
-            // Navigate to Department Dashboard with department parameter
-            window.location.href = `department-dashboard.html?dept=${encodeURIComponent(deptName)}`;
-        }
-        function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
-
-        function copyShareLink() {
-            const url = window.location.href;
-
-            // ตรวจสอบว่าเป็น file:// หรือไม่
-            if (url.startsWith('file://')) {
-                alert('⚠️ ไม่สามารถแชร์ลิงก์ได้\n\nไฟล์นี้เปิดจาก Local ต้อง Host บนเว็บเซิร์ฟเวอร์ก่อน\n\nวิธีแก้:\n1. เปิด Terminal ในโฟลเดอร์นี้\n2. รัน: python -m http.server 8000\n3. เปิดเบราว์เซอร์: http://localhost:8000\n4. คัดลอกลิงก์นั้นแทน');
-                return;
+                }).join('');
             }
+            let realData = {};
 
-            // ถ้าเป็น http:// หรือ https:// ให้คัดลอกได้ปกติ
-            navigator.clipboard.writeText(url).then(() => {
-                const btn = document.getElementById('copyBtn');
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> คัดลอกแล้ว!';
-                btn.style.background = 'var(--success)';
-                btn.style.color = 'white';
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.style.background = '';
-                    btn.style.color = '';
-                }, 2000);
-            }).catch(err => {
-                alert('ไม่สามารถคัดลอกลิงก์ได้: ' + err);
-            });
-        }
+            function calculateRealData() {
+                if (csvData.length === 0) return;
 
-        function exportReport() {
-            const btn = event.target.closest('.btn');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังสร้างรายงาน...';
-            btn.disabled = true;
-
-            setTimeout(() => {
-                // สร้าง CSV content
-                let csvContent = 'แผนก,จำนวน Logs,คะแนนเฉลี่ย,หน้ามือ,หลังมือ,สถานะ\n';
-
-                // Debug: แสดงจำนวนแผนกทั้งหมด
-                console.log('จำนวนแผนกทั้งหมด:', realData.leaderboard.length);
-
-                realData.leaderboard.forEach((dept, index) => {
-                    csvContent += `"${dept.name}",${dept.count},${dept.avg},${dept.f},${dept.b},${dept.s}\n`;
+                // Filter data for 30-31 October 2025
+                const filteredData = csvData.filter(row => {
+                    if (!row.Timestamp) return false;
+                    const [date] = row.Timestamp.split(' ');
+                    const [d, m, y] = date.split('/');
+                    return (d === '30' || d === '31') && m === '10' && y === '2025';
                 });
 
-                console.log('CSV มีทั้งหมด:', csvContent.split('\n').length - 1, 'แถว (รวม header)');
+                // Calculate overall statistics
+                let totalFront = 0, totalBack = 0, totalCount = 0;
+                let passCount = 0;
+                const deptMap = {};
+                const positionMap = {};
+                const hourlyMap = {};
+                const logs = {};
 
-                // สร้าง Blob และ download
-                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', `Hand_Hygiene_Report_${new Date().toISOString().split('T')[0]}.csv`);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                filteredData.forEach(row => {
+                    const front = parseFloat(row.Result_Front) || 0;
+                    const back = parseFloat(row.Result_Back) || 0;
+                    const avg = (front + back) / 2;
+                    totalFront += front;
+                    totalBack += back;
+                    totalCount++;
+                    if (avg >= 80) passCount++;
 
-                btn.innerHTML = `<i class="fa-solid fa-check"></i> ส่งออก ${realData.leaderboard.length} แผนก!`;
-                btn.style.background = 'var(--success)';
+                    const dept = row.Department_Or_Company || 'Unknown';
+                    const pos = row.Position || 'Unknown';
+                    const time = row.Timestamp ? row.Timestamp.split(' ')[1] : '00:00';
+                    const hour = time.split(':')[0];
+
+                    // Department stats
+                    if (!deptMap[dept]) deptMap[dept] = { count: 0, frontSum: 0, backSum: 0, records: [] };
+                    deptMap[dept].count++;
+                    deptMap[dept].frontSum += front;
+                    deptMap[dept].backSum += back;
+                    deptMap[dept].records.push({ time: row.Timestamp, pos, f: front.toFixed(1), b: back.toFixed(1), avg: avg.toFixed(1) });
+
+                    // Position stats
+                    if (!positionMap[pos]) positionMap[pos] = { count: 0, total: 0 };
+                    positionMap[pos].count++;
+                    positionMap[pos].total += avg;
+
+                    // Hourly stats
+                    if (!hourlyMap[hour]) hourlyMap[hour] = { count: 0, total: 0 };
+                    hourlyMap[hour].count++;
+                    hourlyMap[hour].total += avg;
+                });
+
+                // Build leaderboard
+                const leaderboard = Object.keys(deptMap).map(dept => {
+                    const d = deptMap[dept];
+                    const avg = ((d.frontSum + d.backSum) / (d.count * 2)).toFixed(1);
+                    const f = (d.frontSum / d.count).toFixed(1);
+                    const b = (d.backSum / d.count).toFixed(1);
+                    return {
+                        name: dept,
+                        count: d.count,
+                        avg: parseFloat(avg),
+                        f: parseFloat(f),
+                        b: parseFloat(b),
+                        s: avg >= 80 ? "ผ่าน" : avg >= 50 ? "ตก" : "วิกฤต"
+                    };
+                }).sort((a, b) => b.avg - a.avg);
+
+                // Build position data - การกระจายคุณภาพล้างมือ (ดี/ปกติ/วิกฤต)
+                let goodCount = 0, normalCount = 0, criticalCount = 0;
+                leaderboard.forEach(item => {
+                    if (item.avg >= 80) goodCount++;
+                    else if (item.avg >= 50) normalCount++;
+                    else criticalCount++;
+                });
+                const posLabels = ['ดีมาก (80-100%)', 'ปกติ (50-79%)', 'วิกฤต (<50%)'];
+                const posValues = [goodCount, normalCount, criticalCount];
+
+                // Build comparison data - การเปรียบเทียบประสิทธิภาพแผนก (Top 3 vs Bottom 3)
+                const topDepts = leaderboard.slice(0, 3);
+                const bottomDepts = leaderboard.slice(-3).reverse();
+                const gapLabels = [...topDepts.map(d => d.name), ...bottomDepts.map(d => d.name)];
+                const gapValues = [...topDepts.map(d => d.avg), ...bottomDepts.map(d => d.avg)];
+
+                // Build logs object for ALL departments
+                leaderboard.forEach(item => {
+                    logs[item.name] = deptMap[item.name].records.map(r => ({
+                        time: r.time,
+                        pos: r.pos,
+                        f: r.f + '%',
+                        b: r.b + '%',
+                        avg: r.avg + '%'
+                    }));
+                });
+
+                const overall = totalCount > 0 ? ((totalFront + totalBack) / (totalCount * 2)).toFixed(1) : 0;
+                const compliance = totalCount > 0 ? ((passCount / totalCount) * 100).toFixed(1) : 0;
+                const frontAvg = totalCount > 0 ? (totalFront / totalCount).toFixed(1) : 0;
+                const backAvg = totalCount > 0 ? (totalBack / totalCount).toFixed(1) : 0;
+
+                // Generate hours list (08-17 only)
+                const hours = Array.from({ length: 10 }, (_, i) => String(i + 8).padStart(2, '0'));
+
+                realData = {
+                    overall: parseFloat(overall),
+                    compliance: parseFloat(compliance),
+                    front: parseFloat(frontAvg),
+                    back: parseFloat(backAvg),
+                    topDept: leaderboard[0] ? leaderboard[0].name : "N/A",
+                    riskDept: leaderboard[leaderboard.length - 1] ? leaderboard[leaderboard.length - 1].name : "N/A",
+                    trendLabels: hours.map(h => h.padStart(2, '0') + ':00'),
+                    trendValues: hours.map(h => {
+                        const hKey = parseInt(h);
+                        return hourlyMap[hKey] ? parseFloat((hourlyMap[hKey].total / hourlyMap[hKey].count).toFixed(1)) : 0;
+                    }),
+                    complianceDistribution: [goodCount, normalCount, criticalCount],
+                    gapLabels: gapLabels,
+                    gapValues: gapValues,
+                    leaderboard,
+                    logs,
+                    zoneScores: {
+                        "Palm ฝ่ามือ": frontAvg + "%",
+                        "Paw อุ้งมือ": frontAvg + "%",
+                        "Thumbs นิ้วโป้ง": frontAvg + "%",
+                        "Pointer นิ้วชี้": frontAvg + "%",
+                        "Middle นิ้วกลาง": frontAvg + "%",
+                        "Wrist ข้อมือ": overall + "%",
+                        "Backhand หลังมือ": backAvg + "%",
+                        "Between ซอกนิ้ว": backAvg + "%",
+                        "Nails เล็บ": backAvg + "%",
+                        "Pinky นิ้วก้อย": backAvg + "%"
+                    }
+                };
+
+                console.log('✓ Real data calculated:', realData);
+            }
+
+            const tooltip = document.getElementById('handTooltip');
+            document.querySelectorAll('.interactive-zone').forEach(zone => {
+                zone.addEventListener('mouseenter', (e) => {
+                    const name = e.target.getAttribute('data-zone');
+                    tooltip.innerHTML = `${name}: <span style="color:var(--danger)">${realData.zoneScores[name]}</span>`;
+                    tooltip.style.display = 'block';
+                });
+                zone.addEventListener('mousemove', (e) => {
+                    const rect = document.getElementById('handContainer').getBoundingClientRect();
+                    tooltip.style.left = (e.clientX - rect.left) + 'px';
+                    tooltip.style.top = (e.clientY - rect.top) + 'px';
+                });
+                zone.addEventListener('mouseleave', () => tooltip.style.display = 'none');
+            });
+
+            function openDetailModal(deptName) {
+                // Navigate to Department Dashboard with department parameter
+                window.location.href = `department-dashboard.html?dept=${encodeURIComponent(deptName)}`;
+            }
+            function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
+
+            function copyShareLink() {
+                const url = window.location.href;
+
+                // ตรวจสอบว่าเป็น file:// หรือไม่
+                if (url.startsWith('file://')) {
+                    alert('⚠️ ไม่สามารถแชร์ลิงก์ได้\n\nไฟล์นี้เปิดจาก Local ต้อง Host บนเว็บเซิร์ฟเวอร์ก่อน\n\nวิธีแก้:\n1. เปิด Terminal ในโฟลเดอร์นี้\n2. รัน: python -m http.server 8000\n3. เปิดเบราว์เซอร์: http://localhost:8000\n4. คัดลอกลิงก์นั้นแทน');
+                    return;
+                }
+
+                // ถ้าเป็น http:// หรือ https:// ให้คัดลอกได้ปกติ
+                navigator.clipboard.writeText(url).then(() => {
+                    const btn = document.getElementById('copyBtn');
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> คัดลอกแล้ว!';
+                    btn.style.background = 'var(--success)';
+                    btn.style.color = 'white';
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.style.background = '';
+                        btn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    alert('ไม่สามารถคัดลอกลิงก์ได้: ' + err);
+                });
+            }
+
+            function exportReport() {
+                const btn = event.target.closest('.btn');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังสร้างรายงาน...';
+                btn.disabled = true;
+
                 setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.style.background = '';
-                    btn.disabled = false;
-                }, 2000);
-            }, 500);
-        }
+                    // สร้าง CSV content
+                    let csvContent = 'แผนก,จำนวน Logs,คะแนนเฉลี่ย,หน้ามือ,หลังมือ,สถานะ\n';
 
-        function updateUI(data) {
-            // Display overall and compliance
-            document.getElementById('kpiOverall').innerText = data.overall + "%";
-            document.getElementById('kpiCompliance').innerText = data.compliance + "%";
+                    // Debug: แสดงจำนวนแผนกทั้งหมด
+                    console.log('จำนวนแผนกทั้งหมด:', realData.leaderboard.length);
 
-            // Calculate good and risk departments
-            const goodDepts = data.leaderboard.filter(item => item.avg >= 80).sort((a, b) => b.avg - a.avg);
+                    realData.leaderboard.forEach((dept, index) => {
+                        csvContent += `"${dept.name}",${dept.count},${dept.avg},${dept.f},${dept.b},${dept.s}\n`;
+                    });
 
-            document.getElementById('kpiGood').innerText = goodDepts.length;
+                    console.log('CSV มีทั้งหมด:', csvContent.split('\n').length - 1, 'แถว (รวม header)');
 
-            // Show first 3 department lists
-            document.getElementById('goodDeptContent').innerHTML = goodDepts.map(d =>
-                `<div><strong>${d.name}</strong> - ${d.avg}%</div>`
-            ).join('');
+                    // สร้าง Blob และ download
+                    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', `Hand_Hygiene_Report_${new Date().toISOString().split('T')[0]}.csv`);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> ส่งออก ${realData.leaderboard.length} แผนก!`;
+                    btn.style.background = 'var(--success)';
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.style.background = '';
+                        btn.disabled = false;
+                    }, 2000);
+                }, 500);
+            }
+
+            function updateUI(data) {
+                // Display overall and compliance
+                document.getElementById('kpiOverall').innerText = data.overall + "%";
+                document.getElementById('kpiCompliance').innerText = data.compliance + "%";
+
+                // Calculate good and risk departments
+                const goodDepts = data.leaderboard.filter(item => item.avg >= 80).sort((a, b) => b.avg - a.avg);
+
+                document.getElementById('kpiGood').innerText = goodDepts.length;
+
+                // Show first 3 department lists
+                document.getElementById('goodDeptContent').innerHTML = goodDepts.map(d =>
+                    `<div><strong>${d.name}</strong> - ${d.avg}%</div>`
+                ).join('');
 
 
-            const tbody = document.getElementById('leaderboardBody');
-            tbody.innerHTML = data.leaderboard.map(item => `
+                const tbody = document.getElementById('leaderboardBody');
+                tbody.innerHTML = data.leaderboard.map(item => `
                 <tr onclick="openDetailModal('${item.name}')">
                     <td><strong>${item.name}</strong></td>
                     <td>${item.count}</td>
@@ -1899,280 +2148,323 @@
                 </tr>
             `).join('');
 
-            // Don't create trendChart here - it's managed by updateTrendChart() function
+                // Don't create trendChart here - it's managed by updateTrendChart() function
 
-            new Chart(document.getElementById('positionChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['ดีมาก (80-100%)', 'ปกติ (50-79%)', 'วิกฤต (<50%)'],
-                    datasets: [{
-                        data: data.complianceDistribution,
-                        backgroundColor: ['#10b981', '#f59e0b', '#f43f5e'],
-                        borderColor: 'white',
-                        borderWidth: 3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 15 } }
-                    }
-                }
-            });
-
-            new Chart(document.getElementById('hourChart'), {
-                type: 'bar',
-                data: {
-                    labels: data.gapLabels,
-                    datasets: [{
-                        label: 'คะแนนล้างมือ (%)',
-                        data: data.gapValues,
-                        backgroundColor: (context) => {
-                            const idx = context.dataIndex;
-                            if (idx < 3) return '#10b981'; // Top 3 - green
-                            return '#f43f5e'; // Bottom 3 - red
-                        },
-                        borderRadius: 8,
-                        borderSkipped: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    return 'คะแนน: ' + context.parsed.x + '%';
-                                }
-                            }
+                new Chart(document.getElementById('positionChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['ดีมาก (80-100%)', 'ปกติ (50-79%)', 'วิกฤต (<50%)'],
+                        datasets: [{
+                            data: data.complianceDistribution,
+                            backgroundColor: ['#10b981', '#f59e0b', '#f43f5e'],
+                            borderColor: 'white',
+                            borderWidth: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { font: { size: 12 }, padding: 15 } }
                         }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                font: { size: 12 },
-                                callback: function (value) { return value + '%'; }
-                            },
-                            grid: { color: '#e2e8f0' }
-                        },
-                        y: {
-                            ticks: {
-                                font: { size: 13, weight: '600' },
-                                padding: 8,
-                                color: '#334155'
-                            },
-                            grid: { display: false }
-                        }
-                    },
-                    layout: {
-                        padding: { left: 10, right: 20, top: 10, bottom: 10 }
-                    },
-                    barThickness: 32
-                }
-            });
-
-            const fOp = (1 - data.front / 100); const bOp = (1 - data.back / 100);
-            document.getElementById('heatPalm').style.opacity = fOp; document.getElementById('heatPaw').style.opacity = fOp; document.getElementById('heatThumbs').style.opacity = fOp;
-            document.getElementById('heatBackhand').style.opacity = bOp; document.getElementById('heatBetween').style.opacity = bOp; document.getElementById('heatNails').style.opacity = bOp;
-
-            // Update hand zone percentages from real data
-            document.getElementById('frontAvgDisplay').textContent = data.front;
-            document.getElementById('backAvgDisplay').textContent = data.back;
-        }
-
-        window.onload = () => {
-            console.log('Window loaded - starting initialization');
-
-            try {
-                document.getElementById('copyBtn').onclick = copyShareLink;
-
-                // Setup export button
-                const exportBtns = document.querySelectorAll('.btn-share');
-                exportBtns.forEach(btn => {
-                    if (btn.textContent.includes('ส่งออกรายงาน')) {
-                        btn.onclick = exportReport;
                     }
                 });
 
-                // Setup toggle event listeners once
-                const goodDeptsToggle = document.getElementById('goodDeptsToggle');
-                if (goodDeptsToggle) {
-                    goodDeptsToggle.onclick = function (e) {
-                        e.stopPropagation();
-                        const list = document.getElementById('goodDeptsList');
-                        list.style.display = list.style.display === 'none' ? 'block' : 'none';
-                        this.innerText = list.style.display === 'none' ? 'แตะเพื่อดู →' : 'ปิด ←';
-                    };
-                }
-
-                // Load CSV data for filter
-                loadCSVData();
-
-                console.log('Initialization complete');
-            } catch (error) {
-                console.error('Error during initialization:', error);
-                alert('เกิดข้อผิดพลาดในการโหลด: ' + error.message);
-            } finally {
-                // Hide loading screen - ensure it hides even if there's an error
-                setTimeout(() => {
-                    const loadingEl = document.getElementById('loading');
-                    if (loadingEl) {
-                        loadingEl.style.display = 'none';
-                        console.log('Loading screen hidden');
-                    }
-                }, 1000);
-            }
-        };
-
-        function toggleAccordion() {
-            const content = document.getElementById('accordionContent');
-            const toggle = document.getElementById('accordionToggle');
-            content.classList.toggle('open');
-            toggle.classList.toggle('open');
-        }
-
-        function updateTrendChart(day) {
-            // Update button styles - ให้ปุ่มที่เลือกมีสีน้ำเงิน
-            const allBtn = document.getElementById('trendFilterAll');
-            const btn30 = document.getElementById('trendFilter30');
-            const btn31 = document.getElementById('trendFilter31');
-
-            // Reset ปุ่มทั้งหมด
-            [allBtn, btn30, btn31].forEach(btn => {
-                btn.style.background = 'white';
-                btn.style.color = 'var(--primary-blue)';
-                btn.style.borderColor = '#e2e8f0';
-            });
-
-            // เปลี่ยนสีปุ่มที่เลือก
-            if (day === 'all') {
-                allBtn.style.background = 'var(--primary-blue)';
-                allBtn.style.color = 'white';
-                allBtn.style.borderColor = 'var(--primary-blue)';
-            } else if (day === '30') {
-                btn30.style.background = 'var(--primary-blue)';
-                btn30.style.color = 'white';
-                btn30.style.borderColor = 'var(--primary-blue)';
-            } else if (day === '31') {
-                btn31.style.background = 'var(--primary-blue)';
-                btn31.style.color = 'white';
-                btn31.style.borderColor = 'var(--primary-blue)';
-            }
-
-            // Filter data by day
-            const filteredData = csvData.filter(row => {
-                if (!row.Timestamp) return false;
-                const [date] = row.Timestamp.split(' ');
-                const [d, m, y] = date.split('/');
-
-                if (day === 'all') {
-                    return (d === '30' || d === '31') && m === '10' && y === '2025';
-                } else {
-                    return d === day && m === '10' && y === '2025';
-                }
-            });
-
-            // Calculate hourly data
-            const hourlyMap = {};
-            filteredData.forEach(row => {
-                const front = parseFloat(row.Result_Front) || 0;
-                const back = parseFloat(row.Result_Back) || 0;
-                const avg = (front + back) / 2;
-                const time = row.Timestamp ? row.Timestamp.split(' ')[1] : '00:00';
-                const hour = time.split(':')[0];
-
-                if (!hourlyMap[hour]) hourlyMap[hour] = { count: 0, total: 0 };
-                hourlyMap[hour].count++;
-                hourlyMap[hour].total += avg;
-            });
-
-            // Generate hours list (08-17)
-            const hours = Array.from({ length: 10 }, (_, i) => String(i + 8).padStart(2, '0'));
-            const trendLabels = hours.map(h => h + ':00');
-            const trendValues = hours.map(h => {
-                const hKey = parseInt(h);
-                return hourlyMap[hKey] ? parseFloat((hourlyMap[hKey].total / hourlyMap[hKey].count).toFixed(1)) : 0;
-            });
-
-            // Destroy old chart if exists
-            if (trendChartInstance) {
-                trendChartInstance.destroy();
-            }
-
-            // Create new chart
-            trendChartInstance = new Chart(document.getElementById('trendChart'), {
-                type: 'line',
-                data: {
-                    labels: trendLabels,
-                    datasets: [{
-                        label: 'Cleanliness Score (%)',
-                        data: trendValues,
-                        borderColor: '#0ea5e9',
-                        backgroundColor: 'rgba(14, 165, 233, 0.08)',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        fill: true,
-                        pointRadius: 6,
-                        pointBackgroundColor: '#0ea5e9',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                        pointHoverRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: { font: { size: 13, weight: 'bold' }, padding: 20 }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                            padding: 12,
-                            titleFont: { size: 13, weight: 'bold' },
-                            bodyFont: { size: 12 },
-                            callbacks: {
-                                label: function (context) {
-                                    return 'Score: ' + context.parsed.y.toFixed(1) + '%';
+                new Chart(document.getElementById('hourChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: data.gapLabels,
+                        datasets: [{
+                            label: 'คะแนนล้างมือ (%)',
+                            data: data.gapValues,
+                            backgroundColor: (context) => {
+                                const idx = context.dataIndex;
+                                if (idx < 3) return '#10b981'; // Top 3 - green
+                                return '#f43f5e'; // Bottom 3 - red
+                            },
+                            borderRadius: 8,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: { display: false },
+                            datalabels: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return 'คะแนน: ' + context.parsed.x + '%';
+                                    }
                                 }
                             }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: { font: { size: 11 } },
-                            grid: { color: 'rgba(226, 232, 240, 0.5)', drawBorder: true }
                         },
-                        x: {
-                            ticks: { font: { size: 11 } },
-                            grid: { display: true, color: 'rgba(226, 232, 240, 0.3)' }
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    font: { size: 12 },
+                                    callback: function (value) { return value + '%'; }
+                                },
+                                grid: { color: '#e2e8f0' }
+                            },
+                            y: {
+                                ticks: {
+                                    font: { size: 13, weight: '600' },
+                                    padding: 8,
+                                    color: '#334155'
+                                },
+                                grid: { display: false }
+                            }
+                        },
+                        layout: {
+                            padding: { left: 10, right: 20, top: 10, bottom: 10 }
+                        },
+                        barThickness: 32
+                    }
+                });
+
+                const fOp = (1 - data.front / 100); const bOp = (1 - data.back / 100);
+                document.getElementById('heatPalm').style.opacity = fOp; document.getElementById('heatPaw').style.opacity = fOp; document.getElementById('heatThumbs').style.opacity = fOp;
+                document.getElementById('heatBackhand').style.opacity = bOp; document.getElementById('heatBetween').style.opacity = bOp; document.getElementById('heatNails').style.opacity = bOp;
+
+                // Update hand zone percentages from real data
+                document.getElementById('frontAvgDisplay').textContent = data.front;
+                document.getElementById('backAvgDisplay').textContent = data.back;
+            }
+
+            window.onload = () => {
+                console.log('Window loaded - starting initialization');
+
+                try {
+                    document.getElementById('copyBtn').onclick = copyShareLink;
+
+                    // Setup export button
+                    const exportBtns = document.querySelectorAll('.btn-share');
+                    exportBtns.forEach(btn => {
+                        if (btn.textContent.includes('ส่งออกรายงาน')) {
+                            btn.onclick = exportReport;
+                        }
+                    });
+
+                    // Setup toggle event listeners once
+                    const goodDeptsToggle = document.getElementById('goodDeptsToggle');
+                    if (goodDeptsToggle) {
+                        goodDeptsToggle.onclick = function (e) {
+                            e.stopPropagation();
+                            const list = document.getElementById('goodDeptsList');
+                            list.style.display = list.style.display === 'none' ? 'block' : 'none';
+                            this.innerText = list.style.display === 'none' ? 'แตะเพื่อดู →' : 'ปิด ←';
+                        };
+                    }
+
+                    // Load CSV data for filter
+                    loadCSVData();
+
+                    console.log('Initialization complete');
+                } catch (error) {
+                    console.error('Error during initialization:', error);
+                    alert('เกิดข้อผิดพลาดในการโหลด: ' + error.message);
+                } finally {
+                    // Hide loading screen - ensure it hides even if there's an error
+                    setTimeout(() => {
+                        const loadingEl = document.getElementById('loading');
+                        if (loadingEl) {
+                            loadingEl.style.display = 'none';
+                            console.log('Loading screen hidden');
+                        }
+                    }, 1000);
+                }
+            };
+
+            function toggleAccordion() {
+                const content = document.getElementById('accordionContent');
+                const toggle = document.getElementById('accordionToggle');
+                content.classList.toggle('open');
+                toggle.classList.toggle('open');
+            }
+
+            function updateTrendChart(day) {
+                // Update button styles - ให้ปุ่มที่เลือกมีสีน้ำเงิน
+                const allBtn = document.getElementById('trendFilterAll');
+                const btn30 = document.getElementById('trendFilter30');
+                const btn31 = document.getElementById('trendFilter31');
+
+                // Reset ปุ่มทั้งหมด
+                [allBtn, btn30, btn31].forEach(btn => {
+                    btn.style.background = 'white';
+                    btn.style.color = 'var(--primary-blue)';
+                    btn.style.borderColor = '#e2e8f0';
+                });
+
+                // เปลี่ยนสีปุ่มที่เลือก
+                if (day === 'all') {
+                    allBtn.style.background = 'var(--primary-blue)';
+                    allBtn.style.color = 'white';
+                    allBtn.style.borderColor = 'var(--primary-blue)';
+                } else if (day === '30') {
+                    btn30.style.background = 'var(--primary-blue)';
+                    btn30.style.color = 'white';
+                    btn30.style.borderColor = 'var(--primary-blue)';
+                } else if (day === '31') {
+                    btn31.style.background = 'var(--primary-blue)';
+                    btn31.style.color = 'white';
+                    btn31.style.borderColor = 'var(--primary-blue)';
+                }
+
+                // Filter data by day
+                const filteredData = csvData.filter(row => {
+                    if (!row.Timestamp) return false;
+                    const [date] = row.Timestamp.split(' ');
+                    const [d, m, y] = date.split('/');
+
+                    if (day === 'all') {
+                        return (d === '30' || d === '31') && m === '10' && y === '2025';
+                    } else {
+                        return d === day && m === '10' && y === '2025';
+                    }
+                });
+
+                // Calculate hourly data
+                const hourlyMap = {};
+                filteredData.forEach(row => {
+                    const front = parseFloat(row.Result_Front) || 0;
+                    const back = parseFloat(row.Result_Back) || 0;
+                    const avg = (front + back) / 2;
+                    const time = row.Timestamp ? row.Timestamp.split(' ')[1] : '00:00';
+                    const hour = time.split(':')[0];
+
+                    if (!hourlyMap[hour]) hourlyMap[hour] = { count: 0, total: 0 };
+                    hourlyMap[hour].count++;
+                    hourlyMap[hour].total += avg;
+                });
+
+                // Generate hours list (08-17)
+                const hours = Array.from({ length: 10 }, (_, i) => String(i + 8).padStart(2, '0'));
+                const trendLabels = hours.map(h => h + ':00');
+                const trendValues = hours.map(h => {
+                    const hKey = parseInt(h);
+                    return hourlyMap[hKey] ? parseFloat((hourlyMap[hKey].total / hourlyMap[hKey].count).toFixed(1)) : 0;
+                });
+
+                // Destroy old chart if exists
+                if (trendChartInstance) {
+                    trendChartInstance.destroy();
+                }
+
+                // Create new chart
+                trendChartInstance = new Chart(document.getElementById('trendChart'), {
+                    type: 'line',
+                    data: {
+                        labels: trendLabels,
+                        datasets: [{
+                            label: 'Cleanliness Score (%)',
+                            data: trendValues,
+                            borderColor: '#0ea5e9',
+                            backgroundColor: 'rgba(14, 165, 233, 0.08)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 6,
+                            pointBackgroundColor: '#0ea5e9',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: { font: { size: 13, weight: 'bold' }, padding: 20 }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                padding: 12,
+                                titleFont: { size: 13, weight: 'bold' },
+                                bodyFont: { size: 12 },
+                                callbacks: {
+                                    label: function (context) {
+                                        return 'Score: ' + context.parsed.y.toFixed(1) + '%';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: { font: { size: 11 } },
+                                grid: { color: 'rgba(226, 232, 240, 0.5)', drawBorder: true }
+                            },
+                            x: {
+                                ticks: { font: { size: 11 } },
+                                grid: { display: true, color: 'rgba(226, 232, 240, 0.3)' }
+                            }
                         }
                     }
+                });
+            }
+            // Sample data for testing (30-31 October 2025)
+            // ...existing code...
+
+            // Login function
+            function handleLogin() {
+                const password = document.getElementById('passwordInput').value;
+                const errorMessage = document.getElementById('errorMessage');
+
+                if (password === 'ic2026') {
+                    sessionStorage.setItem('ic_authenticated', 'true');
+                    sessionStorage.setItem('ic_login_time', new Date().toISOString());
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+                } else {
+                    errorMessage.style.display = 'flex';
+                    document.getElementById('passwordInput').value = '';
+                    document.getElementById('passwordInput').focus();
+                }
+            }
+
+            // Check authentication on page load
+            window.addEventListener('DOMContentLoaded', function () {
+                const isAuthenticated = sessionStorage.getItem('ic_authenticated');
+                if (isAuthenticated === 'true') {
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+                } else {
+                    document.getElementById('loginScreen').style.display = 'flex';
+                    document.getElementById('dashboardContent').style.display = 'none';
                 }
             });
-        }
-        // Sample data for testing (30-31 October 2025)
-        // ...existing code...
 
-        // Logout function
-        function logout() {
-            sessionStorage.removeItem('ic_authenticated');
-            sessionStorage.removeItem('ic_login_time');
-            window.location.href = 'login.html';
-        }
-    </script>
+            // Allow Enter key to login
+            document.addEventListener('DOMContentLoaded', function () {
+                const passwordInput = document.getElementById('passwordInput');
+                if (passwordInput) {
+                    passwordInput.addEventListener('keypress', function (e) {
+                        if (e.key === 'Enter') {
+                            handleLogin();
+                        }
+                    });
+                }
+            });
+
+            // Logout function
+            function logout() {
+                sessionStorage.removeItem('ic_authenticated');
+                sessionStorage.removeItem('ic_login_time');
+                location.reload();
+            }
+
+        </script>
+    </div> <!-- Close dashboardContent -->
 </body>
 
 </html>
