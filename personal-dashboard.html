@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Hand Hygiene Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
+
     <style>
         :root {
             --primary-blue: #0ea5e9;
@@ -29,10 +32,14 @@
             --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            font-family: 'Anuphan', sans-serif; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Anuphan', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: var(--text-main);
             padding: 20px;
@@ -121,6 +128,32 @@
             display: block;
             margin-bottom: 10px;
             color: var(--primary-blue);
+        }
+
+        .btn-home {
+            width: 100%;
+            padding: 14px 24px;
+            background: white;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Anuphan', sans-serif;
+            margin-top: 20px;
+        }
+
+        .btn-home:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
         }
 
         /* Dashboard */
@@ -228,9 +261,17 @@
             margin-bottom: 10px;
         }
 
-        .kpi-card.pass .value { color: var(--success); }
-        .kpi-card.fail .value { color: var(--danger); }
-        .kpi-card.neutral .value { color: var(--primary-blue); }
+        .kpi-card.pass .value {
+            color: var(--success);
+        }
+
+        .kpi-card.fail .value {
+            color: var(--danger);
+        }
+
+        .kpi-card.neutral .value {
+            color: var(--primary-blue);
+        }
 
         .kpi-card .status {
             font-size: 13px;
@@ -263,6 +304,7 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: var(--shadow-md);
+            margin-bottom: 20px;
         }
 
         .card h2 {
@@ -298,9 +340,17 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
-        .zone-item.excellent { border-left-color: var(--success); }
-        .zone-item.good { border-left-color: var(--warning); }
-        .zone-item.poor { border-left-color: var(--danger); }
+        .zone-item.excellent {
+            border-left-color: var(--success);
+        }
+
+        .zone-item.good {
+            border-left-color: var(--warning);
+        }
+
+        .zone-item.poor {
+            border-left-color: var(--danger);
+        }
 
         .zone-icon {
             width: 50px;
@@ -401,68 +451,6 @@
         .chart-container {
             height: 300px;
             margin-top: 20px;
-        }
-
-        /* Badges & Achievements */
-        .badges-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .badge-card {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: var(--shadow-md);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .badge-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .badge-card.earned {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 2px solid #f59e0b;
-        }
-
-        .badge-card.locked {
-            background: #f8fafc;
-            opacity: 0.6;
-        }
-
-        .badge-icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .badge-card.earned .badge-icon {
-            animation: bounce 1s ease;
-        }
-
-        .badge-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 5px;
-        }
-
-        .badge-desc {
-            font-size: 12px;
-            color: var(--text-sub);
-        }
-
-        .badge-earned-date {
-            font-size: 11px;
-            color: var(--success);
-            margin-top: 8px;
-            font-weight: 600;
         }
 
         /* Calendar Heatmap */
@@ -605,8 +593,15 @@
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         @keyframes fadeIn {
@@ -614,6 +609,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -668,35 +664,388 @@
         @media (max-width: 1200px) {
             .kpi-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin-bottom: 15px;
             }
+
             .content-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            .zones-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .kpi-card .value {
+                font-size: 38px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .zones-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .comparison-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .hand-visual {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
             }
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .login-card {
+                padding: 30px 20px;
+                max-width: 100%;
+            }
+
+            .login-card h1 {
+                font-size: 24px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .user-info h1 {
+                font-size: 22px;
+            }
+
+            .user-info p {
+                font-size: 12px;
+            }
+
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn-export,
+            .btn-logout {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-bottom: 15px;
+            }
+
+            .kpi-card {
+                padding: 20px;
+            }
+
+            .kpi-card .value {
+                font-size: 36px;
+            }
+
+            .comparison-card {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .comparison-stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .comparison-item .value {
+                font-size: 28px;
+            }
+
+            .card {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .card h2 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
             .zones-grid {
                 grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .zone-item {
+                padding: 12px;
+            }
+
+            .zone-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .recommendations {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .recommendation-item {
+                padding: 15px;
+            }
+
+            .recommendation-item h3 {
+                font-size: 14px;
+            }
+
+            .recommendation-item p {
+                font-size: 13px;
+            }
+
+            .calendar-heatmap {
+                padding: 15px;
+                overflow-x: auto;
+                margin-bottom: 15px;
+            }
+
+            .calendar-grid {
+                gap: 4px;
+                min-width: 300px;
+            }
+
+            .calendar-day {
+                font-size: 10px;
+            }
+
+            .hand-visual {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .hand-svg {
+                width: 120px;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            .demo-ids {
+                padding: 15px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+
+            .login-card {
+                padding: 25px 15px;
+            }
+
+            .login-card h1 {
+                font-size: 20px;
+            }
+
+            .login-card p {
+                font-size: 13px;
+            }
+
+            .login-input {
+                padding: 14px 18px;
+                font-size: 14px;
+            }
+
+            .btn-login {
+                padding: 14px;
+                font-size: 14px;
+            }
+
+            .dashboard-header {
+                padding: 15px;
+            }
+
+            .user-info h1 {
+                font-size: 18px;
+            }
+
+            .user-info p {
+                font-size: 11px;
+                line-height: 1.4;
+            }
+
+            .btn-export,
+            .btn-logout {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+
+            .kpi-card {
+                padding: 15px;
+                margin-bottom: 12px;
+            }
+
+            .kpi-card h3 {
+                font-size: 12px;
+            }
+
+            .kpi-card .value {
+                font-size: 30px;
+            }
+
+            .kpi-card .status {
+                font-size: 11px;
+                padding: 4px 12px;
+            }
+
+            .comparison-card {
+                padding: 15px;
+                margin-bottom: 12px;
+            }
+
+            .comparison-card h2 {
+                font-size: 16px;
+            }
+
+            .comparison-item .label {
+                font-size: 11px;
+            }
+
+            .comparison-item .value {
+                font-size: 24px;
+            }
+
+            .comparison-item .diff {
+                font-size: 11px;
+            }
+
+            .card {
+                padding: 15px;
+                margin-bottom: 12px;
+            }
+
+            .card h2 {
+                font-size: 16px;
+            }
+
+            .zone-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .zone-info h4 {
+                font-size: 13px;
+            }
+
+            .zone-info .score {
+                font-size: 16px;
+            }
+
+            .recommendations {
+                padding: 15px;
+                margin-bottom: 12px;
+            }
+
+            .recommendations h2 {
+                font-size: 16px;
+            }
+
+            .recommendation-item {
+                padding: 12px;
+            }
+
+            .recommendation-item h3 {
+                font-size: 13px;
+            }
+
+            .recommendation-item p {
+                font-size: 12px;
+            }
+
+            .recommendation-item .tip {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+
+            .calendar-heatmap {
+                padding: 12px;
+            }
+
+            .calendar-month-label {
+                font-size: 14px;
+            }
+
+            .calendar-grid {
+                gap: 3px;
+            }
+
+            .calendar-day {
+                font-size: 9px;
+            }
+
+            .day-number {
+                font-size: 12px;
+            }
+
+            .day-score {
+                font-size: 8px;
+            }
+
+            .hand-visual {
+                padding: 10px;
+            }
+
+            .hand-svg {
+                width: 100px;
+            }
+
+            .chart-container {
+                height: 200px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Login Screen -->
         <div id="loginScreen" class="login-card">
-            <i class="fa-solid fa-hand-sparkles" style="font-size: 64px; color: var(--primary-blue); margin-bottom: 20px;"></i>
+            <i class="fa-solid fa-hand-sparkles"
+                style="font-size: 64px; color: var(--primary-blue); margin-bottom: 20px;"></i>
             <h1>ระบบดูข้อมูลส่วนบุคคล</h1>
             <p>กรุณาระบุรหัสพนักงานเพื่อดูผลการล้างมือของคุณ</p>
-            
-            <input 
-                type="text" 
-                id="employeeIdInput" 
-                class="login-input" 
-                placeholder="รหัสพนักงาน (เช่น EMP001)"
-                autocomplete="off"
-            >
-            
+
+            <input type="text" id="employeeIdInput" class="login-input" placeholder="รหัสพนักงาน (เช่น EMP001)"
+                autocomplete="off">
+
             <button class="btn-login" onclick="login()">
                 <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ
             </button>
@@ -704,12 +1053,25 @@
             <div class="demo-ids">
                 <strong><i class="fa-solid fa-info-circle"></i> รหัสพนักงานตัวอย่าง (Demo):</strong>
                 <div style="color: var(--text-sub); line-height: 1.8;">
-                    • <code style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP001</code> - ทนงศักดิ์ ใจดี (ผ่านเกณฑ์)<br>
-                    • <code style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP002</code> - สมหญิง รักษ์ป่า (ไม่ผ่านเกณฑ์)<br>
-                    • <code style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP003</code> - วิชัย สุขสันต์ (ผ่านเกณฑ์)<br>
-                    • <code style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP004</code> - นภัสสร พัฒนากุล ⭐ (กำลังพัฒนา)
+                    • <code
+                        style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP001</code>
+                    - ทนงศักดิ์ ใจดี (ผ่านเกณฑ์)<br>
+                    • <code
+                        style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP002</code>
+                    - สมหญิง รักษ์ป่า (ไม่ผ่านเกณฑ์)<br>
+                    • <code
+                        style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP003</code>
+                    - วิชัย สุขสันต์ (ผ่านเกณฑ์)<br>
+                    • <code
+                        style="background: white; padding: 2px 8px; border-radius: 4px; font-weight: 600;">EMP004</code>
+                    - นภัสสร พัฒนากุล ⭐ (กำลังพัฒนา)
                 </div>
             </div>
+
+            <!-- Home Button -->
+            <button class="btn-home" onclick="location.href='index.html'">
+                <i class="fa-solid fa-home"></i> กลับหน้าหลัก
+            </button>
         </div>
 
         <!-- Dashboard Screen -->
@@ -727,7 +1089,8 @@
                     <button class="btn-logout" onclick="logout()">
                         <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
                     </button>
-                    <button class="btn-export" onclick="location.href='index.html'" style="background: linear-gradient(135deg, #f97316, #ea580c); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);">
+                    <button class="btn-export" onclick="location.href='index.html'"
+                        style="background: linear-gradient(135deg, #f97316, #ea580c); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);">
                         <i class="fa-solid fa-home"></i> หน้าหลัก
                     </button>
                 </div>
@@ -738,7 +1101,8 @@
                 <h2 style="font-size: 20px; color: var(--primary-blue); margin-bottom: 10px;">
                     <i class="fa-solid fa-users"></i> เทียบกับเพื่อนร่วมงาน
                 </h2>
-                <p style="font-size: 13px; color: var(--text-sub);">เปรียบเทียบผลงานของคุณกับค่าเฉลี่ยของแผนกและโรงพยาบาล</p>
+                <p style="font-size: 13px; color: var(--text-sub);">
+                    เปรียบเทียบผลงานของคุณกับค่าเฉลี่ยของแผนกและโรงพยาบาล</p>
                 <div class="comparison-stats">
                     <div class="comparison-item">
                         <div class="label">คะแนนของคุณ</div>
@@ -757,12 +1121,6 @@
                 </div>
             </div>
 
-            <!-- Badges & Achievements -->
-            <div class="card">
-                <h2><i class="fa-solid fa-star"></i> ความสำเร็จของคุณ</h2>
-                <div class="badges-section" id="badgesSection"></div>
-            </div>
-
             <!-- History Table -->
             <div class="calendar-heatmap">
                 <h2 style="font-size: 20px; color: var(--text-main); margin-bottom: 5px;">
@@ -775,13 +1133,27 @@
                     <table style="width: 100%; border-collapse: collapse;">
                         <thead>
                             <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                                <th style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">#</th>
-                                <th style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">วัน/เดือน/ปี</th>
-                                <th style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">เวลา</th>
-                                <th style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">หน้ามือ</th>
-                                <th style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">หลังมือ</th>
-                                <th style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">เฉลี่ย</th>
-                                <th style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">สถานะ</th>
+                                <th
+                                    style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                    #</th>
+                                <th
+                                    style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                    วัน/เดือน/ปี</th>
+                                <th
+                                    style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                    เวลา</th>
+                                <th
+                                    style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                    หน้ามือ</th>
+                                <th
+                                    style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                    หลังมือ</th>
+                                <th
+                                    style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                    เฉลี่ย</th>
+                                <th
+                                    style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
+                                    สถานะ</th>
                             </tr>
                         </thead>
                         <tbody id="historyTableBody"></tbody>
@@ -825,52 +1197,66 @@
                     <h2><i class="fa-solid fa-hand"></i> ภาพรวมพื้นที่เสี่ยง</h2>
                     <div class="hand-visual">
                         <div class="hand-view">
-                            <p style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 10px;">หน้ามือ</p>
+                            <p style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 10px;">
+                                หน้ามือ</p>
                             <svg id="frontHandSvg" class="hand-svg" viewBox="0 0 200 250">
                                 <defs>
                                     <filter id="glow">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
                                         <feMerge>
-                                            <feMergeNode in="coloredBlur"/>
-                                            <feMergeNode in="SourceGraphic"/>
+                                            <feMergeNode in="coloredBlur" />
+                                            <feMergeNode in="SourceGraphic" />
                                         </feMerge>
                                     </filter>
                                 </defs>
-                                <path class="hand-path" d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                                <path class="hand-path"
+                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
                                 <!-- Heat zones will be added by JavaScript -->
                             </svg>
-                            <div style="font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-top: 10px;" id="frontScore">-</div>
+                            <div style="font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-top: 10px;"
+                                id="frontScore">-</div>
                         </div>
                         <div class="hand-view">
-                            <p style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 10px;">หลังมือ</p>
+                            <p style="font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 10px;">
+                                หลังมือ</p>
                             <svg id="backHandSvg" class="hand-svg" viewBox="0 0 200 250">
                                 <defs>
                                     <filter id="glow2">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
                                         <feMerge>
-                                            <feMergeNode in="coloredBlur"/>
-                                            <feMergeNode in="SourceGraphic"/>
+                                            <feMergeNode in="coloredBlur" />
+                                            <feMergeNode in="SourceGraphic" />
                                         </feMerge>
                                     </filter>
                                 </defs>
-                                <path class="hand-path" d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                                <path class="hand-path"
+                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
                                 <!-- Heat zones will be added by JavaScript -->
                             </svg>
-                            <div style="font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-top: 10px;" id="backScore">-</div>
+                            <div style="font-size: 18px; font-weight: 700; color: var(--primary-blue); margin-top: 10px;"
+                                id="backScore">-</div>
                         </div>
                     </div>
-                    <div style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 12px; font-size: 12px; text-align: center;">
+                    <div
+                        style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 12px; font-size: 12px; text-align: center;">
                         <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <div style="width: 20px; height: 20px; background: #ef4444; border-radius: 50%; opacity: 0.9;"></div>
-                                <span style="color: var(--text-sub); font-weight: 600;">ต่ำกว่า 60% (ต้องปรับปรุง)</span>
+                                <div
+                                    style="width: 20px; height: 20px; background: #ef4444; border-radius: 50%; opacity: 0.9;">
+                                </div>
+                                <span style="color: var(--text-sub); font-weight: 600;">ต่ำกว่า 60%
+                                    (ต้องปรับปรุง)</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <div style="width: 20px; height: 20px; background: #f59e0b; border-radius: 50%; opacity: 0.7;"></div>
+                                <div
+                                    style="width: 20px; height: 20px; background: #f59e0b; border-radius: 50%; opacity: 0.7;">
+                                </div>
                                 <span style="color: var(--text-sub); font-weight: 600;">60-79% (พอใช้)</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <div style="width: 20px; height: 20px; background: #10b981; border-radius: 50%; opacity: 0.5;"></div>
+                                <div
+                                    style="width: 20px; height: 20px; background: #10b981; border-radius: 50%; opacity: 0.5;">
+                                </div>
                                 <span style="color: var(--text-sub); font-weight: 600;">80%+ (ดีเยี่ยม)</span>
                             </div>
                         </div>
@@ -951,14 +1337,14 @@
                     { date: '28/10/2025', time: '13:30', front: 68, back: 75, zones: [78, 72, 68, 75, 64, 60, 70, 78, 73, 68, 75] },
                     { date: '29/10/2025', time: '09:00', front: 70, back: 74, zones: [76, 70, 70, 74, 66, 62, 72, 76, 72, 70, 74] },
                     { date: '29/10/2025', time: '14:45', front: 75, back: 78, zones: [82, 76, 75, 78, 71, 68, 76, 82, 78, 75, 78] },
-                    
+
                     // สัปดาห์ที่ 2 - เริ่มผ่านบ้าง
                     { date: '30/10/2025', time: '08:30', front: 78, back: 76, zones: [80, 78, 78, 76, 74, 70, 78, 80, 77, 78, 76] },
                     { date: '30/10/2025', time: '12:15', front: 82, back: 84, zones: [88, 82, 82, 84, 78, 75, 82, 88, 84, 82, 84] },
                     { date: '30/10/2025', time: '16:20', front: 77, back: 79, zones: [82, 78, 77, 79, 73, 71, 78, 82, 79, 77, 79] },
                     { date: '31/10/2025', time: '09:45', front: 84, back: 86, zones: [90, 85, 84, 86, 80, 78, 84, 90, 86, 84, 86] },
                     { date: '31/10/2025', time: '14:00', front: 80, back: 78, zones: [84, 80, 80, 78, 76, 72, 80, 84, 79, 80, 78] },
-                    
+
                     // สัปดาห์ที่ 3 - พัฒนาขึ้นชัดเจน
                     { date: '01/11/2025', time: '08:00', front: 86, back: 88, zones: [92, 87, 86, 88, 82, 80, 86, 92, 88, 86, 88] },
                     { date: '01/11/2025', time: '11:30', front: 83, back: 85, zones: [88, 84, 83, 85, 79, 77, 84, 88, 85, 83, 85] },
@@ -988,7 +1374,7 @@
 
         function login() {
             const empId = document.getElementById('employeeIdInput').value.trim().toUpperCase();
-            
+
             if (!mockEmployees[empId]) {
                 alert('❌ ไม่พบรหัสพนักงานนี้ กรุณาลองใหม่อีกครั้ง');
                 return;
@@ -1016,13 +1402,13 @@
 
             // Update header
             document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userDetails').textContent = 
+            document.getElementById('userDetails').textContent =
                 `รหัส: ${currentUser.id} | ตำแหน่ง: ${currentUser.position} | แผนก: ${currentUser.department}`;
 
             // Calculate stats
             const records = currentUser.records;
             const totalScans = records.length;
-            
+
             let totalScore = 0;
             let passCount = 0;
             let frontTotal = 0;
@@ -1034,7 +1420,7 @@
                 totalScore += avg;
                 frontTotal += record.front;
                 backTotal += record.back;
-                
+
                 if (avg >= 80) passCount++;
 
                 record.zones.forEach((score, idx) => {
@@ -1045,7 +1431,7 @@
             const avgScore = (totalScore / totalScans).toFixed(1);
             const frontAvg = (frontTotal / totalScans).toFixed(1);
             const backAvg = (backTotal / totalScans).toFixed(1);
-            
+
             zoneAverages.forEach((sum, idx) => {
                 zoneAverages[idx] = (sum / totalScans).toFixed(1);
             });
@@ -1053,9 +1439,9 @@
             // Update KPI cards
             const avgScoreEl = document.getElementById('avgScore');
             const kpiCard = avgScoreEl.closest('.kpi-card');
-            
+
             avgScoreEl.textContent = avgScore + '%';
-            
+
             if (avgScore >= 80) {
                 kpiCard.classList.add('pass');
                 kpiCard.classList.remove('fail', 'neutral');
@@ -1070,7 +1456,7 @@
 
             document.getElementById('totalScans').textContent = totalScans;
             document.getElementById('passCount').textContent = `${passCount}/${totalScans}`;
-            document.getElementById('dateRange').textContent = 
+            document.getElementById('dateRange').textContent =
                 `${records[0].date} - ${records[records.length - 1].date}`;
 
             document.getElementById('frontScore').textContent = frontAvg + '%';
@@ -1078,9 +1464,6 @@
 
             // Render comparison
             renderComparison(avgScore, currentUser.department);
-
-            // Render badges
-            renderBadges(avgScore, passCount, totalScans, records);
 
             // Render calendar
             renderCalendar(records);
@@ -1120,7 +1503,7 @@
             // Clear existing heat zones and gradients
             const frontSvg = document.getElementById('frontHandSvg');
             const backSvg = document.getElementById('backHandSvg');
-            
+
             // Remove old zones and defs
             frontSvg.querySelectorAll('.heat-zone, .heat-gradient').forEach(el => el.remove());
             backSvg.querySelectorAll('.heat-zone, .heat-gradient').forEach(el => el.remove());
@@ -1134,10 +1517,10 @@
                 const score = parseFloat(zoneAverages[zone.idx]);
                 const color = getHeatColor(score);
                 const intensity = getHeatIntensity(score);
-                
+
                 // Create unique gradient ID
                 const gradientId = `frontGradient${index}`;
-                
+
                 // Create radial gradient
                 const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
                 gradient.setAttribute('id', gradientId);
@@ -1148,7 +1531,7 @@
                     <stop offset="100%" style="stop-color:${color};stop-opacity:0" />
                 `;
                 frontDefs.appendChild(gradient);
-                
+
                 // Create circle with gradient fill
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 circle.setAttribute('class', 'heat-zone');
@@ -1157,12 +1540,12 @@
                 circle.setAttribute('r', zone.r);
                 circle.setAttribute('fill', `url(#${gradientId})`);
                 circle.setAttribute('filter', 'url(#glow)');
-                
+
                 // Tooltip
                 const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
                 title.textContent = `${zone.name}: ${score}%`;
                 circle.appendChild(title);
-                
+
                 frontSvg.appendChild(circle);
             });
 
@@ -1171,10 +1554,10 @@
                 const score = parseFloat(zoneAverages[zone.idx]);
                 const color = getHeatColor(score);
                 const intensity = getHeatIntensity(score);
-                
+
                 // Create unique gradient ID
                 const gradientId = `backGradient${index}`;
-                
+
                 // Create radial gradient
                 const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
                 gradient.setAttribute('id', gradientId);
@@ -1185,7 +1568,7 @@
                     <stop offset="100%" style="stop-color:${color};stop-opacity:0" />
                 `;
                 backDefs.appendChild(gradient);
-                
+
                 // Create circle with gradient fill
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 circle.setAttribute('class', 'heat-zone');
@@ -1194,12 +1577,12 @@
                 circle.setAttribute('r', zone.r);
                 circle.setAttribute('fill', `url(#${gradientId})`);
                 circle.setAttribute('filter', 'url(#glow2)');
-                
+
                 // Tooltip
                 const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
                 title.textContent = `${zone.name}: ${score}%`;
                 circle.appendChild(title);
-                
+
                 backSvg.appendChild(circle);
             });
         }
@@ -1230,7 +1613,7 @@
                 const score = zone.score;
                 const rating = score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'poor';
                 const icon = score >= 80 ? '✓' : score >= 60 ? '!' : '✗';
-                
+
                 const zoneEl = document.createElement('div');
                 zoneEl.className = `zone-item ${rating}`;
                 zoneEl.innerHTML = `
@@ -1248,7 +1631,7 @@
 
         function renderRecommendations(avgScore, zoneAverages) {
             const container = document.getElementById('recommendationsContent');
-            
+
             // Find worst 3 zones
             const zonesWithIndex = zoneAverages.map((score, idx) => ({ score, idx }));
             zonesWithIndex.sort((a, b) => a.score - b.score);
@@ -1324,10 +1707,10 @@
             // Check if recent scores are better than earlier scores
             const records = currentUser.records;
             const half = Math.floor(records.length / 2);
-            
+
             const firstHalfAvg = records.slice(0, half).reduce((sum, r) => sum + (r.front + r.back) / 2, 0) / half;
             const secondHalfAvg = records.slice(half).reduce((sum, r) => sum + (r.front + r.back) / 2, 0) / (records.length - half);
-            
+
             // Improvement if second half is at least 5% better
             return secondHalfAvg > firstHalfAvg + 5;
         }
@@ -1351,7 +1734,7 @@
 
         function renderTrendChart(records) {
             const ctx = document.getElementById('trendChart').getContext('2d');
-            
+
             if (trendChart) {
                 trendChart.destroy();
             }
@@ -1407,7 +1790,7 @@
                             titleFont: { size: 13, weight: 'bold' },
                             bodyFont: { size: 12 },
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     const score = context.parsed.y;
                                     const status = score >= 80 ? '✓ ผ่าน' : '✗ ไม่ผ่าน';
                                     return `คะแนน: ${score}% (${status})`;
@@ -1420,7 +1803,7 @@
                             beginAtZero: true,
                             max: 100,
                             ticks: {
-                                callback: function(value) {
+                                callback: function (value) {
                                     return value + '%';
                                 },
                                 font: { size: 11 }
@@ -1490,70 +1873,6 @@
             }
         }
 
-        // Badges Function
-        function renderBadges(avgScore, passCount, totalScans, records) {
-            const container = document.getElementById('badgesSection');
-            
-            // Check consecutive days passed
-            let maxStreak = 0;
-            let currentStreak = 0;
-            const dateScores = {};
-            
-            records.forEach(r => {
-                const score = (r.front + r.back) / 2;
-                if (!dateScores[r.date] || dateScores[r.date] < score) {
-                    dateScores[r.date] = score;
-                }
-            });
-
-            const sortedDates = Object.keys(dateScores).sort();
-            sortedDates.forEach(date => {
-                if (dateScores[date] >= 80) {
-                    currentStreak++;
-                    maxStreak = Math.max(maxStreak, currentStreak);
-                } else {
-                    currentStreak = 0;
-                }
-            });
-
-            const badges = [
-                {
-                    icon: '🏆',
-                    name: 'ผ่านเกณฑ์',
-                    desc: 'เฉลี่ย ≥80%',
-                    earned: avgScore >= 80,
-                    earnedDate: avgScore >= 80 ? 'ปลดล็อกแล้ว!' : `ปัจจุบัน: ${avgScore}%`
-                },
-                {
-                    icon: '🔥',
-                    name: 'ต่อเนื่อง',
-                    desc: 'ผ่าน 3 วันติด',
-                    earned: maxStreak >= 3,
-                    earnedDate: maxStreak >= 3 ? `${maxStreak} วัน!` : `${maxStreak} วัน`
-                },
-                {
-                    icon: '⭐',
-                    name: 'กำลังพัฒนา',
-                    desc: 'ทำได้ดีขึ้น',
-                    earned: checkImprovementTrend() && totalScans >= 5,
-                    earnedDate: checkImprovementTrend() && totalScans >= 5 ? 'ได้แล้ว!' : 'ต้องทำต่อไป'
-                }
-            ];
-
-            container.innerHTML = '';
-            badges.forEach(badge => {
-                const badgeEl = document.createElement('div');
-                badgeEl.className = `badge-card ${badge.earned ? 'earned' : 'locked'}`;
-                badgeEl.innerHTML = `
-                    <div class="badge-icon">${badge.icon}</div>
-                    <div class="badge-name">${badge.name}</div>
-                    <div class="badge-desc">${badge.desc}</div>
-                    ${badge.earnedDate ? `<div class="badge-earned-date">✓ ${badge.earnedDate}</div>` : ''}
-                `;
-                container.appendChild(badgeEl);
-            });
-        }
-
         // Calendar Heatmap Function
         function renderCalendar(records) {
             const tbody = document.getElementById('historyTableBody');
@@ -1565,18 +1884,18 @@
             reversedRecords.forEach((record, index) => {
                 const avgScore = ((record.front + record.back) / 2).toFixed(1);
                 const isPassed = avgScore >= 80;
-                
+
                 // Format date
                 const [day, month, year] = record.date.split('/');
                 const shortYear = year.substring(2); // แปลง 2025 -> 25
                 const dateStr = `${day}/${month}/${shortYear}`;
-                
+
                 const row = document.createElement('tr');
                 row.style.borderBottom = '1px solid #f1f5f9';
                 row.style.transition = 'all 0.2s ease';
-                row.onmouseover = function() { this.style.background = '#f8fafc'; };
-                row.onmouseout = function() { this.style.background = 'white'; };
-                
+                row.onmouseover = function () { this.style.background = '#f8fafc'; };
+                row.onmouseout = function () { this.style.background = 'white'; };
+
                 row.innerHTML = `
                     <td style="padding: 12px; font-size: 13px; color: var(--text-sub); font-weight: 600;">${reversedRecords.length - index}</td>
                     <td style="padding: 12px; font-size: 13px; color: var(--text-main); font-weight: 600;">${dateStr}</td>
@@ -1597,7 +1916,7 @@
                         </span>
                     </td>
                 `;
-                
+
                 tbody.appendChild(row);
             });
         }
@@ -1606,19 +1925,19 @@
         async function exportToPDF() {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
-            
+
             // Add Thai font support (using default for now)
             pdf.setFont('helvetica');
-            
+
             // Header
             pdf.setFontSize(20);
             pdf.setTextColor(14, 165, 233);
             pdf.text('Hand Hygiene Report', 105, 20, { align: 'center' });
-            
+
             pdf.setFontSize(12);
             pdf.setTextColor(100, 116, 139);
             pdf.text(`Generated: ${new Date().toLocaleDateString('th-TH')}`, 105, 28, { align: 'center' });
-            
+
             // User Info
             pdf.setFontSize(14);
             pdf.setTextColor(15, 23, 42);
@@ -1626,50 +1945,51 @@
             pdf.text(`ID: ${currentUser.id}`, 20, 52);
             pdf.text(`Position: ${currentUser.position}`, 20, 59);
             pdf.text(`Department: ${currentUser.department}`, 20, 66);
-            
+
             // Stats
             pdf.setFontSize(16);
             pdf.setTextColor(14, 165, 233);
             pdf.text('Summary', 20, 80);
-            
+
             pdf.setFontSize(12);
             pdf.setTextColor(15, 23, 42);
             const avgScore = document.getElementById('avgScore').textContent;
             const totalScans = document.getElementById('totalScans').textContent;
             const passCount = document.getElementById('passCount').textContent;
-            
+
             pdf.text(`Average Score: ${avgScore}`, 20, 90);
             pdf.text(`Total Scans: ${totalScans}`, 20, 97);
             pdf.text(`Passed: ${passCount}`, 20, 104);
             pdf.text(`Status: ${parseFloat(avgScore) >= 80 ? 'PASSED' : 'NEEDS IMPROVEMENT'}`, 20, 111);
-            
+
             // Recommendations
             pdf.setFontSize(16);
             pdf.setTextColor(139, 92, 246);
             pdf.text('AI Recommendations', 20, 125);
-            
+
             pdf.setFontSize(10);
             pdf.setTextColor(100, 116, 139);
             const recommendations = document.getElementById('recommendationsContent').innerText.substring(0, 500);
             const lines = pdf.splitTextToSize(recommendations, 170);
             pdf.text(lines, 20, 135);
-            
+
             // Footer
             pdf.setFontSize(8);
             pdf.setTextColor(148, 163, 184);
             pdf.text('Hand Hygiene Monitoring System - Personal Report', 105, 285, { align: 'center' });
-            
+
             pdf.save(`hand-hygiene-report-${currentUser.id}-${new Date().getTime()}.pdf`);
-            
+
             alert('✅ รายงาน PDF ถูกดาวน์โหลดเรียบร้อยแล้ว!');
         }
 
         // Allow Enter key to login
-        document.getElementById('employeeIdInput').addEventListener('keypress', function(e) {
+        document.getElementById('employeeIdInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 login();
             }
         });
     </script>
 </body>
+
 </html>
