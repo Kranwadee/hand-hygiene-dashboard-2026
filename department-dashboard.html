@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+
     <style>
         :root {
             --primary-green: #059669;
@@ -35,37 +36,58 @@
             box-sizing: border-box;
         }
 
+        /* =========================================
+           GLOBAL STYLES
+           ========================================= */
         body {
             font-family: 'Anuphan', sans-serif;
-            background: linear-gradient(135deg, #059669 0%, #10b981 50%, #ffffff 100%);
+            background-color: var(--bg-canvas);
             color: var(--text-main);
             min-height: 100vh;
             padding: 15px;
+            overflow-x: hidden;
         }
 
-        /* Login Screen */
+        /* =========================================
+           LOGIN SCREEN STYLES (Green Theme)
+           ========================================= */
         .login-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .login-card {
-            background: white;
-            padding: 50px;
-            border-radius: 32px;
-            box-shadow: var(--shadow-xl);
-            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            max-width: 420px;
             width: 100%;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 0.8s ease;
         }
 
-        .login-card .icon-wrapper {
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            background: linear-gradient(135deg, #059669, #10b981);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -73,104 +95,136 @@
             margin: 0 auto 25px;
             font-size: 36px;
             color: white;
-            box-shadow: 0 10px 30px rgba(5, 150, 105, 0.4);
+            box-shadow: 0 15px 40px rgba(5, 150, 105, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         .login-card h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 32px;
-            color: var(--primary-green);
-            margin-bottom: 10px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 8px;
+            text-align: center;
         }
 
         .login-card p {
-            color: var(--text-sub);
+            color: #64748b;
+            font-size: 14px;
             margin-bottom: 30px;
-            font-size: 15px;
+            text-align: center;
         }
 
         .login-input {
             width: 100%;
-            padding: 18px 24px;
+            padding: 16px 20px;
             border: 2px solid #e2e8f0;
-            border-radius: 16px;
+            border-radius: 14px;
             font-size: 16px;
             font-family: 'Anuphan', sans-serif;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
+            background: #f8fafc;
         }
 
         .login-input:focus {
             outline: none;
-            border-color: var(--primary-green);
-            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+            border-color: #10b981;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
         }
 
-        .btn-login {
+        .login-button {
             width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            padding: 16px;
+            background: linear-gradient(135deg, #059669, #10b981);
             color: white;
             border: none;
-            border-radius: 16px;
+            border-radius: 14px;
             font-size: 16px;
             font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
             font-family: 'Anuphan', sans-serif;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(5, 150, 105, 0.4);
-        }
-
-        .demo-ids {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 12px;
-            font-size: 13px;
-            text-align: left;
-        }
-
-        .demo-ids strong {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--primary-green);
-        }
-
-        .btn-home {
-            width: 100%;
-            padding: 14px 24px;
-            background: white;
-            border: 2px solid var(--primary-green);
-            color: var(--primary-green);
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-family: 'Anuphan', sans-serif;
-            margin-top: 20px;
+            gap: 10px;
         }
 
-        .btn-home:hover {
-            background: var(--primary-green);
-            color: white;
+        .login-button:hover {
+            background: linear-gradient(135deg, #047857, #059669);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
+            box-shadow: 0 15px 40px rgba(5, 150, 105, 0.4);
+        }
+
+        .login-hint {
+            margin-top: 25px;
+            padding: 18px;
+            background: #f0fdf4;
+            border-radius: 14px;
+            font-size: 13px;
+            color: #047857;
+            border: 1px solid #bbf7d0;
+            text-align: center;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 14px;
+            color: #059669;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #d1fae5;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            background: #ecfdf5;
+        }
+
+        .back-link:hover {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #dashboardContent {
+            display: none;
         }
 
         /* Dashboard Container */
         .dashboard-container {
             max-width: 1600px;
             margin: 0 auto;
-            display: none;
+            display: block;
             animation: fadeIn 0.5s ease;
         }
 
@@ -198,11 +252,11 @@
         /* Navigation */
         .top-nav {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             padding: 10px 0;
             margin-bottom: 10px;
-            gap: 15px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
@@ -232,36 +286,26 @@
 
         .btn-home {
             background: white;
-            border: 2px solid var(--primary-green);
-            color: var(--primary-green);
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+            border: 2px solid var(--danger);
+            color: var(--danger);
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
         }
 
         .btn-home:hover {
-            background: var(--primary-green);
+            background: var(--danger);
             color: white;
-            box-shadow: 0 8px 24px rgba(5, 150, 105, 0.4);
-        }
-
-        .btn-ic {
-            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
-            color: white;
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
-        }
-
-        .btn-ic:hover {
-            box-shadow: 0 8px 24px rgba(14, 165, 233, 0.6);
+            box-shadow: 0 8px 24px rgba(244, 63, 94, 0.4);
         }
 
         .btn-logout {
-            background: white;
-            border: 2px solid var(--danger);
-            color: var(--danger);
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
         }
 
         .btn-logout:hover {
-            background: var(--danger);
-            color: white;
+            background: #dc2626;
+            box-shadow: 0 8px 24px rgba(244, 63, 94, 0.5);
         }
 
         /* KPI Cards */
@@ -574,359 +618,372 @@
 </head>
 
 <body>
+
     <!-- Login Screen -->
     <div id="loginScreen" class="login-container">
         <div class="login-card">
-            <div class="icon-wrapper">
+            <div class="login-icon">
                 <i class="fa-solid fa-users"></i>
             </div>
             <h1>Department Dashboard</h1>
             <p>เข้าสู่ระบบด้วย Employee ID เพื่อดูข้อมูลแผนกของคุณ</p>
-            <input type="text" id="empInput" class="login-input" placeholder="Employee ID (เช่น EMP001)" />
-            <button class="btn-login" onclick="handleLogin()">
-                <i class="fa-solid fa-right-to-bracket" style="display:inline; margin-right:8px;"></i>
-                เข้าสู่ระบบ
-            </button>
-            <div class="demo-ids">
-                <strong><i class="fa-solid fa-vial"></i> Demo IDs สำหรับทดสอบ:</strong>
-                <div>EMP001 (ER), EMP015 (ICU), EMP030 (OR), EMP045 (Ward)</div>
+
+            <div class="error-message" id="errorMessage">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>ไม่พบ Employee ID นี้ในระบบ กรุณาลองใหม่อีกครั้ง</span>
             </div>
 
-            <!-- Home Button -->
-            <button class="btn-home" onclick="location.href='index.html'">
-                <i class="fa-solid fa-home"></i> กลับหน้าหลัก
+            <input type="text" id="empIdInput" class="login-input" placeholder="Employee ID (เช่น EMP001)"
+                autocomplete="off">
+
+            <button class="login-button" onclick="handleLogin()">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <span>เข้าสู่ระบบ</span>
             </button>
+
+            <div class="login-hint">
+                <i class="fa-solid fa-info-circle"></i>
+                <strong>Demo IDs:</strong> EMP001 (ER), EMP015 (ICU), EMP030 (OR), EMP045 (Ward)
+            </div>
+
+            <a href="index.html" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                กลับหน้าหลัก
+            </a>
         </div>
     </div>
 
-    <!-- Dashboard Screen -->
-    <div id="dashboardScreen" class="dashboard-container">
-        <!-- Top Navigation -->
-        <nav class="top-nav">
-            <div class="nav-actions">
-                <button class="btn btn-home" onclick="location.href='index.html'">
-                    <i class="fa-solid fa-home"></i> หน้าหลัก
-                </button>
-                <button class="btn btn-ic" onclick="location.href='hospital-dashboard.html'">
-                    <i class="fa-solid fa-hospital"></i> IC Dashboard
-                </button>
-            </div>
-            <button class="btn btn-logout" onclick="handleLogout()">
-                <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
-            </button>
-        </nav>
+    <!-- Dashboard Content -->
+    <div id="dashboardContent">
 
-        <!-- Header -->
-        <header class="header-section">
-            <h1 id="deptName">แผนก ER (Emergency Room)</h1>
-            <p>ข้อมูลการล้างมือเฉพาะแผนกของคุณ | 30-31 ตุลาคม 2568</p>
-        </header>
+        <!-- Dashboard Screen -->
+        <div id="dashboardScreen" class="dashboard-container">
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <div class="nav-actions">
+                    <button class="btn btn-home" onclick="location.href='index.html'">
+                        <i class="fa-solid fa-home"></i> กลับหน้าหลัก
+                    </button>
+                    <button class="btn btn-logout" onclick="handleLogout()">
+                        <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+                    </button>
+                </div>
+            </nav>
 
-        <!-- KPI Row -->
-        <div class="kpi-row">
-            <div class="kpi-box">
-                <div class="kpi-label">คะแนนเฉลี่ยแผนก</div>
-                <div class="kpi-value" id="deptAvg">31.5%</div>
-                <div class="kpi-sub">Department Average</div>
-            </div>
-            <div class="kpi-box">
-                <div class="kpi-label">Pass Rate (≥80%)</div>
-                <div class="kpi-value" id="deptPass">12.5%</div>
-                <div class="kpi-sub">Compliance Rate</div>
-            </div>
-            <div class="kpi-box">
-                <div class="kpi-label">จำนวน Logs</div>
-                <div class="kpi-value" id="deptLogs">48</div>
-                <div class="kpi-sub">Total Records</div>
-            </div>
-            <div class="kpi-box">
-                <div class="kpi-label">อันดับของแผนก</div>
-                <div class="kpi-value" id="deptRank">#3/12</div>
-                <div class="kpi-sub">Hospital Ranking</div>
-            </div>
-        </div>
+            <!-- Header -->
+            <header class="header-section">
+                <h1 id="deptName">แผนก ER (Emergency Room)</h1>
+                <p>ข้อมูลการล้างมือเฉพาะแผนกของคุณ | 30-31 ตุลาคม 2568</p>
+            </header>
 
-        <!-- Main Content Grid -->
-        <div class="content-grid">
-            <div class="chart-col">
-                <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;">
-                    <i class="fa-solid fa-chart-line" style="color: var(--primary-green);"></i>
-                    แนวโน้มของแผนก <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Department
-                        Trend)</span>
-                </h3>
-                <div style="height: 300px; position: relative;">
-                    <canvas id="trendChart"></canvas>
+            <!-- KPI Row -->
+            <div class="kpi-row">
+                <div class="kpi-box">
+                    <div class="kpi-label">คะแนนเฉลี่ยแผนก</div>
+                    <div class="kpi-value" id="deptAvg">31.5%</div>
+                    <div class="kpi-sub">Department Average</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-label">Pass Rate (≥80%)</div>
+                    <div class="kpi-value" id="deptPass">12.5%</div>
+                    <div class="kpi-sub">Compliance Rate</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-label">จำนวน Logs</div>
+                    <div class="kpi-value" id="deptLogs">48</div>
+                    <div class="kpi-sub">Total Records</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-label">อันดับของแผนก</div>
+                    <div class="kpi-value" id="deptRank">#3/12</div>
+                    <div class="kpi-sub">Hospital Ranking</div>
                 </div>
             </div>
 
-            <div class="hand-col">
-                <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;">
-                    <i class="fa-solid fa-hand-dots" style="color: var(--primary-green);"></i>
-                    วิเคราะห์ 11 โซน
-                </h3>
-                <div class="hand-viz-grid">
-                    <div class="hand-view">
-                        <p style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-green);">
-                            หน้ามือ (Palm)</p>
-                        <svg class="hand-svg" viewBox="0 0 200 250">
-                            <path class="hand-path"
-                                d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                            <circle class="heat-glow" cx="100" cy="170" r="40" fill="var(--danger)" />
-                        </svg>
-                        <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">หน้า:
-                            <span id="frontAvg">31.4</span>%
-                        </div>
-                    </div>
-                    <div class="hand-view">
-                        <p style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-green);">
-                            หลังมือ (Back)</p>
-                        <svg class="hand-svg" viewBox="0 0 200 250">
-                            <path class="hand-path"
-                                d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                            <rect class="heat-glow" x="60" y="140" width="80" height="50" rx="20"
-                                fill="var(--danger)" />
-                        </svg>
-                        <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">หลัง:
-                            <span id="backAvg">27.8</span>%
-                        </div>
+            <!-- Main Content Grid -->
+            <div class="content-grid">
+                <div class="chart-col">
+                    <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;">
+                        <i class="fa-solid fa-chart-line" style="color: var(--primary-green);"></i>
+                        แนวโน้มของแผนก <span
+                            style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Department
+                            Trend)</span>
+                    </h3>
+                    <div style="height: 300px; position: relative;">
+                        <canvas id="trendChart"></canvas>
                     </div>
                 </div>
+
+                <div class="hand-col">
+                    <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;">
+                        <i class="fa-solid fa-hand-dots" style="color: var(--primary-green);"></i>
+                        วิเคราะห์ 11 โซน
+                    </h3>
+                    <div class="hand-viz-grid">
+                        <div class="hand-view">
+                            <p
+                                style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-green);">
+                                หน้ามือ (Palm)</p>
+                            <svg class="hand-svg" viewBox="0 0 200 250">
+                                <path class="hand-path"
+                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                                <circle class="heat-glow" cx="100" cy="170" r="40" fill="var(--danger)" />
+                            </svg>
+                            <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">หน้า:
+                                <span id="frontAvg">31.4</span>%
+                            </div>
+                        </div>
+                        <div class="hand-view">
+                            <p
+                                style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-green);">
+                                หลังมือ (Back)</p>
+                            <svg class="hand-svg" viewBox="0 0 200 250">
+                                <path class="hand-path"
+                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                                <rect class="heat-glow" x="60" y="140" width="80" height="50" rx="20"
+                                    fill="var(--danger)" />
+                            </svg>
+                            <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">หลัง:
+                                <span id="backAvg">27.8</span>%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Card -->
+            <div class="comparison-card">
+                <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 10px;">
+                    <i class="fa-solid fa-scale-balanced" style="color: var(--primary-green);"></i>
+                    เปรียบเทียบกับค่าเฉลี่ยโรงพยาบาล <span
+                        style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Hospital Comparison)</span>
+                </h3>
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <div class="label">คะแนนแผนก vs ทั้งโรงพยาบาล</div>
+                        <div class="value" id="compAvg">31.5%</div>
+                        <div class="diff positive" id="compAvgDiff">+1.9% สูงกว่าค่าเฉลี่ย</div>
+                    </div>
+                    <div class="comparison-item">
+                        <div class="label">Pass Rate แผนก vs โรงพยาบาล</div>
+                        <div class="value" id="compPass">12.5%</div>
+                        <div class="diff positive" id="compPassDiff">+3.8% สูงกว่าค่าเฉลี่ย</div>
+                    </div>
+                    <div class="comparison-item">
+                        <div class="label">จำนวน Logs vs ค่าเฉลี่ย</div>
+                        <div class="value" id="compLogs">48</div>
+                        <div class="diff positive" id="compLogsDiff">+15 มากกว่าค่าเฉลี่ย</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Staff Ranking Table -->
+            <div class="table-section">
+                <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 25px;">
+                    <i class="fa-solid fa-ranking-star" style="color: var(--primary-green);"></i>
+                    Ranking บุคลากรในแผนก <span
+                        style="font-size: 13px; color: var(--text-sub); font-style: italic;">(คลิกเพื่อดูรายละเอียด)</span>
+                </h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Employee ID</th>
+                            <th>Name</th>
+                            <th>เฉลี่ย</th>
+                            <th>หน้ามือ</th>
+                            <th>หลังมือ</th>
+                            <th>Logs</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staffTableBody">
+                        <!-- Staff rows will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Comparison Card -->
-        <div class="comparison-card">
-            <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 10px;">
-                <i class="fa-solid fa-scale-balanced" style="color: var(--primary-green);"></i>
-                เปรียบเทียบกับค่าเฉลี่ยโรงพยาบาล <span
-                    style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Hospital Comparison)</span>
-            </h3>
-            <div class="comparison-grid">
-                <div class="comparison-item">
-                    <div class="label">คะแนนแผนก vs ทั้งโรงพยาบาล</div>
-                    <div class="value" id="compAvg">31.5%</div>
-                    <div class="diff positive" id="compAvgDiff">+1.9% สูงกว่าค่าเฉลี่ย</div>
-                </div>
-                <div class="comparison-item">
-                    <div class="label">Pass Rate แผนก vs โรงพยาบาล</div>
-                    <div class="value" id="compPass">12.5%</div>
-                    <div class="diff positive" id="compPassDiff">+3.8% สูงกว่าค่าเฉลี่ย</div>
-                </div>
-                <div class="comparison-item">
-                    <div class="label">จำนวน Logs vs ค่าเฉลี่ย</div>
-                    <div class="value" id="compLogs">48</div>
-                    <div class="diff positive" id="compLogsDiff">+15 มากกว่าค่าเฉลี่ย</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Staff Ranking Table -->
-        <div class="table-section">
-            <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 25px;">
-                <i class="fa-solid fa-ranking-star" style="color: var(--primary-green);"></i>
-                Ranking บุคลากรในแผนก <span
-                    style="font-size: 13px; color: var(--text-sub); font-style: italic;">(คลิกเพื่อดูรายละเอียด)</span>
-            </h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Employee ID</th>
-                        <th>Name</th>
-                        <th>เฉลี่ย</th>
-                        <th>หน้ามือ</th>
-                        <th>หลังมือ</th>
-                        <th>Logs</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="staffTableBody">
-                    <!-- Staff rows will be inserted here by JavaScript -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script>
-        // Sample department data structure
-        const DEPARTMENT_DATA = {
-            "ER": {
-                name: "แผนก ER (Emergency Room)",
-                staff: [
-                    { empId: "EMP001", name: "Dr. Somchai", front: 85.2, back: 78.3, logs: 12 },
-                    { empId: "EMP002", name: "Nurse Pranee", front: 32.1, back: 28.7, logs: 8 },
-                    { empId: "EMP003", name: "Dr. Wanida", front: 22.5, back: 18.9, logs: 6 },
-                    { empId: "EMP004", name: "Nurse Suwan", front: 28.4, back: 25.1, logs: 10 },
-                    { empId: "EMP005", name: "Dr. Narong", front: 35.7, back: 31.2, logs: 12 }
-                ]
-            },
-            "ICU": {
-                name: "แผนก ICU (Intensive Care Unit)",
-                staff: [
-                    { empId: "EMP015", name: "Dr. Siriwan", front: 88.5, back: 85.2, logs: 15 },
-                    { empId: "EMP016", name: "Nurse Ploy", front: 35.2, back: 31.8, logs: 10 },
-                    { empId: "EMP017", name: "Dr. Chai", front: 82.1, back: 79.5, logs: 12 }
-                ]
-            },
-            "OR": {
-                name: "แผนก OR (Operating Room)",
-                staff: [
-                    { empId: "EMP030", name: "Dr. Thanaporn", front: 25.3, back: 22.1, logs: 8 },
-                    { empId: "EMP031", name: "Nurse Mai", front: 29.8, back: 26.4, logs: 7 },
-                    { empId: "EMP032", name: "Dr. Krit", front: 31.2, back: 28.9, logs: 9 }
-                ]
-            },
-            "Ward": {
-                name: "แผนก Ward (General Ward)",
-                staff: [
-                    { empId: "EMP045", name: "Nurse Noon", front: 27.5, back: 24.3, logs: 6 },
-                    { empId: "EMP046", name: "Dr. Pong", front: 33.8, back: 29.7, logs: 8 },
-                    { empId: "EMP047", name: "Nurse Joy", front: 26.1, back: 23.5, logs: 5 }
-                ]
-            }
-        };
-
-        // Employee to Department mapping
-        const EMP_TO_DEPT = {
-            "EMP001": "ER", "EMP002": "ER", "EMP003": "ER", "EMP004": "ER", "EMP005": "ER",
-            "EMP015": "ICU", "EMP016": "ICU", "EMP017": "ICU",
-            "EMP030": "OR", "EMP031": "OR", "EMP032": "OR",
-            "EMP045": "Ward", "EMP046": "Ward", "EMP047": "Ward"
-        };
-
-        let currentDept = null;
-        let trendChartInstance = null;
-
-        // Check for URL parameter (from drill-down)
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const deptParam = urlParams.get('dept');
-
-            if (deptParam) {
-                // Direct access from IC Dashboard drill-down
-                loadDepartmentByName(deptParam);
-            }
-        });
-
-        function handleLogin() {
-            const empId = document.getElementById('empInput').value.trim().toUpperCase();
-
-            if (!empId) {
-                alert('กรุณาใส่ Employee ID');
-                return;
-            }
-
-            const dept = EMP_TO_DEPT[empId];
-
-            if (!dept) {
-                alert('ไม่พบ Employee ID นี้ในระบบ\nกรุณาลองใช้ Demo IDs: EMP001, EMP015, EMP030, EMP045');
-                return;
-            }
-
-            loadDepartment(dept);
-        }
-
-        function loadDepartmentByName(deptName) {
-            // Map department name to internal key
-            const deptMapping = {
-                "ER": "ER",
-                "ICU": "ICU",
-                "OR": "OR",
-                "Ward": "Ward",
-                "OPD": "Ward", // Default fallback
-                "Lab": "Ward"
+        <script>
+            // Sample department data structure
+            const DEPARTMENT_DATA = {
+                "ER": {
+                    name: "แผนก ER (Emergency Room)",
+                    staff: [
+                        { empId: "EMP001", name: "Dr. Somchai", front: 85.2, back: 78.3, logs: 12 },
+                        { empId: "EMP002", name: "Nurse Pranee", front: 32.1, back: 28.7, logs: 8 },
+                        { empId: "EMP003", name: "Dr. Wanida", front: 22.5, back: 18.9, logs: 6 },
+                        { empId: "EMP004", name: "Nurse Suwan", front: 28.4, back: 25.1, logs: 10 },
+                        { empId: "EMP005", name: "Dr. Narong", front: 35.7, back: 31.2, logs: 12 }
+                    ]
+                },
+                "ICU": {
+                    name: "แผนก ICU (Intensive Care Unit)",
+                    staff: [
+                        { empId: "EMP015", name: "Dr. Siriwan", front: 88.5, back: 85.2, logs: 15 },
+                        { empId: "EMP016", name: "Nurse Ploy", front: 35.2, back: 31.8, logs: 10 },
+                        { empId: "EMP017", name: "Dr. Chai", front: 82.1, back: 79.5, logs: 12 }
+                    ]
+                },
+                "OR": {
+                    name: "แผนก OR (Operating Room)",
+                    staff: [
+                        { empId: "EMP030", name: "Dr. Thanaporn", front: 25.3, back: 22.1, logs: 8 },
+                        { empId: "EMP031", name: "Nurse Mai", front: 29.8, back: 26.4, logs: 7 },
+                        { empId: "EMP032", name: "Dr. Krit", front: 31.2, back: 28.9, logs: 9 }
+                    ]
+                },
+                "Ward": {
+                    name: "แผนก Ward (General Ward)",
+                    staff: [
+                        { empId: "EMP045", name: "Nurse Noon", front: 27.5, back: 24.3, logs: 6 },
+                        { empId: "EMP046", name: "Dr. Pong", front: 33.8, back: 29.7, logs: 8 },
+                        { empId: "EMP047", name: "Nurse Joy", front: 26.1, back: 23.5, logs: 5 }
+                    ]
+                }
             };
 
-            const deptKey = deptMapping[deptName] || "ER";
-            loadDepartment(deptKey);
-        }
+            // Employee to Department mapping
+            const EMP_TO_DEPT = {
+                "EMP001": "ER", "EMP002": "ER", "EMP003": "ER", "EMP004": "ER", "EMP005": "ER",
+                "EMP015": "ICU", "EMP016": "ICU", "EMP017": "ICU",
+                "EMP030": "OR", "EMP031": "OR", "EMP032": "OR",
+                "EMP045": "Ward", "EMP046": "Ward", "EMP047": "Ward"
+            };
 
-        function loadDepartment(deptKey) {
-            currentDept = deptKey;
-            const deptData = DEPARTMENT_DATA[deptKey];
+            let currentDept = null;
+            let trendChartInstance = null;
 
-            if (!deptData) {
-                alert('ไม่พบข้อมูลแผนกนี้');
-                return;
-            }
+            // Check for URL parameter (from drill-down)
+            window.addEventListener('DOMContentLoaded', () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const deptParam = urlParams.get('dept');
 
-            // Hide login, show dashboard
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboardScreen').style.display = 'block';
-
-            // Update department name
-            document.getElementById('deptName').textContent = deptData.name;
-
-            // Calculate department statistics
-            const staff = deptData.staff;
-            let totalFront = 0, totalBack = 0, totalLogs = 0, passCount = 0;
-
-            staff.forEach(s => {
-                totalFront += s.front;
-                totalBack += s.back;
-                totalLogs += s.logs;
-                const avg = (s.front + s.back) / 2;
-                if (avg >= 80) passCount++;
+                if (deptParam) {
+                    // Direct access from IC Dashboard drill-down
+                    loadDepartmentByName(deptParam);
+                }
             });
 
-            const avgFront = (totalFront / staff.length).toFixed(1);
-            const avgBack = (totalBack / staff.length).toFixed(1);
-            const deptAvg = ((totalFront + totalBack) / (staff.length * 2)).toFixed(1);
-            const passRate = ((passCount / staff.length) * 100).toFixed(1);
+            function handleLogin() {
+                const empId = document.getElementById('empInput').value.trim().toUpperCase();
 
-            // Update KPIs
-            document.getElementById('deptAvg').textContent = deptAvg + '%';
-            document.getElementById('deptPass').textContent = passRate + '%';
-            document.getElementById('deptLogs').textContent = totalLogs;
-            document.getElementById('deptRank').textContent = '#3/12'; // Mock ranking
+                if (!empId) {
+                    alert('กรุณาใส่ Employee ID');
+                    return;
+                }
 
-            // Update hand visualization
-            document.getElementById('frontAvg').textContent = avgFront;
-            document.getElementById('backAvg').textContent = avgBack;
+                const dept = EMP_TO_DEPT[empId];
 
-            // Update comparison (mock data)
-            const hospitalAvg = 29.6;
-            const avgDiff = (parseFloat(deptAvg) - hospitalAvg).toFixed(1);
-            document.getElementById('compAvg').textContent = deptAvg + '%';
-            document.getElementById('compAvgDiff').textContent =
-                (avgDiff >= 0 ? '+' : '') + avgDiff + '% ' + (avgDiff >= 0 ? 'สูงกว่า' : 'ต่ำกว่า') + 'ค่าเฉลี่ย';
-            document.getElementById('compAvgDiff').className = avgDiff >= 0 ? 'diff positive' : 'diff negative';
+                if (!dept) {
+                    alert('ไม่พบ Employee ID นี้ในระบบ\nกรุณาลองใช้ Demo IDs: EMP001, EMP015, EMP030, EMP045');
+                    return;
+                }
 
-            const hospitalPass = 8.7;
-            const passDiff = (parseFloat(passRate) - hospitalPass).toFixed(1);
-            document.getElementById('compPass').textContent = passRate + '%';
-            document.getElementById('compPassDiff').textContent =
-                (passDiff >= 0 ? '+' : '') + passDiff + '% ' + (passDiff >= 0 ? 'สูงกว่า' : 'ต่ำกว่า') + 'ค่าเฉลี่ย';
-            document.getElementById('compPassDiff').className = passDiff >= 0 ? 'diff positive' : 'diff negative';
+                loadDepartment(dept);
+            }
 
-            const avgLogsPerDept = 33;
-            const logsDiff = totalLogs - avgLogsPerDept;
-            document.getElementById('compLogs').textContent = totalLogs;
-            document.getElementById('compLogsDiff').textContent =
-                (logsDiff >= 0 ? '+' : '') + logsDiff + ' ' + (logsDiff >= 0 ? 'มากกว่า' : 'น้อยกว่า') + 'ค่าเฉลี่ย';
-            document.getElementById('compLogsDiff').className = logsDiff >= 0 ? 'diff positive' : 'diff negative';
+            function loadDepartmentByName(deptName) {
+                // Map department name to internal key
+                const deptMapping = {
+                    "ER": "ER",
+                    "ICU": "ICU",
+                    "OR": "OR",
+                    "Ward": "Ward",
+                    "OPD": "Ward", // Default fallback
+                    "Lab": "Ward"
+                };
 
-            // Render staff ranking table
-            renderStaffTable(staff);
+                const deptKey = deptMapping[deptName] || "ER";
+                loadDepartment(deptKey);
+            }
 
-            // Render trend chart
-            renderTrendChart(deptAvg);
-        }
+            function loadDepartment(deptKey) {
+                currentDept = deptKey;
+                const deptData = DEPARTMENT_DATA[deptKey];
 
-        function renderStaffTable(staff) {
-            // Sort staff by average score (descending)
-            const sortedStaff = staff.map(s => ({
-                ...s,
-                avg: ((s.front + s.back) / 2).toFixed(1)
-            })).sort((a, b) => parseFloat(b.avg) - parseFloat(a.avg));
+                if (!deptData) {
+                    alert('ไม่พบข้อมูลแผนกนี้');
+                    return;
+                }
 
-            const tbody = document.getElementById('staffTableBody');
-            tbody.innerHTML = sortedStaff.map((s, index) => {
-                const avg = parseFloat(s.avg);
-                const status = avg >= 80 ? 'ผ่าน' : avg >= 50 ? 'ตก' : 'วิกฤต';
-                const statusClass = avg >= 80 ? 'bg-success' : 'bg-danger';
+                // Hide login, show dashboard
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardScreen').style.display = 'block';
 
-                return `
+                // Update department name
+                document.getElementById('deptName').textContent = deptData.name;
+
+                // Calculate department statistics
+                const staff = deptData.staff;
+                let totalFront = 0, totalBack = 0, totalLogs = 0, passCount = 0;
+
+                staff.forEach(s => {
+                    totalFront += s.front;
+                    totalBack += s.back;
+                    totalLogs += s.logs;
+                    const avg = (s.front + s.back) / 2;
+                    if (avg >= 80) passCount++;
+                });
+
+                const avgFront = (totalFront / staff.length).toFixed(1);
+                const avgBack = (totalBack / staff.length).toFixed(1);
+                const deptAvg = ((totalFront + totalBack) / (staff.length * 2)).toFixed(1);
+                const passRate = ((passCount / staff.length) * 100).toFixed(1);
+
+                // Update KPIs
+                document.getElementById('deptAvg').textContent = deptAvg + '%';
+                document.getElementById('deptPass').textContent = passRate + '%';
+                document.getElementById('deptLogs').textContent = totalLogs;
+                document.getElementById('deptRank').textContent = '#3/12'; // Mock ranking
+
+                // Update hand visualization
+                document.getElementById('frontAvg').textContent = avgFront;
+                document.getElementById('backAvg').textContent = avgBack;
+
+                // Update comparison (mock data)
+                const hospitalAvg = 29.6;
+                const avgDiff = (parseFloat(deptAvg) - hospitalAvg).toFixed(1);
+                document.getElementById('compAvg').textContent = deptAvg + '%';
+                document.getElementById('compAvgDiff').textContent =
+                    (avgDiff >= 0 ? '+' : '') + avgDiff + '% ' + (avgDiff >= 0 ? 'สูงกว่า' : 'ต่ำกว่า') + 'ค่าเฉลี่ย';
+                document.getElementById('compAvgDiff').className = avgDiff >= 0 ? 'diff positive' : 'diff negative';
+
+                const hospitalPass = 8.7;
+                const passDiff = (parseFloat(passRate) - hospitalPass).toFixed(1);
+                document.getElementById('compPass').textContent = passRate + '%';
+                document.getElementById('compPassDiff').textContent =
+                    (passDiff >= 0 ? '+' : '') + passDiff + '% ' + (passDiff >= 0 ? 'สูงกว่า' : 'ต่ำกว่า') + 'ค่าเฉลี่ย';
+                document.getElementById('compPassDiff').className = passDiff >= 0 ? 'diff positive' : 'diff negative';
+
+                const avgLogsPerDept = 33;
+                const logsDiff = totalLogs - avgLogsPerDept;
+                document.getElementById('compLogs').textContent = totalLogs;
+                document.getElementById('compLogsDiff').textContent =
+                    (logsDiff >= 0 ? '+' : '') + logsDiff + ' ' + (logsDiff >= 0 ? 'มากกว่า' : 'น้อยกว่า') + 'ค่าเฉลี่ย';
+                document.getElementById('compLogsDiff').className = logsDiff >= 0 ? 'diff positive' : 'diff negative';
+
+                // Render staff ranking table
+                renderStaffTable(staff);
+
+                // Render trend chart
+                renderTrendChart(deptAvg);
+            }
+
+            function renderStaffTable(staff) {
+                // Sort staff by average score (descending)
+                const sortedStaff = staff.map(s => ({
+                    ...s,
+                    avg: ((s.front + s.back) / 2).toFixed(1)
+                })).sort((a, b) => parseFloat(b.avg) - parseFloat(a.avg));
+
+                const tbody = document.getElementById('staffTableBody');
+                tbody.innerHTML = sortedStaff.map((s, index) => {
+                    const avg = parseFloat(s.avg);
+                    const status = avg >= 80 ? 'ผ่าน' : avg >= 50 ? 'ตก' : 'วิกฤต';
+                    const statusClass = avg >= 80 ? 'bg-success' : 'bg-danger';
+
+                    return `
                     <tr onclick="location.href='personal-dashboard.html?empId=${s.empId}'">
                         <td><strong>#${index + 1}</strong></td>
                         <td>${s.empId}</td>
@@ -938,77 +995,157 @@
                         <td><span class="status-badge ${statusClass}">${status}</span></td>
                     </tr>
                 `;
-            }).join('');
-        }
-
-        function renderTrendChart(avgScore) {
-            // Mock hourly trend data
-            const hours = [
-                '08:00', '09:00', '10:00', '11:00', '12:00', '13:00',
-                '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'
-            ];
-            const baseScore = parseFloat(avgScore);
-            const scores = hours.map(() => (baseScore + (Math.random() * 10 - 5)).toFixed(1));
-
-            const ctx = document.getElementById('trendChart');
-
-            if (trendChartInstance) {
-                trendChartInstance.destroy();
+                }).join('');
             }
 
-            trendChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: hours,
-                    datasets: [{
-                        label: 'คะแนนเฉลี่ยแผนก (%)',
-                        data: scores,
-                        borderColor: 'rgb(5, 150, 105)',
-                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
-                        tension: 0.4,
-                        fill: true,
-                        borderWidth: 3
-                    }, {
-                        label: 'เกณฑ์ 80%',
-                        data: hours.map(() => 80),
-                        borderColor: 'rgb(16, 185, 129)',
-                        borderDash: [5, 5],
-                        borderWidth: 2,
-                        pointRadius: 0,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        }
+            function renderTrendChart(avgScore) {
+                // Mock hourly trend data
+                const hours = [
+                    '08:00', '09:00', '10:00', '11:00', '12:00', '13:00',
+                    '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'
+                ];
+                const baseScore = parseFloat(avgScore);
+                const scores = hours.map(() => (baseScore + (Math.random() * 10 - 5)).toFixed(1));
+
+                const ctx = document.getElementById('trendChart');
+
+                if (trendChartInstance) {
+                    trendChartInstance.destroy();
+                }
+
+                trendChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: hours,
+                        datasets: [{
+                            label: 'คะแนนเฉลี่ยแผนก (%)',
+                            data: scores,
+                            borderColor: 'rgb(5, 150, 105)',
+                            backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            borderWidth: 3
+                        }, {
+                            label: 'เกณฑ์ 80%',
+                            data: hours.map(() => 80),
+                            borderColor: 'rgb(16, 185, 129)',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                callback: function (value) {
-                                    return value + '%';
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value + '%';
+                                    }
                                 }
                             }
                         }
                     }
+                });
+            }
+
+            // Demo employee data
+            const DEMO_EMPLOYEES = {
+                'EMP001': { name: 'กมลศักดิ์ ใจดี', dept: 'ER' },
+                'EMP015': { name: 'สมหญิง รักษ์ป่า', dept: 'ICU' },
+                'EMP030': { name: 'วิชัย สุขสันต์', dept: 'OR' },
+                'EMP045': { name: 'มภัสสร พัฒนากุล', dept: 'Ward' }
+            };
+
+            // Login function
+            function handleLogin() {
+                const empId = document.getElementById('empIdInput').value.toUpperCase().trim();
+                const errorMessage = document.getElementById('errorMessage');
+
+                if (DEMO_EMPLOYEES[empId]) {
+                    const employee = DEMO_EMPLOYEES[empId];
+                    sessionStorage.setItem('dept_authenticated', 'true');
+                    sessionStorage.setItem('dept_empId', empId);
+                    sessionStorage.setItem('dept_name', employee.dept);
+                    sessionStorage.setItem('dept_login_time', new Date().toISOString());
+
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+
+                    // Update department name in header
+                    document.getElementById('deptName').textContent = `แผนก ${employee.dept}`;
+                } else {
+                    errorMessage.style.display = 'flex';
+                    document.getElementById('empIdInput').value = '';
+                    document.getElementById('empIdInput').focus();
+                }
+            }
+
+            // Check authentication on page load
+            window.addEventListener('DOMContentLoaded', function () {
+                // Check if coming from IC Dashboard drill-down (has dept parameter)
+                const urlParams = new URLSearchParams(window.location.search);
+                const deptParam = urlParams.get('dept');
+
+                if (deptParam) {
+                    // Coming from IC Dashboard - bypass login
+                    sessionStorage.setItem('dept_authenticated', 'true');
+                    sessionStorage.setItem('dept_name', deptParam);
+                    sessionStorage.setItem('dept_source', 'ic_drilldown');
+                    sessionStorage.setItem('dept_login_time', new Date().toISOString());
+
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+                    document.getElementById('deptName').textContent = `แผนก ${deptParam}`;
+
+                    console.log('✓ IC Dashboard drill-down detected:', deptParam);
+                } else {
+                    // Normal access - check session
+                    const isAuthenticated = sessionStorage.getItem('dept_authenticated');
+                    if (isAuthenticated === 'true') {
+                        const deptName = sessionStorage.getItem('dept_name');
+                        document.getElementById('loginScreen').style.display = 'none';
+                        document.getElementById('dashboardContent').style.display = 'block';
+                        if (deptName) {
+                            document.getElementById('deptName').textContent = `แผนก ${deptName}`;
+                        }
+                    } else {
+                        document.getElementById('loginScreen').style.display = 'flex';
+                        document.getElementById('dashboardContent').style.display = 'none';
+                    }
                 }
             });
-        }
 
-        function handleLogout() {
-            document.getElementById('dashboardScreen').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'flex';
-            document.getElementById('empInput').value = '';
-            currentDept = null;
-        }
-    </script>
+            // Allow Enter key to login
+            document.addEventListener('DOMContentLoaded', function () {
+                const empIdInput = document.getElementById('empIdInput');
+                if (empIdInput) {
+                    empIdInput.addEventListener('keypress', function (e) {
+                        if (e.key === 'Enter') {
+                            handleLogin();
+                        }
+                    });
+                }
+            });
+
+            // Logout function
+            function handleLogout() {
+                sessionStorage.clear();
+                location.reload();
+            }
+
+        </script>
+    </div> <!-- Close dashboardContent -->
 </body>
 
 </html>
