@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hand Hygiene Monitoring System</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -18,13 +18,14 @@
         }
 
         body {
-            font-family: 'Anuphan', sans-serif;
+            font-family: 'Prompt', sans-serif;
             background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 50%, #ffffff 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
         }
 
         .container {
@@ -57,15 +58,15 @@
         .card-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
+            gap: 20px;
             animation: fadeInUp 0.8s ease 0.2s backwards;
             max-width: 100%;
         }
 
         .dashboard-card {
             background: white;
-            border-radius: 14px;
-            padding: 12px;
+            border-radius: 20px;
+            padding: 32px 28px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
@@ -96,15 +97,15 @@
         }
 
         .card-icon {
-            width: 40px;
-            height: 40px;
+            width: 56px;
+            height: 56px;
             background: linear-gradient(135deg, #1e3a8a, #1e40af);
-            border-radius: 10px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
-            font-size: 20px;
+            margin-bottom: 18px;
+            font-size: 28px;
             color: white;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
@@ -117,29 +118,31 @@
 
         .card-title {
             font-family: 'Outfit', sans-serif;
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 5px;
+            color: #1e293b;
+            margin-bottom: 12px;
+            line-height: 1.3;
         }
 
         .card-description {
-            font-size: 10px;
+            font-size: 14px;
             color: #64748b;
-            line-height: 1.3;
-            margin-bottom: 10px;
+            line-height: 1.7;
+            margin-bottom: 18px;
         }
 
         .card-features {
             list-style: none;
-            margin-bottom: 25px;
+            margin-bottom: 28px;
         }
 
         .card-features li {
-            font-size: 10px;
-            margin-bottom: 4px;
-            padding-left: 16px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            padding-left: 24px;
             position: relative;
+            line-height: 1.6;
         }
 
         .card-features li::before {
@@ -148,25 +151,26 @@
             left: 0;
             color: #1e40af;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .card-button {
             width: 100%;
-            padding: 9px 14px;
+            padding: 14px 20px;
             background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            margin-top: 12px;
+            gap: 8px;
+            margin-top: 8px;
+            font-family: 'Prompt', sans-serif;
         }
 
         .card-button:hover {
@@ -176,7 +180,7 @@
         }
 
         .card-button i {
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .footer {
@@ -533,12 +537,12 @@
         /* Large Screens (Desktop) - 1367px and above */
         @media (min-width: 1367px) {
             .container {
-                max-width: 1100px;
+                max-width: 1400px;
             }
 
             .card-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 35px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
             }
 
             .header h1 {
@@ -550,7 +554,14 @@
             }
 
             .dashboard-card {
-                padding: 45px;
+                padding: 40px 35px;
+            }
+        }
+
+        /* Force 3 columns on all desktop screens 1024px+ */
+        @media (min-width: 1024px) {
+            .card-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
             }
         }
 
@@ -599,14 +610,60 @@
         .dashboard-card.department .card-features li::before {
             color: #10b981;
         }
+
+        /* Language Toggle Button */
+        .language-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            gap: 4px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Prompt', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+
+        .language-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .lang-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-option.active {
+            color: #1e3a8a;
+            text-decoration: underline;
+            font-weight: 800;
+        }
+
+        .lang-option:not(.active) {
+            color: #94a3b8;
+        }
+
+        .lang-separator {
+            color: #cbd5e1;
+            user-select: none;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fa-solid fa-hospital-user"></i> ระบบติดตามคุณภาพการล้างมือ</h1>
-            <p>Hand Hygiene Monitoring System | Bangkok Hospital Phuket</p>
+            <h1><i class="fa-solid fa-hospital-user"></i> <span>ระบบติดตามคุณภาพการล้างมือ (Hand Hygiene Monitoring
+                    System)</span></h1>
+            <p>Bangkok Hospital Phuket</p>
         </div>
 
         <div class="card-grid">
@@ -615,18 +672,18 @@
                 <div class="card-icon">
                     <i class="fa-solid fa-hospital"></i>
                 </div>
-                <h2 class="card-title">Dashboard แผนก IC</h2>
-                <p class="card-description">ระบบวิเคราะห์เชิงลึกสำหรับทีม Infection Control - ดูภาพรวมทั้งโรงพยาบาล
-                    พร้อม Drill-down ดูรายละเอียดแต่ละแผนก</p>
+                <h2 class="card-title">Dashboard แผนก IC (IC Dashboard)</h2>
+                <p class="card-description">ระบบวิเคราะห์เชิงลึกสำหรับทีม Infection Control -
+                    ดูภาพรวมทั้งโรงพยาบาล (For IC Team - Hospital Overview with Department Drill-down)</p>
                 <ul class="card-features">
-                    <li>ดัชนีสะอาดรวมทั้งโรงพยาบาล</li>
-                    <li>เปรียบเทียบประสิทธิภาพแผนก</li>
-                    <li>วิเคราะห์พื้นที่เสี่ยง 11 โซน</li>
-                    <li>คลิกดูรายละเอียดแต่ละแผนก</li>
+                    <li>ดัชนีสะอาดรวม (Overall Cleanliness Index)</li>
+                    <li>เปรียบเทียบประสิทธิภาพแผนก (Department Comparison)</li>
+                    <li>วิเคราะห์พื้นที่เสี่ยง 11 โซน (11 Risk Zone Analysis)</li>
+                    <li>คลิกดูรายละเอียดแต่ละแผนก (Click to drill-down)</li>
                 </ul>
                 <button class="card-button">
                     <i class="fa-solid fa-chart-line"></i>
-                    เข้าสู่ระบบวิเคราะห์
+                    <span>เข้าสู่ระบบวิเคราะห์ (Enter Analytics)</span>
                 </button>
             </div>
 
@@ -635,18 +692,19 @@
                 <div class="card-icon">
                     <i class="fa-solid fa-users"></i>
                 </div>
-                <h2 class="card-title">Dashboard แผนก</h2>
-                <p class="card-description">สำหรับหัวหน้าแผนกและบุคลากร - ดูข้อมูลเฉพาะแผนกของคุณ พร้อมจัดอันดับทีมงาน
+                <h2 class="card-title">Dashboard แผนก (Department Dashboard)</h2>
+                <p class="card-description">สำหรับหัวหน้าแผนกและบุคลากร -
+                    ดูข้อมูลเฉพาะแผนก (For Department Heads and Staff - View Your Department Data)
                 </p>
                 <ul class="card-features">
-                    <li>คะแนนเฉลี่ยแผนก</li>
-                    <li>Ranking บุคลากรในแผนก</li>
-                    <li>แนวโน้มของแผนก</li>
-                    <li>เปรียบเทียบกับโรงพยาบาล</li>
+                    <li>คะแนนเฉลี่ยแผนก (Department Average)</li>
+                    <li>Ranking บุคลากรในแผนก (Staff Ranking)</li>
+                    <li>แนวโน้มของแผนก (Department Trend)</li>
+                    <li>เปรียบเทียบกับโรงพยาบาล (Compare with Hospital)</li>
                 </ul>
                 <button class="card-button">
                     <i class="fa-solid fa-building"></i>
-                    เข้าสู่ระบบแผนก
+                    <span>เข้าสู่ระบบแผนก (Enter Department)</span>
                 </button>
             </div>
 
@@ -655,17 +713,18 @@
                 <div class="card-icon">
                     <i class="fa-solid fa-user-doctor"></i>
                 </div>
-                <h2 class="card-title">Dashboard ส่วนตัว</h2>
-                <p class="card-description">ติดตามผลการล้างมือส่วนบุคคล พร้อมคำแนะนำปรับปรุงจาก AI</p>
+                <h2 class="card-title">Dashboard ส่วนตัว (Personal Dashboard)</h2>
+                <p class="card-description">ติดตามผลการล้างมือส่วนบุคคล
+                    พร้อมคำแนะนำปรับปรุงจาก AI (Track Your Personal Hand Hygiene with AI Recommendations)</p>
                 <ul class="card-features">
-                    <li>คะแนนประจำวันของคุณ</li>
-                    <li>แนวโน้มพัฒนาการ</li>
-                    <li>จุดที่ควรปรับปรุง</li>
-                    <li>เกียรติบัตรและความสำเร็จ</li>
+                    <li>คะแนนประจำวันของคุณ (Your Daily Score)</li>
+                    <li>แนวโน้มพัฒนาการ (Progress Trend)</li>
+                    <li>จุดที่ควรปรับปรุง (Areas for Improvement)</li>
+                    <li>เกียรติบัตรและความสำเร็จ (Certificates & Achievements)</li>
                 </ul>
                 <button class="card-button">
                     <i class="fa-solid fa-arrow-right"></i>
-                    เข้าสู่ระบบส่วนตัว
+                    <span>เข้าสู่ระบบส่วนตัว (Enter Personal)</span>
                 </button>
             </div>
         </div>
@@ -675,6 +734,8 @@
             <p style="margin-top: 10px;"><strong>Bangkok Hospital Phuket</strong> © 2026</p>
         </div>
     </div>
+
+    <!-- No translation system needed - bilingual format built-in -->
 </body>
 
 </html>
