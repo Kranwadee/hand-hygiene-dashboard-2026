@@ -7,7 +7,7 @@
     <title>IC Dashboard - Hospital-wide Analytics</title>
     <!-- Fonts & Libraries -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -44,7 +44,7 @@
         }
 
         body {
-            font-family: 'Anuphan', sans-serif;
+            font-family: 'Prompt', sans-serif;
             background-color: var(--bg-canvas);
             color: var(--text-main);
             padding: 15px;
@@ -178,7 +178,7 @@
             border: 2px solid #e2e8f0;
             border-radius: 14px;
             font-size: 16px;
-            font-family: 'Anuphan', sans-serif;
+            font-family: 'Prompt', sans-serif;
             margin-bottom: 20px;
             transition: all 0.3s ease;
             background: #f8fafc;
@@ -200,7 +200,7 @@
             border-radius: 14px;
             font-size: 16px;
             font-weight: 700;
-            font-family: 'Anuphan', sans-serif;
+            font-family: 'Prompt', sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
@@ -1164,18 +1164,19 @@
                 <i class="fa-solid fa-shield-halved"></i>
             </div>
             <h1>IC Dashboard Login</h1>
-            <p>กรุณาใส่รหัสผ่านเพื่อเข้าสู่ระบบ</p>
+            <p>เข้าสู่ระบบด้วยรหัสผ่านเพื่อดูข้อมูลแผนกของคุณ (Enter password to view department data)</p>
 
             <div class="error-message" id="errorMessage">
                 <i class="fa-solid fa-circle-exclamation"></i>
-                <span>รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง</span>
+                <span>รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง (Incorrect password, please try again)</span>
             </div>
 
-            <input type="password" id="passwordInput" class="login-input" placeholder="รหัสผ่าน" autocomplete="off">
+            <input type="password" id="passwordInput" class="login-input" placeholder="รหัสผ่าน (Password)"
+                autocomplete="off">
 
             <button class="login-button" onclick="handleLogin()">
                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                <span>เข้าสู่ระบบ</span>
+                <span>เข้าสู่ระบบ (Login)</span>
             </button>
 
             <div class="login-hint">
@@ -1186,7 +1187,7 @@
 
             <a href="index.html" class="back-link">
                 <i class="fa-solid fa-arrow-left"></i>
-                กลับหน้าหลัก
+                <span>กลับหน้าหลัก (Back to Home)</span>
             </a>
         </div>
     </div>
@@ -1226,15 +1227,17 @@
             <!-- Top Nav -->
             <nav class="top-nav">
                 <div class="nav-actions">
-                    <button class="btn btn-outline" id="copyBtn"><i class="fa-solid fa-link"></i> ลิงก์แชร์</button>
-                    <button class="btn btn-share"><i class="fa-solid fa-file-export"></i> ส่งออกรายงาน</button>
+                    <button class="btn btn-outline" id="copyBtn"><i class="fa-solid fa-link"></i> <span>ลิงก์แชร์ (Share
+                            Link)</span></button>
+                    <button class="btn btn-outline" onclick="exportDashboard()"><i class="fa-solid fa-file-export"></i>
+                        <span>ส่งออกรายงาน (Export Report)</span></button>
                 </div>
                 <div style="display: flex; gap: 8px;">
                     <button class="btn btn-outline" onclick="logout()" style="color: #dc2626; border-color: #fecaca;">
-                        <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+                        <i class="fa-solid fa-right-from-bracket"></i> <span>ออกจากระบบ (Logout)</span>
                     </button>
                     <button class="btn btn-home" onclick="location.href='index.html'"><i class="fa-solid fa-home"></i>
-                        หน้าหลัก</button>
+                        <span>หน้าหลัก (Home)</span></button>
                 </div>
             </nav>
 
@@ -1242,8 +1245,10 @@
             <header class="header-section">
                 <div class="header-content">
                     <h1>IC Dashboard - Infection Control</h1>
-                    <p style="margin-top: 8px; font-size: 13px; opacity: 0.95;">สำหรับทีม Infection Control -
-                        ภาพรวมทั้งโรงพยาบาล พร้อม Drill-down ดูแต่ละแผนก</p>
+                    <p style="margin-top: 8px; font-size: 13px; opacity: 0.95;">
+                        สำหรับทีม Infection Control -
+                        ภาพรวมทั้งโรงพยาบาล พร้อม Drill-down ดูแต่ละแผนก (For IC Team - Hospital overview with
+                        Department drill-down)</p>
                 </div>
                 <div style="text-align: right;">
                     <div style="font-weight: 700; font-size: 16px;">30-31 ตุลาคม 2568</div>
@@ -1264,9 +1269,9 @@
                 <div class="kpi-box">
                     <div class="kpi-label">ระดับดี (Good Level - 80-100%)</div>
                     <div class="kpi-value" id="kpiGood" style="color: var(--success);">2</div>
-                    <div style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">หน่วยงาน</div>
+                    <div style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">หน่วยงาน (Departments)</div>
                     <div style="font-size: 11px; color: var(--primary-blue); margin-top: 8px; font-weight: 700; cursor: pointer;"
-                        id="goodDeptsToggle">แตะเพื่อดู →</div>
+                        id="goodDeptsToggle">แตะเพื่อดู → (Tap to view)</div>
                     <div id="goodDeptsList"
                         style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
                         <div style="font-size: 12px; line-height: 2; color: var(--text-main);">
@@ -1365,9 +1370,8 @@
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                         <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin: 0;"><i
                                 class="fa-solid fa-chart-line" style="color: var(--primary-blue);"></i>
-                            แนวโน้มรายชั่วโมง
-                            <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Hourly Trend - Oct
-                                30-31)</span>
+                            แนวโน้มรายชั่วโมง (Hourly Trend)
+                            <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">Oct 30-31</span>
                         </h3>
                         <div style="display: flex; gap: 8px;">
                             <button id="trendFilterAll"
@@ -1387,10 +1391,7 @@
                 <div class="hand-side" id="handContainer">
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
                             class="fa-solid fa-hand-dots" style="color: var(--primary-blue);"></i>
-                        วิเคราะห์พื้นที่เสี่ยง
-                        <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Risk Area Analysis -
-                            11
-                            Zones)</span>
+                        วิเคราะห์พื้นที่เสี่ยง (Risk Area Analysis - 11 Zones)
                     </h3>
 
                     <div id="handTooltip">Zone: 0%</div>
@@ -1485,18 +1486,15 @@
                 <div class="card">
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
                             class="fa-solid fa-chart-pie" style="color: var(--primary-blue);"></i>
-                        การกระจายคุณภาพล้างมือ
-                        <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Hand Hygiene Quality
-                            Distribution)</span>
+                        การกระจายคุณภาพล้างมือ (Hand Hygiene Quality Distribution)
+
                     </h3>
                     <div style="height: 250px;"><canvas id="positionChart"></canvas></div>
                 </div>
                 <div class="card">
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
                             class="fa-solid fa-ranking-star" style="color: var(--primary-blue);"></i>
-                        การเปรียบเทียบประสิทธิภาพแผนก <span
-                            style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Department Performance
-                            Comparison)</span></h3>
+                        การเปรียบเทียบประสิทธิภาพแผนก (Department Performance Comparison)</h3>
                     <div style="height: 320px;"><canvas id="hourChart"></canvas></div>
                 </div>
             </div>
@@ -1505,8 +1503,7 @@
             <div class="table-section">
                 <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 25px;"><i
                         class="fa-solid fa-ranking-star" style="color: var(--primary-blue);"></i> สรุปประสิทธิภาพแผนก
-                    <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">(Department Performance
-                        Summary)</span> <span
+                    (Department Performance Summary) <span
                         style="font-size: 13px; color: var(--primary-blue); font-style: italic; font-weight: 700;">←
                         คลิกแผนกเพื่อ Drill-down →</span>
                 </h3>
@@ -1541,6 +1538,11 @@
         <script>
             let csvData = [];
             let trendChartInstance = null;
+
+
+            // ============================================
+            // GOOGLE TRANSLATE WIDGET
+            // ============================================
 
             // Sample data for testing (30-31 October 2025)
 
