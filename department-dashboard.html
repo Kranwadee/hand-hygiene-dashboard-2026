@@ -776,24 +776,24 @@
             <!-- KPI Row -->
             <div class="kpi-row">
                 <div class="kpi-box">
-                    <div class="kpi-label">คะแนนเฉลี่ยแผนก (Department Average)</div>
+                    <div class="kpi-label">ค่าเฉลี่ยความสะอาดแผนก (Department Average Score)</div>
                     <div class="kpi-value" id="deptAvg">0%</div>
                     <div class="kpi-sub">Department Average</div>
                 </div>
                 <div class="kpi-box">
-                    <div class="kpi-label">อัตราการผ่านเกณฑ์ (Pass Rate ≥80%)</div>
+                    <div class="kpi-label">ร้อยละการล้างผ่านเกณฑ์ในแผนก (% Pass Rate within Dept)</div>
                     <div class="kpi-value" id="deptPass">12.5%</div>
                     <div class="kpi-sub">Compliance Rate</div>
                 </div>
                 <div class="kpi-box">
-                    <div class="kpi-label">จำนวน Logs (Total Logs)</div>
+                    <div class="kpi-label">จำนวนครั้งการล้างมือ (Total Washing Count)</div>
                     <div class="kpi-value" id="deptLogs">0</div>
                     <div class="kpi-sub">Total Records</div>
                 </div>
                 <div class="kpi-box">
-                    <div class="kpi-label">อันดับของแผนก (Department Rank)</div>
-                    <div class="kpi-value" id="deptRank">#0/12</div>
-                    <div class="kpi-sub" data-translate="kpi-rank-sub">Hospital Ranking</div>
+                    <div class="kpi-label">สถานะเทียบกับเป้าหมาย (Status vs Target)</div>
+                    <div class="kpi-value" id="deptStatus" style="font-size: 22px;">-</div>
+                    <div class="kpi-sub">Target: 80%</div>
                 </div>
             </div>
 
@@ -802,7 +802,7 @@
                 <div class="chart-col">
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;">
                         <i class="fa-solid fa-chart-line" style="color: var(--primary-green);"></i>
-                        <span data-translate="header-trend">แนวโน้มของแผนก (Department Trend)</span>
+                        <span data-translate="header-trend">แนวโน้มคะแนนเฉลี่ยรายวัน (Daily Average Trend)</span>
                     </h3>
                     <div style="height: 300px; position: relative;">
                         <canvas id="trendChart"></canvas>
@@ -812,7 +812,7 @@
                 <div class="hand-col">
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;">
                         <i class="fa-solid fa-hand-dots" style="color: var(--primary-green);"></i>
-                        <span data-translate="header-11-zone">วิเคราะห์ 11 โซน (11-Zone Analysis)</span>
+                        <span data-translate="header-11-zone">จุดที่มักล้างไม่สะอาดในแผนก (Dept Unclean Zones)</span>
                     </h3>
                     <div class="hand-viz-grid">
                         <div class="hand-view">
@@ -846,43 +846,17 @@
                 </div>
             </div>
 
-            <!-- Comparison Card -->
-            <div class="comparison-card">
-                <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 10px;">
-                    <i class="fa-solid fa-scale-balanced" style="color: var(--primary-green);"></i>
-                    <span data-translate="header-comparison">เปรียบเทียบกับค่าเฉลี่ยโรงพยาบาล (Hospital
-                        Comparison)</span>
-                </h3>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <div class="label">คะแนนแผนก vs ทั้งโรงพยาบาล</div>
-                        <div class="value" id="compAvg">31.5%</div>
-                        <div class="diff positive" id="compAvgDiff">+1.9% สูงกว่าค่าเฉลี่ย</div>
-                    </div>
-                    <div class="comparison-item">
-                        <div class="label">Pass Rate แผนก vs โรงพยาบาล</div>
-                        <div class="value" id="compPass">12.5%</div>
-                        <div class="diff positive" id="compPassDiff">+3.8% สูงกว่าค่าเฉลี่ย</div>
-                    </div>
-                    <div class="comparison-item">
-                        <div class="label">จำนวน Logs vs ค่าเฉลี่ย</div>
-                        <div class="value" id="compLogs">48</div>
-                        <div class="diff positive" id="compLogsDiff">+15 มากกว่าค่าเฉลี่ย</div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Staff Ranking Table -->
+            <!-- Staff List Table -->
             <div class="table-section">
                 <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 25px;">
-                    <i class="fa-solid fa-ranking-star" style="color: var(--primary-green);"></i>
-                    <span data-translate="header-ranking">Ranking บุคลากรในแผนก (Staff Rankings)</span> <span
+                    <i class="fa-solid fa-users" style="color: var(--primary-green);"></i>
+                    <span data-translate="header-ranking">รายชื่อพนักงาน (Staff List)</span> <span
                         style="font-size: 13px; color: var(--text-sub); font-style: italic;">(คลิกเพื่อดูรายละเอียด)</span>
                 </h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>Rank</th>
                             <th>Employee ID</th>
                             <th>Name</th>
                             <th>เฉลี่ย</th>
@@ -1140,7 +1114,19 @@
                 if (deptAvgEl) deptAvgEl.textContent = deptData.stats.avgScore.toFixed(1) + '%';
                 if (deptPassEl) deptPassEl.textContent = deptData.stats.passRate.toFixed(1) + '%';
                 if (deptLogsEl) deptLogsEl.textContent = deptData.stats.totalLogs;
-                if (deptRankEl) deptRankEl.textContent = deptData.stats.rank;
+
+                // Update Status vs Target (Target = 85%)
+                const deptStatusEl = document.getElementById('deptStatus');
+                if (deptStatusEl) {
+                    const TARGET = 85;
+                    if (deptData.stats.avgScore >= TARGET) {
+                        deptStatusEl.textContent = 'ผ่านเป้าหมาย (On Track)';
+                        deptStatusEl.style.color = 'var(--success)';
+                    } else {
+                        deptStatusEl.textContent = 'ต่ำกว่าเป้าหมาย (Below Target)';
+                        deptStatusEl.style.color = 'var(--danger)';
+                    }
+                }
 
                 // Update comparison section
                 const compAvgEl = document.getElementById('compAvg');
@@ -1221,17 +1207,17 @@
             }
 
             // ============================================
-            // RENDER STAFF RANKINGS TABLE
+            // RENDER STAFF LIST TABLE (sorted by Name/ID)
             // ============================================
             function renderRankingsTable(staffData) {
                 const tbody = document.getElementById('staffTableBody');
                 if (!tbody) return;
 
                 tbody.innerHTML = '';
-                const sortedStaff = [...staffData].sort((a, b) => b.score - a.score);
+                // Sort by name alphabetically instead of by score
+                const sortedStaff = [...staffData].sort((a, b) => a.name.localeCompare(b.name));
 
-                sortedStaff.forEach((emp, index) => {
-                    const rank = index + 1;
+                sortedStaff.forEach((emp) => {
                     const isPassed = emp.score >= 80;
                     const scoreColor = isPassed ? 'var(--success)' : 'var(--danger)';
 
@@ -1245,9 +1231,6 @@
                     };
 
                     row.innerHTML = `
-                        <td style="padding: 14px; text-align: center; font-weight: 700;">
-                            ${rank <= 3 ? '🏆' : ''} ${rank}
-                        </td>
                         <td style="padding: 14px; text-align: center; font-weight: 600;">${emp.id}</td>
                         <td style="padding: 14px; font-weight: 600;">${emp.name}</td>
                         <td style="padding: 14px; text-align: center; font-size: 16px; font-weight: 700; color: ${scoreColor};">
