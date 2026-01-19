@@ -2051,8 +2051,8 @@
             });
 
             function openDetailModal(deptName) {
-                // Navigate to Department Dashboard with department parameter
-                window.location.href = `department-dashboard.html?dept=${encodeURIComponent(deptName)}`;
+                // Navigate to Department Dashboard with department parameter and IC source
+                window.location.href = `department-dashboard.html?dept=${encodeURIComponent(deptName)}&source=ic`;
             }
             function closeModal() { document.getElementById('detailModal').style.display = 'none'; }
 
