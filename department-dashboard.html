@@ -890,274 +890,188 @@
 
         <script>
             // ============================================
-            // MOCK DATABASE
+            // DEPARTMENT NAME MAPPING
+            // Maps various department names to database keys
+            // ============================================
+            const deptNameMapping = {
+                // ER mappings
+                'ER': 'ER',
+                'er': 'ER',
+                'Emergency': 'ER',
+                'emergency': 'ER',
+                'Emergency Room': 'ER',
+                'emergency room': 'ER',
+                'ห้องฉุกเฉิน': 'ER',
+                'แผนกฉุกเฉิน': 'ER',
+
+                // ICU mappings
+                'ICU': 'ICU',
+                'icu': 'ICU',
+                'Intensive Care Unit': 'ICU',
+                'intensive care unit': 'ICU',
+                'ICUs': 'ICU',
+                'ICUs 6': 'ICU',
+                'ไอซียู': 'ICU',
+
+                // OR mappings
+                'OR': 'OR',
+                'or': 'OR',
+                'Operating Room': 'OR',
+                'operating room': 'OR',
+                'ห้องผ่าตัด': 'OR',
+                'Surgery': 'OR',
+
+                // Ward mappings
+                'Ward': 'Ward',
+                'ward': 'Ward',
+                'General Ward': 'Ward',
+                'general ward': 'Ward',
+                'หอผู้ป่วย': 'Ward',
+
+                // Additional department mappings for CSV data
+                'Labour Room': 'Ward',
+                'Nursery': 'Ward',
+                'IPD Female': 'Ward',
+                'IPD Male': 'Ward',
+                'Pediatric': 'Ward',
+                'OPD': 'ER',
+                'Phlebotomy': 'Ward',
+                'Dialysis': 'ICU',
+                'NICU': 'ICU',
+                'CCU': 'ICU',
+                'Hr': 'Ward'
+            };
+
+            // ============================================
+            // MOCK DATABASE WITH RICH DATA
             // ============================================
             const database = {
                 users: {
                     'EMP001': { name: 'Dr. Somchai Ruangsri', dept: 'ER' },
+                    'EMP002': { name: 'Nurse Pranee Sukjai', dept: 'ER' },
+                    'EMP003': { name: 'Dr. Wanida Pongpan', dept: 'ER' },
+                    'EMP004': { name: 'Nurse Suwan Thongdee', dept: 'ER' },
                     'EMP015': { name: 'Dr. Wichai Sukjai', dept: 'ICU' },
+                    'EMP016': { name: 'Nurse Ploy Chai', dept: 'ICU' },
+                    'EMP017': { name: 'Dr. Chai Wongsawat', dept: 'ICU' },
                     'EMP030': { name: 'Dr. Narong Kaewmala', dept: 'OR' },
-                    'EMP045': { name: 'Nurse Apinya Wongsawat', dept: 'Ward' }
+                    'EMP031': { name: 'Nurse Mai Pong', dept: 'OR' },
+                    'EMP032': { name: 'Dr. Krit Suk', dept: 'OR' },
+                    'EMP045': { name: 'Nurse Apinya Wongsawat', dept: 'Ward' },
+                    'EMP046': { name: 'Dr. Pong Chai', dept: 'Ward' },
+                    'EMP047': { name: 'Nurse Joy Ploy', dept: 'Ward' }
                 },
                 departments: {
                     'ER': {
                         name: 'แผนก ER (Emergency Room)',
                         stats: { avgScore: 62.8, passRate: 25.0, totalLogs: 39, rank: '#3/12' },
                         trend: [
-                            { date: '09/11', score: 58.2 }, { date: '10/11', score: 60.5 },
-                            { date: '11/11', score: 61.8 }, { date: '12/11', score: 59.3 },
-                            { date: '13/11', score: 63.7 }, { date: '14/11', score: 65.2 },
-                            { date: '15/11', score: 62.8 }
+                            { date: '30/10', score: 58.2 }, { date: '31/10', score: 60.5 },
+                            { date: '01/11', score: 61.8 }, { date: '02/11', score: 59.3 },
+                            { date: '03/11', score: 63.7 }, { date: '04/11', score: 65.2 },
+                            { date: '05/11', score: 62.8 }
                         ],
                         staff: [
                             { id: 'EMP001', name: 'Dr. Somchai Ruangsri', score: 88.5, front: 90, back: 87, logs: 12, status: 'Pass' },
                             { id: 'EMP002', name: 'Nurse Pranee Sukjai', score: 80.2, front: 82, back: 78, logs: 10, status: 'Pass' },
                             { id: 'EMP003', name: 'Dr. Wanida Pongpan', score: 47.5, front: 50, back: 45, logs: 8, status: 'Fail' },
                             { id: 'EMP004', name: 'Nurse Suwan Thongdee', score: 35.2, front: 38, back: 32, logs: 9, status: 'Fail' }
-                        ]
+                        ],
+                        frontAvg: 65.0,
+                        backAvg: 60.5
                     },
                     'ICU': {
                         name: 'แผนก ICU (Intensive Care Unit)',
                         stats: { avgScore: 82.5, passRate: 66.7, totalLogs: 37, rank: '#1/12' },
                         trend: [
-                            { date: '09/11', score: 78.5 }, { date: '10/11', score: 80.2 },
-                            { date: '11/11', score: 81.8 }, { date: '12/11', score: 83.1 },
-                            { date: '13/11', score: 84.5 }, { date: '14/11', score: 83.7 },
-                            { date: '15/11', score: 82.5 }
+                            { date: '30/10', score: 78.5 }, { date: '31/10', score: 80.2 },
+                            { date: '01/11', score: 81.8 }, { date: '02/11', score: 83.1 },
+                            { date: '03/11', score: 84.5 }, { date: '04/11', score: 83.7 },
+                            { date: '05/11', score: 82.5 }
                         ],
                         staff: [
                             { id: 'EMP015', name: 'Dr. Wichai Sukjai', score: 86.8, front: 88, back: 85, logs: 15, status: 'Pass' },
                             { id: 'EMP016', name: 'Nurse Ploy Chai', score: 82.5, front: 84, back: 81, logs: 12, status: 'Pass' },
                             { id: 'EMP017', name: 'Dr. Chai Wongsawat', score: 78.2, front: 80, back: 76, logs: 10, status: 'Fail' }
-                        ]
+                        ],
+                        frontAvg: 84.0,
+                        backAvg: 80.7
                     },
                     'OR': {
                         name: 'แผนก OR (Operating Room)',
                         stats: { avgScore: 93.1, passRate: 100.0, totalLogs: 39, rank: '#1/12' },
                         trend: [
-                            { date: '09/11', score: 91.2 }, { date: '10/11', score: 92.5 },
-                            { date: '11/11', score: 93.8 }, { date: '12/11', score: 94.1 },
-                            { date: '13/11', score: 93.5 }, { date: '14/11', score: 92.8 },
-                            { date: '15/11', score: 93.1 }
+                            { date: '30/10', score: 91.2 }, { date: '31/10', score: 92.5 },
+                            { date: '01/11', score: 93.8 }, { date: '02/11', score: 94.1 },
+                            { date: '03/11', score: 93.5 }, { date: '04/11', score: 92.8 },
+                            { date: '05/11', score: 93.1 }
                         ],
                         staff: [
                             { id: 'EMP030', name: 'Dr. Narong Kaewmala', score: 95.3, front: 96, back: 94, logs: 14, status: 'Pass' },
                             { id: 'EMP031', name: 'Nurse Mai Pong', score: 92.8, front: 94, back: 91, logs: 13, status: 'Pass' },
                             { id: 'EMP032', name: 'Dr. Krit Suk', score: 91.2, front: 92, back: 90, logs: 12, status: 'Pass' }
-                        ]
+                        ],
+                        frontAvg: 94.0,
+                        backAvg: 91.7
                     },
                     'Ward': {
                         name: 'แผนก Ward (General Ward)',
                         stats: { avgScore: 68.8, passRate: 0.0, totalLogs: 28, rank: '#8/12' },
                         trend: [
-                            { date: '09/11', score: 65.2 }, { date: '10/11', score: 66.8 },
-                            { date: '11/11', score: 68.5 }, { date: '12/11', score: 69.7 },
-                            { date: '13/11', score: 70.2 }, { date: '14/11', score: 69.5 },
-                            { date: '15/11', score: 68.8 }
+                            { date: '30/10', score: 65.2 }, { date: '31/10', score: 66.8 },
+                            { date: '01/11', score: 68.5 }, { date: '02/11', score: 69.7 },
+                            { date: '03/11', score: 70.2 }, { date: '04/11', score: 69.5 },
+                            { date: '05/11', score: 68.8 }
                         ],
                         staff: [
                             { id: 'EMP045', name: 'Nurse Apinya Wongsawat', score: 75.5, front: 78, back: 73, logs: 11, status: 'Fail' },
                             { id: 'EMP046', name: 'Dr. Pong Chai', score: 68.8, front: 71, back: 66, logs: 9, status: 'Fail' },
                             { id: 'EMP047', name: 'Nurse Joy Ploy', score: 62.1, front: 65, back: 59, logs: 8, status: 'Fail' }
-                        ]
+                        ],
+                        frontAvg: 71.3,
+                        backAvg: 66.0
                     }
                 }
             };
 
+            // ============================================
+            // HELPER FUNCTION: Map department name to ID
+            // ============================================
+            function mapDeptNameToId(deptParam) {
+                if (!deptParam) return null;
 
+                // First check direct mapping
+                if (deptNameMapping[deptParam]) {
+                    return deptNameMapping[deptParam];
+                }
+
+                // Check case-insensitive mapping
+                const lowerParam = deptParam.toLowerCase();
+                for (const [key, value] of Object.entries(deptNameMapping)) {
+                    if (key.toLowerCase() === lowerParam) {
+                        return value;
+                    }
+                }
+
+                // Check if it's already a valid department ID
+                if (database.departments[deptParam]) {
+                    return deptParam;
+                }
+
+                // Default fallback to ER if no match found
+                console.warn(`Department "${deptParam}" not found, defaulting to ER`);
+                return 'ER';
+            }
+
+            // ============================================
+            // GLOBAL VARIABLES
+            // ============================================
             let deptTrendChart = null;
-            const translations = {
-                th: {
-                    // Login Screen
-                    'login-title': 'Department Dashboard Login',
-                    'login-subtitle': 'เข้าสู่ระบบด้วย Employee ID เพื่อดูข้อมูลแผนกของคุณ',
-                    'login-button': 'เข้าสู่ระบบ',
-                    'login-error': 'ไม่พบ Employee ID นี้ในระบบ กรุณาลองใหม่อีกครั้ง',
-                    'back-home': 'กลับหน้าหลัก',
+            let currentSource = null; // Track if user came from IC
 
-                    // Navigation
-                    'btn-back-ic': 'กลับ IC Dashboard',
-                    'btn-home': 'กลับหน้าหลัก',
-                    'btn-logout': 'ออกจากระบบ',
-
-                    // Header
-                    'dept-subtitle': 'ข้อมูลการล้างมือเฉพาะแผนกของคุณ',
-
-                    // KPI Labels
-                    'kpi-dept-avg': 'คะแนนเฉลี่ยแผนก',
-                    'kpi-dept-avg-sub': 'Department Average',
-                    'kpi-pass-rate': 'อัตราการผ่านเกณฑ์ (≥80%)',
-                    'kpi-pass-rate-sub': 'Compliance Rate',
-                    'kpi-logs': 'จำนวน Logs',
-                    'kpi-logs-sub': 'Total Records',
-                    'kpi-rank': 'อันดับของแผนก',
-                    'kpi-rank-sub': 'Hospital Ranking',
-
-                    // Section Headers
-                    'header-trend': 'แนวโน้มของแผนก',
-                    'header-11-zone': 'วิเคราะห์ 11 โซน',
-                    'header-comparison': 'เปรียบเทียบกับค่าเฉลี่ยโรงพยาบาล',
-                    'header-comparison-sub': 'คะแนนแผนก vs ทั้งโรงพยาบาล',
-                    'header-ranking': 'Ranking บุคลากรในแผนก',
-                    'header-ranking-sub': 'คลิกเพื่อดูรายละเอียด',
-
-                    // Table Headers
-                    'th-rank': 'Rank',
-                    'th-emp-id': 'Employee ID',
-                    'th-name': 'Name',
-                    'th-avg': 'เฉลี่ย',
-                    'th-front': 'เฉลี่ยหน้ามือ',
-                    'th-back': 'หลังมือ',
-                    'th-logs': 'Logs',
-                    'th-status': 'Status',
-
-                    // Comparison
-                    'comp-above-avg': 'สูงกว่าค่าเฉลี่ย',
-                    'comp-more-than': 'มากกว่าค่าเฉลี่ย',
-
-                    // Status
-                    'status-pass': 'ผ่าน',
-                    'status-fail': 'ไม่ผ่าน',
-
-                    // Months
-                    'month-october': 'ตุลาคม'
-                },
-                en: {
-                    // Login Screen
-                    'login-title': 'Department Dashboard Login',
-                    'login-subtitle': 'Enter your Employee ID to view your department data',
-                    'login-button': 'Login',
-                    'login-error': 'Employee ID not found. Please try again',
-                    'back-home': 'Back to Home',
-
-                    // Navigation
-                    'btn-back-ic': 'Back to IC Dashboard',
-                    'btn-home': 'Back to Home',
-                    'btn-logout': 'Logout',
-
-                    // Header
-                    'dept-subtitle': 'Your Department Hand Hygiene Data',
-
-                    // KPI Labels
-                    'kpi-dept-avg': 'Department Average',
-                    'kpi-dept-avg-sub': 'Department Average',
-                    'kpi-pass-rate': 'Pass Rate (≥80%)',
-                    'kpi-pass-rate-sub': 'Compliance Rate',
-                    'kpi-logs': 'Total Logs',
-                    'kpi-logs-sub': 'Total Records',
-                    'kpi-rank': 'Department Rank',
-                    'kpi-rank-sub': 'Hospital Ranking',
-
-                    // Section Headers
-                    'header-trend': 'Department Trend',
-                    'header-11-zone': '11-Zone Analysis',
-                    'header-comparison': 'Hospital Comparison',
-                    'header-comparison-sub': 'Department Score vs Hospital',
-                    'header-ranking': 'Staff Rankings',
-                    'header-ranking-sub': 'Click to view details',
-
-                    // Table Headers
-                    'th-rank': 'Rank',
-                    'th-emp-id': 'Employee ID',
-                    'th-name': 'Name',
-                    'th-avg': 'Average',
-                    'th-front': 'Palm Avg',
-                    'th-back': 'Back',
-                    'th-logs': 'Logs',
-                    'th-status': 'Status',
-
-                    // Comparison
-                    'comp-above-avg': 'above average',
-                    'comp-more-than': 'more than average',
-
-                    // Status
-                    'status-pass': 'Pass',
-                    'status-fail': 'Fail',
-
-                    // Months
-                    'month-october': 'October'
-                }
-            };
-
-            // Auto-add data-translate attributes to elements
-            function autoAddTranslateAttributes() {
-                const mappings = {
-                    // Headers
-                    'ข้อมูลการล้างมือเฉพาะแผนกของคุณ': 'dept-subtitle',
-                    'ตุลาคม': 'month-october',
-
-                    // Section Headers
-                    'แนวโน้มของแผนก': 'header-trend',
-                    'วิเคราะห์ 11 โซน': 'header-11-zone',
-                    'เปรียบเทียบกับค่าเฉลี่ยโรงพยาบาล': 'header-comparison',
-                    'คะแนนแผนก vs ทั้งโรงพยาบาล': 'header-comparison-sub',
-                    'Ranking บุคลากรในแผนก': 'header-ranking',
-                    'คลิกเพื่อดูรายละเอียด': 'header-ranking-sub',
-
-                    // Table Headers
-                    'Rank': 'th-rank',
-                    'Employee ID': 'th-emp-id',
-                    'Name': 'th-name',
-                    'เฉลี่ย': 'th-avg',
-                    'เฉลี่ยหน้ามือ': 'th-front',
-                    'หลังมือ': 'th-back',
-                    'Logs': 'th-logs',
-                    'Status': 'th-status',
-
-                    // Comparison
-                    'สูงกว่าค่าเฉลี่ย': 'comp-above-avg',
-                    'มากกว่าค่าเฉลี่ย': 'comp-more-than',
-
-                    // Status
-                    'ผ่าน': 'status-pass',
-                    'ไม่ผ่าน': 'status-fail'
-                };
-
-                // Add data-translate to matching elements
-                document.querySelectorAll('label, th, h3, h4, span, div, p').forEach(el => {
-                    if (el.children.length === 0 && !el.hasAttribute('data-translate')) {
-                        const text = el.textContent.trim();
-                        // Handle text with icons
-                        const cleanText = text.replace(/[✓✗]/g, '').trim();
-                        if (mappings[text] || mappings[cleanText]) {
-                            el.setAttribute('data-translate', mappings[text] || mappings[cleanText]);
-                        }
-                    }
-                });
-            }
-
-
-            // Apply language to all translatable elements
-            function updateLanguage(lang) {
-                const trans = translations[lang] || translations['th'];
-
-                // Apply translations to elements with data-translate attribute
-                document.querySelectorAll('[data-translate]').forEach(el => {
-                    const key = el.getAttribute('data-translate');
-                    if (trans[key]) {
-                        if (el.tagName === 'INPUT') {
-                            el.placeholder = trans[key];
-                        } else {
-                            el.textContent = trans[key];
-                        }
-                    }
-                });
-            }
-
-            // Initialize language on page load
-            (function () {
-                const savedLang = localStorage.getItem('selectedLanguage') || localStorage.getItem('preferredLanguage') || 'th';
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', () => {
-                        autoAddTranslateAttributes();
-                        updateLanguage(savedLang);
-                    });
-                } else {
-                    autoAddTranslateAttributes();
-                    updateLanguage(savedLang);
-                }
-            })();
-
+            // ============================================
+            // LOGIN HANDLER
+            // ============================================
             function handleLogin() {
                 const empInput = document.getElementById('empIdInput');
                 const errorMsg = document.getElementById('errorMessage');
@@ -1181,15 +1095,32 @@
                 }
             }
 
+            // ============================================
+            // LOGOUT HANDLER - FIXED: Redirect to index.html
+            // ============================================
+            function handleLogout() {
+                sessionStorage.clear();
+                // Redirect to index.html to prevent auto-login loop
+                window.location.href = 'index.html';
+            }
+
+            // ============================================
+            // LOAD DASHBOARD DATA
+            // ============================================
             function loadDashboard(deptId) {
                 const deptData = database.departments[deptId];
-                if (!deptData) return;
+                if (!deptData) {
+                    console.error('Department data not found for:', deptId);
+                    return;
+                }
+
+                console.log('Loading dashboard for:', deptId, deptData);
 
                 // Update header
                 const deptNameEl = document.getElementById('deptName');
                 if (deptNameEl) deptNameEl.textContent = deptData.name;
 
-                // Update KPIs - MATCHING EXACT HTML IDs
+                // Update KPIs
                 const deptAvgEl = document.getElementById('deptAvg');
                 const deptPassEl = document.getElementById('deptPass');
                 const deptLogsEl = document.getElementById('deptLogs');
@@ -1200,7 +1131,7 @@
                 if (deptLogsEl) deptLogsEl.textContent = deptData.stats.totalLogs;
                 if (deptRankEl) deptRankEl.textContent = deptData.stats.rank;
 
-                // Update comparison
+                // Update comparison section
                 const compAvgEl = document.getElementById('compAvg');
                 const compPassEl = document.getElementById('compPass');
                 const compLogsEl = document.getElementById('compLogs');
@@ -1209,10 +1140,22 @@
                 if (compPassEl) compPassEl.textContent = deptData.stats.passRate.toFixed(1) + '%';
                 if (compLogsEl) compLogsEl.textContent = deptData.stats.totalLogs;
 
+                // Update hand visualization
+                const frontAvgEl = document.getElementById('frontAvg');
+                const backAvgEl = document.getElementById('backAvg');
+                if (frontAvgEl && deptData.frontAvg) frontAvgEl.textContent = deptData.frontAvg.toFixed(1);
+                if (backAvgEl && deptData.backAvg) backAvgEl.textContent = deptData.backAvg.toFixed(1);
+
+                // Render charts and tables
                 renderTrendChart(deptData.trend);
                 renderRankingsTable(deptData.staff);
+
+                console.log('Dashboard loaded successfully');
             }
 
+            // ============================================
+            // RENDER TREND CHART
+            // ============================================
             function renderTrendChart(trendData) {
                 const canvas = document.getElementById('trendChart');
                 if (!canvas) return;
@@ -1228,7 +1171,7 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'คะแนนเฉลี่ยแผนก (%)',
+                            label: 'คะแนนเฉลี่ยแผนก (Dept Average %)',
                             data: scores,
                             borderColor: 'rgb(5, 150, 105)',
                             backgroundColor: 'rgba(5, 150, 105, 0.1)',
@@ -1240,7 +1183,7 @@
                             pointBorderColor: '#fff',
                             pointBorderWidth: 2
                         }, {
-                            label: 'เกณฑ์ผ่าน (80%)',
+                            label: 'เกณฑ์ผ่าน (Pass Threshold 80%)',
                             data: Array(labels.length).fill(80),
                             borderColor: 'rgb(239, 68, 68)',
                             borderWidth: 2,
@@ -1266,6 +1209,9 @@
                 });
             }
 
+            // ============================================
+            // RENDER STAFF RANKINGS TABLE
+            // ============================================
             function renderRankingsTable(staffData) {
                 const tbody = document.getElementById('staffTableBody');
                 if (!tbody) return;
@@ -1280,8 +1226,11 @@
 
                     const row = document.createElement('tr');
                     row.style.cursor = 'pointer';
+
+                    // FIXED: Always pass source=ic when coming from IC dashboard
                     row.onclick = function () {
-                        window.location.href = `personal-dashboard.html?source=dept&id=${emp.id}`;
+                        const sourceParam = currentSource === 'ic' ? 'ic' : 'dept';
+                        window.location.href = 'personal-dashboard.html?id=' + emp.id + '&source=' + sourceParam;
                     };
 
                     row.innerHTML = `
@@ -1298,7 +1247,7 @@
                         <td style="padding: 14px; text-align: center;">${emp.logs}</td>
                         <td style="padding: 14px; text-align: center;">
                             <span style="padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; background: ${isPassed ? '#d1fae5' : '#ffe4e6'}; color: ${scoreColor};">
-                                ${isPassed ? '✓ ผ่าน' : '✗ ไม่ผ่าน'}
+                                ${isPassed ? '✓ ผ่าน (Pass)' : '✗ ไม่ผ่าน (Fail)'}
                             </span>
                         </td>
                     `;
@@ -1306,23 +1255,72 @@
                 });
             }
 
-            function handleLogout() {
-                sessionStorage.clear();
-                location.reload();
+            // ============================================
+            // SETUP BACK BUTTON
+            // ============================================
+            function setupBackButton() {
+                const backContainer = document.getElementById('backButtonContainer');
+                if (!backContainer) return;
+
+                if (currentSource === 'ic') {
+                    backContainer.style.display = 'block';
+                    // Update button to go back to hospital dashboard
+                    const backButton = backContainer.querySelector('button');
+                    if (backButton) {
+                        backButton.onclick = function () {
+                            window.location.href = 'hospital-dashboard.html';
+                        };
+                    }
+                } else {
+                    backContainer.style.display = 'none';
+                }
             }
 
+            // ============================================
+            // PAGE INITIALIZATION
+            // ============================================
             document.addEventListener('DOMContentLoaded', function () {
-                const params = new URLSearchParams(window.location.search);
-                const isICView = params.get('source') === 'ic';
-                const deptCode = params.get('dept');
+                console.log('Department Dashboard Initializing...');
 
-                if (isICView && deptCode) {
-                    sessionStorage.setItem('dept_authenticated', 'true');
-                    sessionStorage.setItem('dept_id', deptCode);
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('dashboardContent').style.display = 'block';
-                    loadDashboard(deptCode);
-                } else {
+                // Step 1: Check URL parameters
+                const params = new URLSearchParams(window.location.search);
+                const source = params.get('source');
+                const deptParam = params.get('dept');
+
+                currentSource = source; // Store source globally
+
+                // Step 2: Handle IC view (source=ic)
+                if (source === 'ic' && deptParam) {
+                    console.log('IC View detected, dept param:', deptParam);
+
+                    // Map department name to ID
+                    const deptId = mapDeptNameToId(deptParam);
+                    console.log('Mapped to department ID:', deptId);
+
+                    if (deptId && database.departments[deptId]) {
+                        // Bypass login
+                        sessionStorage.setItem('dept_authenticated', 'true');
+                        sessionStorage.setItem('dept_id', deptId);
+
+                        document.getElementById('loginScreen').style.display = 'none';
+                        document.getElementById('dashboardContent').style.display = 'block';
+
+                        // Setup back button for IC users
+                        setupBackButton();
+
+                        // Load dashboard data
+                        loadDashboard(deptId);
+
+                        console.log('IC View dashboard loaded for:', deptId);
+                    } else {
+                        console.error('Department not found after mapping:', deptParam, '->', deptId);
+                        // Fallback: Show login screen
+                        document.getElementById('loginScreen').style.display = 'flex';
+                        document.getElementById('dashboardContent').style.display = 'none';
+                    }
+                }
+                // Step 3: Handle normal authenticated session
+                else {
                     const isAuth = sessionStorage.getItem('dept_authenticated');
                     const storedDept = sessionStorage.getItem('dept_id');
 
@@ -1336,14 +1334,16 @@
                     }
                 }
 
+                // Setup Enter key for login
                 const empInput = document.getElementById('empIdInput');
                 if (empInput) {
                     empInput.addEventListener('keypress', function (e) {
                         if (e.key === 'Enter') handleLogin();
                     });
                 }
-            });
 
+                console.log('Department Dashboard Initialized');
+            });
 
         </script>
     </div>
