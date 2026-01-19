@@ -351,10 +351,20 @@
             box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
         }
 
-        .btn-back {
+        /* Top Navigation Bar */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn {
             padding: 12px 24px;
-            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-            color: white;
             border: none;
             border-radius: 12px;
             font-weight: 700;
@@ -363,15 +373,20 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            z-index: 100;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: white;
         }
 
         .btn-back:hover {
             background: linear-gradient(135deg, #0284c7, #0ea5e9);
-            transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(14, 165, 233, 0.5);
         }
 
@@ -384,11 +399,15 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .btn-logout:hover {
             background: var(--danger);
             color: white;
+            transform: translateY(-2px);
         }
 
         /* KPI Cards Enhanced */
@@ -1376,22 +1395,26 @@
 
         <div class="container">
             <div id="dashboardScreen" class="dashboard">
-                <!-- Back Button (Absolute Position) -->
-                <button class="btn-back" id="backButton" style="display: none;" onclick="goBack()">
-                    <i class="fa-solid fa-arrow-left"></i> กลับ IC Dashboard (Back to IC Dashboard)
-                </button>
+                <!-- Top Navigation Bar -->
+                <nav class="top-nav">
+                    <div id="backButtonContainer" style="display: none;">
+                        <button class="btn btn-back" id="backButton" onclick="goBack()">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <span>กลับ Dashboard แผนก (Back to Dept Dashboard)</span>
+                        </button>
+                    </div>
+                    <div style="flex: 1;"></div>
+                    <button class="btn btn-logout" id="logoutButton" onclick="handleLogout()">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>ออกจากระบบ (Logout)</span>
+                    </button>
+                </nav>
 
                 <!-- Header -->
                 <div class="dashboard-header">
                     <div class="user-info">
                         <h1 id="userName">Dashboard ส่วนตัว (Personal Dashboard)</h1>
                         <p id="userDept">แผนก (Department): ER | รหัสพนักงาน (Employee ID): EMP001</p>
-                    </div>
-                    <div class="header-actions" style="display: flex; justify-content: flex-end;">
-                        <button class="btn-logout" id="logoutButton" onclick="handleLogout()"
-                            style="background-color: #ef4444; color: white; border: none;">
-                            <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ (Logout)
-                        </button>
                     </div>
                 </div>
 
@@ -2413,8 +2436,17 @@
             // ============================================
             function goBack() {
                 const source = sessionStorage.getItem('personal_source');
+                const referrer = sessionStorage.getItem('personal_referrer');
+
                 if (source === 'ic_drilldown') {
-                    location.href = 'hospital-dashboard.html';
+                    // Check if we came from department dashboard
+                    if (referrer && referrer.includes('department-dashboard.html')) {
+                        // Extract dept parameter from referrer and go back to it
+                        location.href = referrer;
+                    } else {
+                        // Go directly to hospital dashboard
+                        location.href = 'hospital-dashboard.html';
+                    }
                 } else if (source === 'dept_drilldown') {
                     location.href = 'department-dashboard.html?source=ic';
                 } else {
@@ -2444,17 +2476,21 @@
                         sessionStorage.setItem('personal_empId', targetID);
                         sessionStorage.setItem('personal_source', 'ic_drilldown');
 
+                        // Store the referrer URL for proper back navigation
+                        const referrer = document.referrer;
+                        if (referrer.includes('department-dashboard.html')) {
+                            sessionStorage.setItem('personal_referrer', referrer);
+                        }
+
                         if (loginScreen) loginScreen.style.display = 'none';
                         if (dashboardContent) dashboardContent.style.display = 'block';
 
-                        // Show back button, hide logout
-                        const backBtn = safeGetElement('backButton');
+                        // Show back button container, hide logout
+                        const backBtnContainer = safeGetElement('backButtonContainer');
                         const logoutBtn = safeGetElement('logoutButton');
 
-                        if (backBtn) {
-                            backBtn.style.display = 'flex';
-                            backBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> ย้อนกลับ';
-                            backBtn.onclick = goBack;
+                        if (backBtnContainer) {
+                            backBtnContainer.style.display = 'block';
                         }
                         if (logoutBtn) logoutBtn.style.display = 'none';
 
