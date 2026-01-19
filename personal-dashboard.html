@@ -356,11 +356,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 24px;
-            background: white;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-sm);
+            padding: 10px 0;
+            margin-bottom: 15px;
+            background-color: transparent;
+            box-shadow: none;
+            border: none;
         }
 
         .btn {
@@ -392,9 +392,9 @@
 
         .btn-logout {
             padding: 12px 24px;
-            background: white;
-            border: 2px solid var(--danger);
-            color: var(--danger);
+            background: var(--danger);
+            border: none;
+            color: white;
             border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
@@ -402,12 +402,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
         }
 
         .btn-logout:hover {
-            background: var(--danger);
-            color: white;
+            background: #dc2626;
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(244, 63, 94, 0.4);
         }
 
         /* KPI Cards Enhanced */
