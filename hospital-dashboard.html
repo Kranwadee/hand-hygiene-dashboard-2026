@@ -1259,24 +1259,19 @@
             <!-- KPI Row -->
             <div class="kpi-row">
                 <div class="kpi-box">
-                    <div class="kpi-label">ดัชนีสะอาดรวม (Overall Cleanliness Index)</div>
+                    <div class="kpi-label">ค่าเฉลี่ยความสะอาดรวมทั้งโรงพยาบาล (Hospital-wide Average)</div>
                     <div class="kpi-value" id="kpiOverall" style="color: var(--danger);">29.6%</div>
                 </div>
                 <div class="kpi-box">
-                    <div class="kpi-label">อัตราการผ่านเกณฑ์ 80% (Pass Rate ≥80%)</div>
+                    <div class="kpi-label">อัตราการล้างมือผ่านเกณฑ์ (Pass Rate ≥80%)</div>
                     <div class="kpi-value" id="kpiCompliance">8.7%</div>
                 </div>
                 <div class="kpi-box">
                     <div class="kpi-label">ระดับดี (Good Level - 80-100%)</div>
-                    <div class="kpi-value" id="kpiGood" style="color: var(--success);">2</div>
-                    <div style="font-size: 12px; color: var(--text-sub); margin-top: 8px;">หน่วยงาน (Departments)</div>
-                    <div style="font-size: 11px; color: var(--primary-blue); margin-top: 8px; font-weight: 700; cursor: pointer;"
-                        id="goodDeptsToggle">แตะเพื่อดู → (Tap to view)</div>
-                    <div id="goodDeptsList"
-                        style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
-                        <div style="font-size: 12px; line-height: 2; color: var(--text-main);">
-                            <div id="goodDeptContent"></div>
-                        </div>
+                    <div class="kpi-value" id="kpiGood" style="color: var(--success);">0</div>
+                    <div class="kpi-sub">หน่วยงาน (Departments)</div>
+                    <div id="goodDeptContent"
+                        style="font-size: 11px; color: var(--text-sub); margin-top: 8px; max-height: 60px; overflow-y: auto;">
                     </div>
                 </div>
             </div>
@@ -1370,7 +1365,7 @@
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                         <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin: 0;"><i
                                 class="fa-solid fa-chart-line" style="color: var(--primary-blue);"></i>
-                            แนวโน้มรายชั่วโมง (Hourly Trend)
+                            ค่าเฉลี่ยคะแนนรายชั่วโมง (Average Score by Hour)
                             <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">Oct 30-31</span>
                         </h3>
                         <div style="display: flex; gap: 8px;">
@@ -1391,7 +1386,7 @@
                 <div class="hand-side" id="handContainer">
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
                             class="fa-solid fa-hand-dots" style="color: var(--primary-blue);"></i>
-                        วิเคราะห์พื้นที่เสี่ยง (Risk Area Analysis - 11 Zones)
+                        สถิติจุดที่ยังไม่สะอาด 11 โซน (11 Unclean Zones Statistics)
                     </h3>
 
                     <div id="handTooltip">Zone: 0%</div>
@@ -1494,7 +1489,7 @@
                 <div class="card">
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
                             class="fa-solid fa-ranking-star" style="color: var(--primary-blue);"></i>
-                        การเปรียบเทียบประสิทธิภาพแผนก (Department Performance Comparison)</h3>
+                        ค่าเฉลี่ยความสะอาดแยกตามแผนก (Average Score by Department)</h3>
                     <div style="height: 320px;"><canvas id="hourChart"></canvas></div>
                 </div>
             </div>
