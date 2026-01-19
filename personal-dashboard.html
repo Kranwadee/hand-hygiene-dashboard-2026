@@ -1419,29 +1419,16 @@
                     </div>
                 </div>
 
-                <!-- Comparison Section -->
-                <div class="comparison-card">
-                    <h2 style="font-size: 20px; color: var(--primary-blue); margin-bottom: 10px;">
-                        <i class="fa-solid fa-users"></i> <span>เทียบกับเพื่อนร่วมงาน (Compare with Colleagues)</span>
-                    </h2>
-                    <p style="font-size: 13px; color: var(--text-sub);">
-                        เปรียบเทียบผลงานของคุณกับค่าเฉลี่ยของแผนกและโรงพยาบาล (Compare your performance with department
-                        and hospital averages)</p>
-                    <div class="comparison-stats">
-                        <div class="comparison-item">
-                            <div class="label">คะแนนของคุณ (Your Score)</div>
-                            <div class="value" id="yourScore">-</div>
-                        </div>
-                        <div class="comparison-item">
-                            <div class="label">เฉลี่ยแผนก (Department Average)</div>
-                            <div class="value" style="color: #6366f1;" id="deptAvg">-</div>
-                            <div class="diff" id="deptDiff">-</div>
-                        </div>
-                        <div class="comparison-item">
-                            <div class="label">เฉลี่ยโรงพยาบาล (Hospital Average)</div>
-                            <div class="value" style="color: #8b5cf6;" id="hospitalAvg">-</div>
-                            <div class="diff" id="hospitalDiff">-</div>
-                        </div>
+                <!-- KPI Cards (Profile Summary) -->
+                <div class="kpi-grid" style="margin-top: 20px; grid-template-columns: repeat(2, 1fr);">
+                    <div class="kpi-card neutral">
+                        <h3><i class="fa-solid fa-chart-line"></i> ค่าเฉลี่ยของฉัน (My Average Score)</h3>
+                        <div class="value" id="avgScore">-</div>
+                        <span class="status" id="passStatus">-</span>
+                    </div>
+                    <div class="kpi-card neutral">
+                        <h3><i class="fa-solid fa-hand-dots"></i> จำนวนครั้งที่ล้าง (Total Wash Count)</h3>
+                        <div class="value" id="totalScans">-</div>
                     </div>
                 </div>
 
@@ -1486,42 +1473,20 @@
                     </div>
                 </div>
 
-                <!-- KPI Cards -->
-                <div class="kpi-grid">
-                    <div class="kpi-card neutral">
-                        <h3><i class="fa-solid fa-chart-line"></i> คะแนนเฉลี่ยรวม (Overall Average Score)</h3>
-                        <div class="value" id="avgScore">-</div>
-                        <span class="status" id="passStatus">-</span>
-                    </div>
-                    <div class="kpi-card neutral">
-                        <h3><i class="fa-solid fa-hand-dots"></i> จำนวนครั้งที่สแกน (Total Scans)</h3>
-                        <div class="value" id="totalScans">-</div>
-                    </div>
-                    <div class="kpi-card neutral">
-                        <h3><i class="fa-solid fa-trophy"></i> ครั้งที่ผ่านเกณฑ์ (Passed Scans)</h3>
-                        <div class="value" id="passCount">-</div>
-                    </div>
-                    <div class="kpi-card neutral">
-                        <h3><i class="fa-solid fa-calendar-days"></i> ช่วงเวลา (Time Period)</h3>
-                        <div class="value" style="font-size: 16px; margin-top: 10px;" id="dateRange">-</div>
-                    </div>
-                </div>
-
                 <!-- Main Content -->
                 <div class="content-grid">
                     <!-- Trend Chart -->
                     <div class="card">
-                        <h2><i class="fa-solid fa-chart-area"></i> <span data-translate="header-trend">แนวโน้มการล้างมือ
-                                (Hand Hygiene Trend)</span></h2>
+                        <h2><i class="fa-solid fa-chart-area"></i> <span
+                                data-translate="header-trend">ผลการล้างมือแต่ละครั้ง
+                                (Score per Washing Session)</span></h2>
                         <div class="chart-container">
                             <canvas id="trendChart"></canvas>
                         </div>
                     </div>
-
-                    <!-- Zone Overview -->
                     <div class="card">
                         <h2><i class="fa-solid fa-hand"></i> <span
-                                data-translate="header-risk-overview">ภาพรวมพื้นที่เสี่ยง (Risk Area Overview)</span>
+                                data-translate="header-risk-overview">จุดที่ฉันมักล้างไม่สะอาด (My Unclean Zones)</span>
                         </h2>
                         <div class="hand-visual">
                             <div class="hand-view">
@@ -1598,7 +1563,8 @@
                 <!-- Top 3 Weak Zones -->
                 <div class="card">
                     <h2><i class="fa-solid fa-exclamation-triangle"></i> <span
-                            data-translate="header-improvement">จุดที่ต้องปรับปรุง (Areas for Improvement)</span></h2>
+                            data-translate="header-improvement">โซนที่ต้องเน้นเป็นพิเศษ (Urgent Zones to Improve)</span>
+                    </h2>
                     <div class="zones-grid" id="zonesGrid"></div>
                 </div>
 
@@ -2541,6 +2507,31 @@
                 }
             });
 
+            // ============================================
+            // AUTO-LOGOUT AFTER 5 MINUTES OF INACTIVITY
+            // ============================================
+            (function () {
+                let idleTimeout;
+                const IDLE_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+                function resetIdleTimer() {
+                    clearTimeout(idleTimeout);
+                    idleTimeout = setTimeout(function () {
+                        alert('Session Timeout - หมดเวลาการใช้งาน');
+                        sessionStorage.clear();
+                        window.location.href = 'index.html';
+                    }, IDLE_TIME);
+                }
+
+                // Start the timer and listen for user activity
+                document.addEventListener('DOMContentLoaded', function () {
+                    resetIdleTimer();
+                    document.addEventListener('mousemove', resetIdleTimer);
+                    document.addEventListener('keypress', resetIdleTimer);
+                    document.addEventListener('click', resetIdleTimer);
+                    document.addEventListener('scroll', resetIdleTimer);
+                });
+            })();
 
         </script>
     </div> <!-- Close dashboardContent -->
