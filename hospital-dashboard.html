@@ -955,7 +955,9 @@
 
             .hand-side,
             .chart-side {
-                min-width: 100%;
+                width: 100% !important;
+                min-width: 0 !important;
+                flex: none !important;
                 padding: 15px;
             }
 
@@ -1080,9 +1082,37 @@
             }
         }
 
-        @media (min-width: 769px) and (max-width: 1024px) {
+        /* ============================================
+           NEW BREAKPOINT: Tablets & iPad Landscape (≤1200px)
+           ============================================ */
+        @media (max-width: 1200px) {
 
-            /* Tablets (iPad, etc.) */
+            .main-analysis-row,
+            .analytics-row-secondary {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hand-side,
+            .chart-side {
+                width: 100% !important;
+                min-width: 0 !important;
+                flex: none !important;
+                padding: 25px;
+            }
+
+            .kpi-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+
+            .header-content h1 {
+                font-size: 26px;
+            }
+        }
+
+        /* Tablets Portrait (769px - 1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
             body {
                 padding: 12px;
             }
@@ -1100,22 +1130,6 @@
                 gap: 12px;
             }
 
-            .main-analysis-row,
-            .analytics-row-secondary {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .hand-side,
-            .chart-side {
-                min-width: 100%;
-                padding: 25px;
-            }
-
-            .hand-side {
-                min-width: 100%;
-            }
-
             .top-nav {
                 flex-wrap: wrap;
             }
@@ -1125,9 +1139,8 @@
             }
         }
 
-        @media (min-width: 1025px) and (max-width: 1400px) {
-
-            /* Small laptops/notebooks */
+        /* Small laptops (1025px - 1400px) */
+        @media (min-width: 1025px) and (max-width: 1200px) {
             .dashboard-container {
                 max-width: 100%;
             }
@@ -1139,15 +1152,10 @@
             .main-analysis-row {
                 gap: 12px;
             }
-
-            .hand-side {
-                min-width: 350px;
-            }
         }
 
+        /* Large screens (1401px+) */
         @media (min-width: 1401px) {
-
-            /* Large screens */
             .dashboard-container {
                 max-width: 1600px;
             }
@@ -1386,7 +1394,7 @@
                 <div class="hand-side" id="handContainer">
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
                             class="fa-solid fa-hand-dots" style="color: var(--primary-blue);"></i>
-                        สถิติจุดที่ยังไม่สะอาด 11 โซน (11 Unclean Zones Statistics)
+                        จุดที่มักล้างไม่สะอาด (Frequent Unclean Zones)
                     </h3>
 
                     <div id="handTooltip">Zone: 0%</div>
@@ -1490,7 +1498,9 @@
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
                             class="fa-solid fa-ranking-star" style="color: var(--primary-blue);"></i>
                         ค่าเฉลี่ยความสะอาดแยกตามแผนก (Average Score by Department)</h3>
-                    <div style="height: 320px;"><canvas id="hourChart"></canvas></div>
+                    <div class="chart-container-responsive"
+                        style="position: relative; height: 400px; width: 100%; overflow: hidden;"><canvas
+                            id="hourChart"></canvas></div>
                 </div>
             </div>
 
@@ -2212,9 +2222,21 @@
                             },
                             y: {
                                 ticks: {
-                                    font: { size: 13, weight: '600' },
-                                    padding: 8,
-                                    color: '#334155'
+                                    font: {
+                                        size: window.innerWidth < 768 ? 10 : 13,
+                                        weight: '600'
+                                    },
+                                    padding: window.innerWidth < 768 ? 4 : 8,
+                                    color: '#334155',
+                                    callback: function (value, index, values) {
+                                        const label = this.getLabelForValue(value);
+                                        if (window.innerWidth < 480 && label.length > 8) {
+                                            return label.substring(0, 8) + '...';
+                                        } else if (window.innerWidth < 768 && label.length > 12) {
+                                            return label.substring(0, 12) + '...';
+                                        }
+                                        return label;
+                                    }
                                 },
                                 grid: { display: false }
                             }
