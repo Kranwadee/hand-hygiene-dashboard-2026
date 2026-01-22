@@ -548,6 +548,101 @@
             }
         }
 
+        /* Prominent Hand Visualization Card */
+        .hand-prominent-card {
+            width: 100%;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fffbeb 100%);
+            padding: 30px;
+            border-radius: 28px;
+            border: 3px solid #f59e0b;
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .hand-prominent-card:hover {
+            box-shadow: 0 12px 40px rgba(245, 158, 11, 0.3), 0 6px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .hand-prominent-card .hand-viz-grid {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 30px 20px;
+            border-radius: 20px;
+        }
+
+        .hand-prominent-card .hand-svg {
+            width: 220px;
+            max-width: 220px;
+        }
+
+        /* Motivational Banner */
+        .motivational-banner {
+            padding: 16px 24px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            animation: fadeInBanner 0.5s ease-out;
+        }
+
+        @keyframes fadeInBanner {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .motivational-banner.excellent {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+
+        .motivational-banner.good {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border: 2px solid #f59e0b;
+        }
+
+        .motivational-banner.needs-improvement {
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            color: #9d174d;
+            border: 2px solid #ec4899;
+        }
+
+        /* Full-width chart side */
+        .chart-side-full {
+            width: 100%;
+            background: var(--card-white);
+            padding: 30px;
+            border-radius: 28px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .chart-side-full:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-blue);
+        }
+
         #handTooltip {
             position: absolute;
             background: var(--text-main);
@@ -1284,6 +1379,106 @@
                 </div>
             </div>
 
+            <!-- Prominent Hand Visualization Card (Moved from main-analysis-row) -->
+            <div class="hand-prominent-card" id="handProminentCard">
+                <!-- Motivational Banner -->
+                <div id="motivational-banner" class="motivational-banner excellent">
+                    🏆🌟 สุดยอด! มาตรฐานความสะอาดดีเยี่ยม — รักษามาตรฐานไว้นะครับชาว BHP!
+                </div>
+
+                <h3
+                    style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; text-align: center;">
+                    <i class="fa-solid fa-hand-dots" style="color: #f59e0b;"></i>
+                    จุดที่มักล้างไม่สะอาด (Frequent Unclean Zones)
+                </h3>
+
+                <div id="handTooltipProminent"
+                    style="position: absolute; background: var(--text-main); color: white; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 600; pointer-events: none; opacity: 0; transform: translateY(10px); transition: all 0.3s; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 100;">
+                    Zone: 0%</div>
+
+                <div class="hand-viz-grid">
+                    <div class="hand-view">
+                        <p style="font-size: 12px; font-weight: 800; margin-bottom: 12px; color: var(--primary-blue);">
+                            หน้ามือ (Front - Palm)</p>
+                        <svg class="hand-svg" viewBox="0 0 200 250">
+                            <path class="hand-path"
+                                d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                            <circle class="heat-glow" cx="100" cy="170" r="40" fill="var(--danger)"
+                                id="heatPalmProminent" />
+                            <circle class="interactive-zone" cx="100" cy="170" r="40" fill="transparent"
+                                data-zone="Palm ฝ่ามือ" />
+                            <circle class="heat-glow" cx="60" cy="180" r="25" fill="var(--danger)"
+                                id="heatPawProminent" />
+                            <circle class="interactive-zone" cx="60" cy="180" r="25" fill="transparent"
+                                data-zone="Paw อุ้งมือ" />
+                            <circle class="heat-glow" cx="25" cy="110" r="18" fill="var(--danger)"
+                                id="heatThumbsProminent" />
+                            <circle class="interactive-zone" cx="25" cy="110" r="18" fill="transparent"
+                                data-zone="Thumbs นิ้วโป้ง" />
+                            <circle class="interactive-zone" cx="50" cy="30" r="18" fill="transparent"
+                                data-zone="Pointer นิ้วชี้" />
+                            <circle class="interactive-zone" cx="100" cy="20" r="18" fill="transparent"
+                                data-zone="Middle นิ้วกลาง" />
+                        </svg>
+                        <div style="font-size: 16px; font-weight: 800; color: var(--danger); margin-top:12px;">
+                            หน้ามือ (Front): <span id="frontAvgDisplayProminent">31.4</span>%</div>
+                    </div>
+                    <div class="hand-view">
+                        <p style="font-size: 12px; font-weight: 800; margin-bottom: 12px; color: var(--primary-blue);">
+                            หลังมือ (Back - Backhand)</p>
+                        <svg class="hand-svg" viewBox="0 0 200 250">
+                            <path class="hand-path"
+                                d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                            <rect class="heat-glow" x="60" y="140" width="80" height="50" rx="20" fill="var(--danger)"
+                                id="heatBackhandProminent" />
+                            <rect class="interactive-zone" x="60" y="140" width="80" height="50" rx="20"
+                                fill="transparent" data-zone="Backhand หลังมือ" />
+                            <rect class="heat-glow" x="75" y="85" width="50" height="15" rx="5" fill="var(--danger)"
+                                id="heatBetweenProminent" />
+                            <rect class="interactive-zone" x="75" y="85" width="50" height="15" rx="5"
+                                fill="transparent" data-zone="Between ซอกนิ้ว" />
+                            <circle class="heat-glow" cx="100" cy="15" r="20" fill="var(--danger)"
+                                id="heatNailsProminent" />
+                            <circle class="interactive-zone" cx="100" cy="15" r="20" fill="transparent"
+                                data-zone="Nails เล็บ" />
+                            <circle class="interactive-zone" cx="180" cy="180" r="18" fill="transparent"
+                                data-zone="Pinky นิ้วก้อย" />
+                        </svg>
+                        <div style="font-size: 16px; font-weight: 800; color: var(--danger); margin-top:12px;">
+                            หลังมือ (Back): <span id="backAvgDisplayProminent">27.8</span>%</div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div
+                    style="background: rgba(255,255,255,0.8); padding: 12px 16px; border-radius: 12px; margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 20px; border: 1px solid #e2e8f0; flex-wrap: wrap;">
+                    <div style="font-size: 11px; font-weight: 700; color: var(--text-sub); text-transform: uppercase;">
+                        คำอธิบาย:</div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <div
+                            style="width: 24px; height: 16px; background: var(--danger); border-radius: 4px; opacity: 0.9;">
+                        </div>
+                        <span style="font-size: 12px; font-weight: 600;">ไม่สะอาด (0-30%)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <div
+                            style="width: 24px; height: 16px; background: var(--warning); border-radius: 4px; opacity: 0.6;">
+                        </div>
+                        <span style="font-size: 12px; font-weight: 600;">ปานกลาง (30-70%)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <div
+                            style="width: 24px; height: 16px; background: var(--success); border-radius: 4px; opacity: 0.3;">
+                        </div>
+                        <span style="font-size: 12px; font-weight: 600;">สะอาด (70-100%)</span>
+                    </div>
+                    <div style="border-left: 1px solid #e2e8f0; padding-left: 15px;">
+                        <span style="font-size: 11px; color: var(--text-sub); font-style: italic;"><i
+                                class="fa-solid fa-hand-pointer"></i> Hover บนโซนเพื่อดูคะแนน</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Accordion Filter Section -->
             <div style="margin-bottom: 20px;">
                 <div class="accordion-header" onclick="toggleAccordion()">
@@ -1366,122 +1561,27 @@
                 </div>
             </div>
 
-            <!-- MAIN ROW -->
-            <div class="main-analysis-row">
-                <div class="chart-side">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                        <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin: 0;"><i
-                                class="fa-solid fa-chart-line" style="color: var(--primary-blue);"></i>
-                            ค่าเฉลี่ยคะแนนรายชั่วโมง (Average Score by Hour)
-                            <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">Oct 30-31</span>
-                        </h3>
-                        <div style="display: flex; gap: 8px;">
-                            <button id="trendFilterAll"
-                                style="padding: 8px 16px; border-radius: 8px; border: 2px solid var(--primary-blue); background: var(--primary-blue); color: white; font-weight: 700; cursor: pointer; font-size: 12px;"
-                                onclick="updateTrendChart('all')">All</button>
-                            <button id="trendFilter30"
-                                style="padding: 8px 16px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: var(--primary-blue); font-weight: 700; cursor: pointer; font-size: 12px;"
-                                onclick="updateTrendChart('30')">30 ตุลาคม</button>
-                            <button id="trendFilter31"
-                                style="padding: 8px 16px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: var(--primary-blue); font-weight: 700; cursor: pointer; font-size: 12px;"
-                                onclick="updateTrendChart('31')">31 ตุลาคม</button>
-                        </div>
-                    </div>
-                    <div style="flex-grow: 1; position: relative;"><canvas id="trendChart"></canvas></div>
-                </div>
-
-                <div class="hand-side" id="handContainer">
-                    <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
-                            class="fa-solid fa-hand-dots" style="color: var(--primary-blue);"></i>
-                        จุดที่มักล้างไม่สะอาด (Frequent Unclean Zones)
+            <!-- MAIN ROW (Chart Only - Hand moved to prominent card above) -->
+            <div class="chart-side-full">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin: 0;"><i
+                            class="fa-solid fa-chart-line" style="color: var(--primary-blue);"></i>
+                        ค่าเฉลี่ยคะแนนรายชั่วโมง (Average Score by Hour)
+                        <span style="font-size: 14px; color: var(--text-sub); font-weight: 400;">Oct 30-31</span>
                     </h3>
-
-                    <div id="handTooltip">Zone: 0%</div>
-                    <div class="hand-viz-grid">
-                        <div class="hand-view">
-                            <p
-                                style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-blue);">
-                                หน้ามือ (Front - Palm)</p>
-                            <svg class="hand-svg" viewBox="0 0 200 250">
-                                <path class="hand-path"
-                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                                <circle class="heat-glow" cx="100" cy="170" r="40" fill="var(--danger)" id="heatPalm" />
-                                <circle class="interactive-zone" cx="100" cy="170" r="40" fill="transparent"
-                                    data-zone="Palm ฝ่ามือ" />
-                                <circle class="heat-glow" cx="60" cy="180" r="25" fill="var(--danger)" id="heatPaw" />
-                                <circle class="interactive-zone" cx="60" cy="180" r="25" fill="transparent"
-                                    data-zone="Paw อุ้งมือ" />
-                                <circle class="heat-glow" cx="25" cy="110" r="18" fill="var(--danger)"
-                                    id="heatThumbs" />
-                                <circle class="interactive-zone" cx="25" cy="110" r="18" fill="transparent"
-                                    data-zone="Thumbs นิ้วโป้ง" />
-                                <circle class="interactive-zone" cx="50" cy="30" r="18" fill="transparent"
-                                    data-zone="Pointer นิ้วชี้" />
-                                <circle class="interactive-zone" cx="100" cy="20" r="18" fill="transparent"
-                                    data-zone="Middle นิ้วกลาง" />
-                            </svg>
-                            <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">
-                                หน้ามือ
-                                (Front): <span id="frontAvgDisplay">31.4</span>%</div>
-                        </div>
-                        <div class="hand-view">
-                            <p
-                                style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-blue);">
-                                หลังมือ (Back - Backhand)</p>
-                            <svg class="hand-svg" viewBox="0 0 200 250">
-                                <path class="hand-path"
-                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                                <rect class="heat-glow" x="60" y="140" width="80" height="50" rx="20"
-                                    fill="var(--danger)" id="heatBackhand" />
-                                <rect class="interactive-zone" x="60" y="140" width="80" height="50" rx="20"
-                                    fill="transparent" data-zone="Backhand หลังมือ" />
-                                <rect class="heat-glow" x="75" y="85" width="50" height="15" rx="5" fill="var(--danger)"
-                                    id="heatBetween" />
-                                <rect class="interactive-zone" x="75" y="85" width="50" height="15" rx="5"
-                                    fill="transparent" data-zone="Between ซอกนิ้ว" />
-                                <circle class="heat-glow" cx="100" cy="15" r="20" fill="var(--danger)" id="heatNails" />
-                                <circle class="interactive-zone" cx="100" cy="15" r="20" fill="transparent"
-                                    data-zone="Nails เล็บ" />
-                                <circle class="interactive-zone" cx="180" cy="180" r="18" fill="transparent"
-                                    data-zone="Pinky นิ้วก้อย" />
-                            </svg>
-                            <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">
-                                หลังมือ
-                                (Back): <span id="backAvgDisplay">27.8</span>%</div>
-                        </div>
-                    </div>
-
-                    <!-- Legend - Moved below hand visualization -->
-                    <div
-                        style="background: #f8fafc; padding: 8px 12px; border-radius: 10px; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 15px; border: 1px solid #e2e8f0; flex-wrap: wrap;">
-                        <div
-                            style="font-size: 10px; font-weight: 700; color: var(--text-sub); text-transform: uppercase;">
-                            คำอธิบาย:</div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <div
-                                style="width: 24px; height: 16px; background: var(--danger); border-radius: 4px; opacity: 0.9;">
-                            </div>
-                            <span style="font-size: 11px; font-weight: 600;">ไม่สะอาด (0-30%)</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <div
-                                style="width: 24px; height: 16px; background: var(--warning); border-radius: 4px; opacity: 0.6;">
-                            </div>
-                            <span style="font-size: 11px; font-weight: 600;">ปานกลาง (30-70%)</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <div
-                                style="width: 24px; height: 16px; background: var(--success); border-radius: 4px; opacity: 0.3;">
-                            </div>
-                            <span style="font-size: 11px; font-weight: 600;">สะอาด (70-100%)</span>
-                        </div>
-                        <div style="border-left: 1px solid #e2e8f0; padding-left: 15px;">
-                            <span style="font-size: 10px; color: var(--text-sub); font-style: italic;"><i
-                                    class="fa-solid fa-hand-pointer"></i> Hover บนโซนเพื่อดูคะแนน</span>
-                        </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button id="trendFilterAll"
+                            style="padding: 8px 16px; border-radius: 8px; border: 2px solid var(--primary-blue); background: var(--primary-blue); color: white; font-weight: 700; cursor: pointer; font-size: 12px;"
+                            onclick="updateTrendChart('all')">All</button>
+                        <button id="trendFilter30"
+                            style="padding: 8px 16px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: var(--primary-blue); font-weight: 700; cursor: pointer; font-size: 12px;"
+                            onclick="updateTrendChart('30')">30 ตุลาคม</button>
+                        <button id="trendFilter31"
+                            style="padding: 8px 16px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: var(--primary-blue); font-weight: 700; cursor: pointer; font-size: 12px;"
+                            onclick="updateTrendChart('31')">31 ตุลาคม</button>
                     </div>
                 </div>
+                <div style="flex-grow: 1; position: relative; height: 350px;"><canvas id="trendChart"></canvas></div>
             </div>
 
             <!-- Secondary Analytics Row -->
@@ -2040,19 +2140,30 @@
                 console.log('✓ Real data calculated:', realData);
             }
 
-            const tooltip = document.getElementById('handTooltip');
+            const tooltip = document.getElementById('handTooltipProminent');
+            const handCard = document.getElementById('handProminentCard');
             document.querySelectorAll('.interactive-zone').forEach(zone => {
                 zone.addEventListener('mouseenter', (e) => {
                     const name = e.target.getAttribute('data-zone');
-                    tooltip.innerHTML = `${name}: <span style="color:var(--danger)">${realData.zoneScores[name]}</span>`;
-                    tooltip.style.display = 'block';
+                    if (tooltip && realData.zoneScores[name]) {
+                        tooltip.innerHTML = `${name}: <span style="color:var(--danger)">${realData.zoneScores[name]}</span>`;
+                        tooltip.style.opacity = '1';
+                        tooltip.style.transform = 'translateY(0)';
+                    }
                 });
                 zone.addEventListener('mousemove', (e) => {
-                    const rect = document.getElementById('handContainer').getBoundingClientRect();
-                    tooltip.style.left = (e.clientX - rect.left) + 'px';
-                    tooltip.style.top = (e.clientY - rect.top) + 'px';
+                    if (tooltip && handCard) {
+                        const rect = handCard.getBoundingClientRect();
+                        tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+                        tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+                    }
                 });
-                zone.addEventListener('mouseleave', () => tooltip.style.display = 'none');
+                zone.addEventListener('mouseleave', () => {
+                    if (tooltip) {
+                        tooltip.style.opacity = '0';
+                        tooltip.style.transform = 'translateY(10px)';
+                    }
+                });
             });
 
             function openDetailModal(deptName) {
@@ -2249,12 +2360,45 @@
                 });
 
                 const fOp = (1 - data.front / 100); const bOp = (1 - data.back / 100);
-                document.getElementById('heatPalm').style.opacity = fOp; document.getElementById('heatPaw').style.opacity = fOp; document.getElementById('heatThumbs').style.opacity = fOp;
-                document.getElementById('heatBackhand').style.opacity = bOp; document.getElementById('heatBetween').style.opacity = bOp; document.getElementById('heatNails').style.opacity = bOp;
 
-                // Update hand zone percentages from real data
-                document.getElementById('frontAvgDisplay').textContent = data.front;
-                document.getElementById('backAvgDisplay').textContent = data.back;
+                // Update prominent card heat zones
+                const heatPalmProm = document.getElementById('heatPalmProminent');
+                const heatPawProm = document.getElementById('heatPawProminent');
+                const heatThumbsProm = document.getElementById('heatThumbsProminent');
+                const heatBackhandProm = document.getElementById('heatBackhandProminent');
+                const heatBetweenProm = document.getElementById('heatBetweenProminent');
+                const heatNailsProm = document.getElementById('heatNailsProminent');
+
+                if (heatPalmProm) heatPalmProm.style.opacity = fOp;
+                if (heatPawProm) heatPawProm.style.opacity = fOp;
+                if (heatThumbsProm) heatThumbsProm.style.opacity = fOp;
+                if (heatBackhandProm) heatBackhandProm.style.opacity = bOp;
+                if (heatBetweenProm) heatBetweenProm.style.opacity = bOp;
+                if (heatNailsProm) heatNailsProm.style.opacity = bOp;
+
+                // Update hand zone percentages from real data (prominent card)
+                const frontDisplayProm = document.getElementById('frontAvgDisplayProminent');
+                const backDisplayProm = document.getElementById('backAvgDisplayProminent');
+                if (frontDisplayProm) frontDisplayProm.textContent = data.front;
+                if (backDisplayProm) backDisplayProm.textContent = data.back;
+
+                // Motivational Banner Logic
+                const banner = document.getElementById('motivational-banner');
+                if (banner) {
+                    const overallScore = data.overall;
+                    banner.classList.remove('excellent', 'good', 'needs-improvement');
+
+                    if (overallScore >= 80) {
+                        banner.classList.add('excellent');
+                        banner.innerHTML = '🏆🌟 สุดยอด! มาตรฐานความสะอาดดีเยี่ยม — รักษามาตรฐานไว้นะครับชาว BHP!';
+                    } else if (overallScore >= 60) {
+                        banner.classList.add('good');
+                        banner.innerHTML = '💪✨ เกือบถึงเป้าหมายแล้ว! ฮึบอีกนิดเดียว — ช่วยกันคนละไม้คนละมือนะ';
+                    } else {
+                        banner.classList.add('needs-improvement');
+                        banner.innerHTML = '📉 ช่วงนี้เราการ์ดตกไปนิด — มาช่วยกันล้างมือให้ถูกวิธีเพื่อความปลอดภัยกันเถอะ! 😷❤️';
+                    }
+                }
             }
 
             window.onload = () => {
