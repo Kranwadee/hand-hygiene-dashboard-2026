@@ -449,13 +449,14 @@
 
         /* Main Content Grid */
         .content-grid {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 15px;
             margin-bottom: 20px;
         }
 
         .chart-col {
-            flex: 2;
+            width: 100%;
             background: white;
             padding: 30px;
             border-radius: 28px;
@@ -463,24 +464,32 @@
             box-shadow: var(--shadow-md);
         }
 
-        .hand-col {
-            flex: 1;
-            background: white;
+        /* Hand Visualization - Prominent Full-Width Card */
+        .hand-prominent-card {
+            width: 100%;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fffbeb 100%);
             padding: 30px;
             border-radius: 28px;
-            border: 1px solid #e2e8f0;
-            box-shadow: var(--shadow-md);
-            min-width: 400px;
+            border: 3px solid #f59e0b;
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .hand-prominent-card:hover {
+            box-shadow: 0 12px 40px rgba(245, 158, 11, 0.3), 0 6px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         /* Hand Visualization */
         .hand-viz-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            background: #e0f2fe;
-            padding: 25px 15px;
-            border-radius: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 30px 20px;
+            border-radius: 20px;
             margin-top: 20px;
         }
 
@@ -489,8 +498,8 @@
         }
 
         .hand-svg {
-            width: 100%;
-            max-width: 160px;
+            width: 220px;
+            max-width: 220px;
             height: auto;
             filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.06));
         }
@@ -754,7 +763,7 @@
             }
         }
 
-        /* Motivation Banner Styles - WOW Redesign */
+        /* Motivation Banner Styles - Premium 5-Level Design */
         .motivation-banner {
             padding: 18px 28px;
             border-radius: 16px;
@@ -763,11 +772,12 @@
             font-size: 17px;
             font-weight: 700;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 14px;
+            gap: 8px;
             color: white;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 4px 10px -3px rgba(0, 0, 0, 0.1);
             animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             position: relative;
@@ -812,24 +822,45 @@
             }
         }
 
-        .motivation-excellent {
-            background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
-            border: none;
+        @keyframes pulse-critical {
+
+            0%,
+            100% {
+                opacity: 1;
+                box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.5), 0 4px 10px -3px rgba(0, 0, 0, 0.1);
+            }
+
+            50% {
+                opacity: 0.9;
+                box-shadow: 0 15px 35px -5px rgba(220, 38, 38, 0.7), 0 6px 15px -3px rgba(0, 0, 0, 0.15);
+            }
         }
 
-        .motivation-good {
-            background: linear-gradient(135deg, #ea580c 0%, #f59e0b 50%, #fbbf24 100%);
-            border: none;
+        /* 5-Level Gradient System */
+        .motivation-emerald {
+            background: linear-gradient(135deg, #34d399, #059669);
         }
 
-        .motivation-improve {
-            background: linear-gradient(135deg, #e11d48 0%, #f43f5e 50%, #fb7185 100%);
-            border: none;
+        .motivation-ocean {
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
         }
 
-        .emoji-icon {
-            font-size: 32px;
-            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+        .motivation-amber {
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+        }
+
+        .motivation-orange {
+            background: linear-gradient(135deg, #fb923c, #ea580c);
+        }
+
+        .motivation-crimson {
+            background: linear-gradient(135deg, #f87171, #dc2626);
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), pulse-critical 2s ease-in-out infinite;
+        }
+
+        .banner-main-text {
+            font-size: 17px;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -926,7 +957,43 @@
                 </div>
             </div>
 
-            <!-- Main Content Grid -->
+            <!-- Hand Visualization - Prominent Full-Width Card -->
+            <div class="hand-prominent-card">
+                <h3
+                    style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; text-align: center;">
+                    <i class="fa-solid fa-hand-dots" style="color: #f59e0b;"></i>
+                    <span data-translate="header-11-zone">จุดที่มักล้างไม่สะอาด (Frequent Unclean Zones)</span>
+                </h3>
+                <div class="hand-viz-grid">
+                    <div class="hand-view">
+                        <p style="font-size: 12px; font-weight: 800; margin-bottom: 12px; color: var(--primary-green);">
+                            หน้ามือ (Palm)</p>
+                        <svg class="hand-svg" viewBox="0 0 200 250">
+                            <path class="hand-path"
+                                d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                            <circle class="heat-glow" cx="100" cy="170" r="40" fill="var(--danger)" />
+                        </svg>
+                        <div style="font-size: 16px; font-weight: 800; color: var(--danger); margin-top:10px;">หน้า:
+                            <span id="frontAvg">31.4</span>%
+                        </div>
+                    </div>
+                    <div class="hand-view">
+                        <p style="font-size: 12px; font-weight: 800; margin-bottom: 12px; color: var(--primary-green);">
+                            หลังมือ (Back)</p>
+                        <svg class="hand-svg" viewBox="0 0 200 250">
+                            <path class="hand-path"
+                                d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
+                            <rect class="heat-glow" x="60" y="140" width="80" height="50" rx="20"
+                                fill="var(--danger)" />
+                        </svg>
+                        <div style="font-size: 16px; font-weight: 800; color: var(--danger); margin-top:10px;">หลัง:
+                            <span id="backAvg">27.8</span>%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid (Trend Chart Only) -->
             <div class="content-grid">
                 <div class="chart-col">
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;">
@@ -935,42 +1002,6 @@
                     </h3>
                     <div style="height: 300px; position: relative;">
                         <canvas id="trendChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="hand-col">
-                    <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;">
-                        <i class="fa-solid fa-hand-dots" style="color: var(--primary-green);"></i>
-                        <span data-translate="header-11-zone">จุดที่มักล้างไม่สะอาด (Frequent Unclean Zones)</span>
-                    </h3>
-                    <div class="hand-viz-grid">
-                        <div class="hand-view">
-                            <p
-                                style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-green);">
-                                หน้ามือ (Palm)</p>
-                            <svg class="hand-svg" viewBox="0 0 200 250">
-                                <path class="hand-path"
-                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                                <circle class="heat-glow" cx="100" cy="170" r="40" fill="var(--danger)" />
-                            </svg>
-                            <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">หน้า:
-                                <span id="frontAvg">31.4</span>%
-                            </div>
-                        </div>
-                        <div class="hand-view">
-                            <p
-                                style="font-size: 10px; font-weight: 800; margin-bottom: 12px; color: var(--primary-green);">
-                                หลังมือ (Back)</p>
-                            <svg class="hand-svg" viewBox="0 0 200 250">
-                                <path class="hand-path"
-                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                                <rect class="heat-glow" x="60" y="140" width="80" height="50" rx="20"
-                                    fill="var(--danger)" />
-                            </svg>
-                            <div style="font-size: 14px; font-weight: 800; color: var(--danger); margin-top:10px;">หลัง:
-                                <span id="backAvg">27.8</span>%
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1278,21 +1309,28 @@
                 renderTrendChart(deptData.trend);
                 renderRankingsTable(deptData.staff);
 
-                // Update Motivation Banner based on score
+                // Update Motivation Banner based on score - 5 Level System
                 const motivationBanner = document.getElementById('motivationBanner');
                 if (motivationBanner) {
                     const score = deptData.stats.avgScore;
                     motivationBanner.className = 'motivation-banner';
 
-                    if (score >= 80) {
-                        motivationBanner.classList.add('motivation-excellent');
-                        motivationBanner.innerHTML = '<span class="emoji-icon">🏆</span><span>สุดยอด! แผนกเราทำได้ดีมาก — รักษามาตรฐานนี้ต่อไปนะครับ! 🌟✨</span>';
+                    // 5-Level Gamification System for Department
+                    if (score >= 95) {
+                        motivationBanner.classList.add('motivation-emerald');
+                        motivationBanner.innerHTML = '<span class="banner-main-text">🏆 <strong>Perfect! (สะอาดไร้ที่ติ)</strong> — ยอดเยี่ยมสมบูรณ์แบบครับ! คุณช่วยหยุดการแพร่กระจายเชื้อได้อย่างดีเยี่ยม</span>';
+                    } else if (score >= 85) {
+                        motivationBanner.classList.add('motivation-ocean');
+                        motivationBanner.innerHTML = '<span class="banner-main-text">✨ <strong>Excellent (ทำได้ดีมาก)</strong> — มือสะอาดเกือบทั้งหมดแล้วครับ! ลองเน้นจุดเล็กๆ ที่ AI ระบุเพิ่มอีกนิดเดียว</span>';
+                    } else if (score >= 75) {
+                        motivationBanner.classList.add('motivation-amber');
+                        motivationBanner.innerHTML = '<span class="banner-main-text">👍 <strong>Good (สะอาดตามมาตรฐาน)</strong> — ล้างมือได้ดีครับ แต่อาจมีบางจุดที่ยังไม่ทั่วถึง ลองเช็กตำแหน่งสีแดงดูนะ</span>';
                     } else if (score >= 60) {
-                        motivationBanner.classList.add('motivation-good');
-                        motivationBanner.innerHTML = '<span class="emoji-icon">💪</span><span>เกือบถึงเป้าหมายแล้ว! ฮึบอีกนิดเดียว — ช่วยกันคนละไม้คนละมือนะ ✨</span>';
+                        motivationBanner.classList.add('motivation-orange');
+                        motivationBanner.innerHTML = '<span class="banner-main-text">⚠️ <strong>Caution (ต้องระวัง)</strong> — พยายามได้ดีครับ! แต่ความสะอาดระดับนี้ยังมีความเสี่ยงอยู่ อย่าลืมเช็กจุดที่ล้างยากๆ</span>';
                     } else {
-                        motivationBanner.classList.add('motivation-improve');
-                        motivationBanner.innerHTML = '<span class="emoji-icon">📉</span><span>ช่วงนี้เราการ์ดตกไปนิด — มาช่วยกันล้างมือให้ถูกวิธีเพื่อความปลอดภัยกันเถอะ! 😷❤️</span>';
+                        motivationBanner.classList.add('motivation-crimson');
+                        motivationBanner.innerHTML = '<span class="banner-main-text">🚨 <strong>Critical! (โปรดล้างใหม่)</strong> — ระวัง! ตรวจพบจุดเสี่ยงที่อาจมีเชื้อโรคตกค้างหลายตำแหน่ง แนะนำให้ล้างใหม่อีกครั้งทันที</span>';
                     }
                 }
 
