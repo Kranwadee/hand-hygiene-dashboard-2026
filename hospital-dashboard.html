@@ -2279,6 +2279,50 @@
                 });
             });
 
+            // ============================================
+            // INTERACTIVE HEATMAP UPDATE FROM TABLE
+            // ============================================
+            function updateHeatmapFromTable(frontScore, backScore) {
+                // Update the prominent hand display values
+                const frontDisplay = document.getElementById('frontAvgDisplayProminent');
+                const backDisplay = document.getElementById('backAvgDisplayProminent');
+
+                if (frontDisplay) frontDisplay.textContent = frontScore.toFixed(1);
+                if (backDisplay) backDisplay.textContent = backScore.toFixed(1);
+
+                // Helper function to get color based on score
+                function getScoreColor(score) {
+                    if (score >= 80) return 'var(--success)';
+                    if (score >= 50) return 'var(--warning)';
+                    return 'var(--danger)';
+                }
+
+                // Update heatmap glow colors based on scores
+                const heatElements = {
+                    'heatPalmProminent': frontScore,
+                    'heatPawProminent': frontScore,
+                    'heatThumbsProminent': frontScore,
+                    'heatBackhandProminent': backScore,
+                    'heatBetweenProminent': backScore,
+                    'heatNailsProminent': backScore
+                };
+
+                Object.entries(heatElements).forEach(([id, score]) => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.setAttribute('fill', getScoreColor(score));
+                    }
+                });
+
+                // Update text color for front/back displays
+                if (frontDisplay) {
+                    frontDisplay.parentElement.style.color = getScoreColor(frontScore);
+                }
+                if (backDisplay) {
+                    backDisplay.parentElement.style.color = getScoreColor(backScore);
+                }
+            }
+
             function openDetailModal(deptName) {
                 // Navigate to Department Dashboard with department parameter and IC source
                 window.location.href = `department-dashboard.html?dept=${encodeURIComponent(deptName)}&source=ic`;
@@ -2366,35 +2410,35 @@
                     `<div><strong>${d.name}</strong> - ${d.avg}%</div>`
                 ).join('');
 
-                // Update Motivational Banner based on hospital-wide score - 5 Level Risk Status System
+                // Update Motivational Banner based on hospital-wide score - 5 Level Humanized System
                 const motivationalBanner = document.getElementById('motivational-banner');
                 if (motivationalBanner) {
                     const score = data.overall;
                     motivationalBanner.className = 'motivational-banner';
 
-                    // 5-Level Risk Status System for Hospital
-                    if (score >= 95) {
+                    // 5-Level Humanized Thai Message System for Hospital
+                    if (score >= 90) {
                         motivationalBanner.classList.add('emerald');
-                        motivationalBanner.innerHTML = '<span class="banner-main-text">🛡️ <strong>Optimal Safety (ดีเยี่ยม)</strong> — มาตรฐานการป้องกันสูงสุด ความเสี่ยงต่อการแพร่กระจายเชื้อต่ำมาก (Chain of Infection Broken)</span>';
-                    } else if (score >= 85) {
-                        motivationalBanner.classList.add('ocean');
-                        motivationalBanner.innerHTML = '<span class="banner-main-text">✅ <strong>High Compliance (ผ่านเกณฑ์ดี)</strong> — บุคลากรส่วนใหญ่ปฏิบัติได้ถูกต้อง แนะนำให้รักษาความสม่ำเสมอ</span>';
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">🏆 Perfect !!! คุณช่วยลดโอกาสการแพร่กระจายเชื้อโรคได้อย่างสมบูรณ์แบบ</span>';
                     } else if (score >= 75) {
-                        motivationalBanner.classList.add('amber');
-                        motivationalBanner.innerHTML = '<span class="banner-main-text">👌 <strong>Acceptable (อยู่ในเกณฑ์ยอมรับได้)</strong> — ผ่านมาตรฐาน แต่พบจุดบกพร่องเล็กน้อยในบางยูนิต ควรเฝ้าระวัง</span>';
+                        motivationalBanner.classList.add('ocean');
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">✨ ทำได้ดี !!! มือสะอาดเกือบทั้งหมดแล้ว พยายามเก็บรายละเอียดอีกนิดนะ</span>';
                     } else if (score >= 60) {
+                        motivationalBanner.classList.add('amber');
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">👍 ความสะอาดอยู่ในเกณฑ์มาตรฐาน อย่าลืมเช็คจุดที่ล้างยากๆ ด้วยล่ะ</span>';
+                    } else if (score >= 50) {
                         motivationalBanner.classList.add('orange');
-                        motivationalBanner.innerHTML = '<span class="banner-main-text">⚠️ <strong>Warning (ระดับเฝ้าระวัง)</strong> — มาตรฐานเริ่มลดต่ำลง มีโอกาสเพิ่มขึ้นในการแพร่กระจายเชื้อ (Risk of Cross-contamination)</span>';
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">⚠️ พยายามได้ดี !!! แต่ความสะอาดระดับนี้ยังมีความเสี่ยงอยู่ ลองเก็บรายละเอียดดูอีกครั้งนะ!</span>';
                     } else {
                         motivationalBanner.classList.add('crimson');
-                        motivationalBanner.innerHTML = '<span class="banner-main-text">⛔ <strong>Critical Risk (ระดับวิกฤต)</strong> — ตรวจพบจุดเสี่ยงสะสมรุนแรง จำเป็นต้องเข้าตรวจสอบหน้างานและทบทวนแนวทางปฏิบัติทันที</span>';
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">🚨 ระวัง!!! ตรวจพบจุดเสี่ยงที่อาจมีเชื้อโรคปะปนหลายตำแหน่ง</span>';
                     }
                 }
 
 
                 const tbody = document.getElementById('leaderboardBody');
                 tbody.innerHTML = data.leaderboard.map(item => `
-                <tr onclick="openDetailModal('${item.name}')">
+                <tr onclick="openDetailModal('${item.name}')" onmouseover="updateHeatmapFromTable(${item.f}, ${item.b})" style="cursor: pointer;">
                     <td><strong>${item.name}</strong></td>
                     <td>${item.count}</td>
                     <td style="font-weight:700; color: ${item.avg >= 80 ? 'var(--success)' : 'var(--danger)'}">${item.avg}%</td>
