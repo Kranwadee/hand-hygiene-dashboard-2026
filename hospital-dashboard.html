@@ -261,8 +261,13 @@
             gap: 10px;
         }
 
+        /* Dashboard Content - Centered Container */
         #dashboardContent {
             display: none;
+            max-width: 1600px;
+            margin: 0 auto !important;
+            width: 100%;
+            padding: 0 15px;
         }
 
         /* Nav & Action UI */
@@ -400,8 +405,8 @@
         .kpi-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 25px;
         }
 
         .kpi-box {
@@ -444,9 +449,10 @@
         /* --- THE SIDE-BY-SIDE CONTAINER --- */
         .main-analysis-row {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 32px !important;
+            margin: 0 auto 40px auto !important;
             min-height: 520px;
+            width: 100%;
         }
 
         .chart-side {
@@ -458,6 +464,7 @@
             display: flex;
             flex-direction: column;
             min-width: 0;
+            width: 100%;
             box-shadow: var(--shadow-md);
             transition: all 0.3s ease;
         }
@@ -580,49 +587,104 @@
             max-width: 220px;
         }
 
-        /* Motivational Banner */
+        /* Motivational Banner - Premium 5-Level Design */
         .motivational-banner {
-            padding: 16px 24px;
+            padding: 18px 28px;
             border-radius: 16px;
             margin-bottom: 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            font-size: 16px;
+            gap: 8px;
+            font-size: 17px;
             font-weight: 700;
             text-align: center;
-            animation: fadeInBanner 0.5s ease-out;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 4px 10px -3px rgba(0, 0, 0, 0.1);
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes fadeInBanner {
-            from {
+        .motivational-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.7);
                 opacity: 0;
-                transform: translateY(-10px);
             }
 
-            to {
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
                 opacity: 1;
-                transform: translateY(0);
             }
         }
 
-        .motivational-banner.excellent {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            color: #065f46;
-            border: 2px solid #10b981;
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+
+            50%,
+            100% {
+                left: 100%;
+            }
         }
 
-        .motivational-banner.good {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            color: #92400e;
-            border: 2px solid #f59e0b;
+        @keyframes pulse-critical {
+
+            0%,
+            100% {
+                opacity: 1;
+                box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.5), 0 4px 10px -3px rgba(0, 0, 0, 0.1);
+            }
+
+            50% {
+                opacity: 0.9;
+                box-shadow: 0 15px 35px -5px rgba(220, 38, 38, 0.7), 0 6px 15px -3px rgba(0, 0, 0, 0.15);
+            }
         }
 
-        .motivational-banner.needs-improvement {
-            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-            color: #9d174d;
-            border: 2px solid #ec4899;
+        /* 5-Level Gradient System */
+        .motivational-banner.emerald {
+            background: linear-gradient(135deg, #34d399, #059669);
+        }
+
+        .motivational-banner.ocean {
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+        }
+
+        .motivational-banner.amber {
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+        }
+
+        .motivational-banner.orange {
+            background: linear-gradient(135deg, #fb923c, #ea580c);
+        }
+
+        .motivational-banner.crimson {
+            background: linear-gradient(135deg, #f87171, #dc2626);
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), pulse-critical 2s ease-in-out infinite;
+        }
+
+        .banner-main-text {
+            font-size: 17px;
+            font-weight: 700;
         }
 
         /* Full-width chart side */
@@ -636,11 +698,23 @@
             flex-direction: column;
             box-shadow: var(--shadow-md);
             transition: all 0.3s ease;
+            margin-bottom: 30px;
         }
 
         .chart-side-full:hover {
             box-shadow: var(--shadow-lg);
             border-color: var(--primary-blue);
+        }
+
+        /* Chart Container Spacing */
+        .chart-container-responsive {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .chart-container-responsive canvas {
+            margin: auto;
+            display: block;
         }
 
         #handTooltip {
@@ -661,23 +735,54 @@
         /* Secondary Analytics Row */
         .analytics-row-secondary {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px !important;
+            width: 100%;
+            margin-bottom: 40px !important;
         }
 
         .card {
             background: white;
-            padding: 25px;
+            padding: 35px !important;
             border-radius: 24px;
             border: 1px solid #e2e8f0;
             box-shadow: var(--shadow-md);
             transition: all 0.3s ease;
+            width: 100%;
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
             box-shadow: var(--shadow-lg);
             border-color: var(--primary-blue);
+        }
+
+        /* Mobile Responsive for Analytics Rows */
+        @media (max-width: 1200px) {
+            .main-analysis-row {
+                flex-direction: column;
+            }
+
+            .analytics-row-secondary {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .analytics-row-secondary {
+                grid-template-columns: 1fr;
+            }
+
+            .main-analysis-row {
+                flex-direction: column;
+            }
+
+            .chart-side,
+            .hand-side {
+                min-width: unset;
+            }
         }
 
         /* Accordion Styles */
@@ -1598,9 +1703,7 @@
                     <h3 style="font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"><i
                             class="fa-solid fa-ranking-star" style="color: var(--primary-blue);"></i>
                         ค่าเฉลี่ยความสะอาดแยกตามแผนก (Average Score by Department)</h3>
-                    <div class="chart-container-responsive"
-                        style="position: relative; height: 400px; width: 100%; overflow: hidden;"><canvas
-                            id="hourChart"></canvas></div>
+                    <div style="position: relative; height: 450px; width: 100%;"><canvas id="hourChart"></canvas></div>
                 </div>
             </div>
 
@@ -1643,6 +1746,8 @@
         <script>
             let csvData = [];
             let trendChartInstance = null;
+            let pieChartInstance = null;
+            let barChartInstance = null;
 
 
             // ============================================
@@ -2253,6 +2358,31 @@
                     `<div><strong>${d.name}</strong> - ${d.avg}%</div>`
                 ).join('');
 
+                // Update Motivational Banner based on hospital-wide score - 5 Level Risk Status System
+                const motivationalBanner = document.getElementById('motivational-banner');
+                if (motivationalBanner) {
+                    const score = data.overall;
+                    motivationalBanner.className = 'motivational-banner';
+
+                    // 5-Level Risk Status System for Hospital
+                    if (score >= 95) {
+                        motivationalBanner.classList.add('emerald');
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">🛡️ <strong>Optimal Safety (ดีเยี่ยม)</strong> — มาตรฐานการป้องกันสูงสุด ความเสี่ยงต่อการแพร่กระจายเชื้อต่ำมาก (Chain of Infection Broken)</span>';
+                    } else if (score >= 85) {
+                        motivationalBanner.classList.add('ocean');
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">✅ <strong>High Compliance (ผ่านเกณฑ์ดี)</strong> — บุคลากรส่วนใหญ่ปฏิบัติได้ถูกต้อง แนะนำให้รักษาความสม่ำเสมอ</span>';
+                    } else if (score >= 75) {
+                        motivationalBanner.classList.add('amber');
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">👌 <strong>Acceptable (อยู่ในเกณฑ์ยอมรับได้)</strong> — ผ่านมาตรฐาน แต่พบจุดบกพร่องเล็กน้อยในบางยูนิต ควรเฝ้าระวัง</span>';
+                    } else if (score >= 60) {
+                        motivationalBanner.classList.add('orange');
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">⚠️ <strong>Warning (ระดับเฝ้าระวัง)</strong> — มาตรฐานเริ่มลดต่ำลง มีโอกาสเพิ่มขึ้นในการแพร่กระจายเชื้อ (Risk of Cross-contamination)</span>';
+                    } else {
+                        motivationalBanner.classList.add('crimson');
+                        motivationalBanner.innerHTML = '<span class="banner-main-text">⛔ <strong>Critical Risk (ระดับวิกฤต)</strong> — ตรวจพบจุดเสี่ยงสะสมรุนแรง จำเป็นต้องเข้าตรวจสอบหน้างานและทบทวนแนวทางปฏิบัติทันที</span>';
+                    }
+                }
+
 
                 const tbody = document.getElementById('leaderboardBody');
                 tbody.innerHTML = data.leaderboard.map(item => `
@@ -2268,7 +2398,9 @@
 
                 // Don't create trendChart here - it's managed by updateTrendChart() function
 
-                new Chart(document.getElementById('positionChart'), {
+                // Destroy old chart instances before creating new ones
+                if (pieChartInstance) pieChartInstance.destroy();
+                pieChartInstance = new Chart(document.getElementById('positionChart'), {
                     type: 'doughnut',
                     data: {
                         labels: ['ดีมาก (80-100%)', 'ปกติ (50-79%)', 'วิกฤต (<50%)'],
@@ -2288,7 +2420,9 @@
                     }
                 });
 
-                new Chart(document.getElementById('hourChart'), {
+                // Destroy old bar chart instance before creating new one
+                if (barChartInstance) barChartInstance.destroy();
+                barChartInstance = new Chart(document.getElementById('hourChart'), {
                     type: 'bar',
                     data: {
                         labels: data.gapLabels,
