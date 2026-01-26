@@ -804,16 +804,19 @@
             }
         }
 
-        /* Hand Visualization */
+        /* Hand Visualization - Department Dashboard Style */
         .hand-visual {
             display: flex;
-            justify-content: center;
-            gap: 50px;
+            justify-content: space-around;
+            align-items: center;
+            gap: 60px;
             flex-wrap: wrap;
-            padding: 30px;
-            background: #f8fafc;
-            border-radius: 16px;
-            margin-top: 20px;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 20px;
+            margin-top: 30px;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
         }
 
         .hand-view {
@@ -821,9 +824,15 @@
         }
 
         .hand-svg {
-            width: 280px;
+            width: 300px;
+            max-width: 300px;
             height: auto;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+            transition: transform 0.3s ease;
+        }
+
+        .hand-svg:hover {
+            transform: scale(1.03);
         }
 
         .hand-path {
@@ -1354,24 +1363,22 @@
             }
         }
 
-        /* Motivation Banner Styles - WOW Redesign */
+        /* Motivation Banner Styles - Compact Professional Design */
         .motivation-banner {
-            padding: 18px 28px;
-            border-radius: 16px;
-            margin-bottom: 20px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 15px 0 25px 0;
+            color: white !important;
             text-align: center;
-            font-size: 17px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 4px 10px -3px rgba(0, 0, 0, 0.1);
-            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             position: relative;
             overflow: hidden;
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
         }
 
         .motivation-banner::before {
@@ -1412,24 +1419,77 @@
             }
         }
 
-        .motivation-excellent {
-            background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
-            border: none;
+        @keyframes pulse-red {
+
+            0%,
+            100% {
+                opacity: 1;
+                box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
+            }
+
+            50% {
+                opacity: 0.9;
+                box-shadow: 0 12px 25px rgba(220, 38, 38, 0.6);
+            }
         }
 
-        .motivation-good {
-            background: linear-gradient(135deg, #ea580c 0%, #f59e0b 50%, #fbbf24 100%);
-            border: none;
+        /* Gradient 5 ระดับ (เหมือน Department เป๊ะๆ) */
+        .bg-perfect {
+            background: linear-gradient(135deg, #059669, #10b981) !important;
         }
 
-        .motivation-improve {
-            background: linear-gradient(135deg, #e11d48 0%, #f43f5e 50%, #fb7185 100%);
-            border: none;
+        .bg-excellent {
+            background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
         }
 
-        .emoji-icon {
-            font-size: 32px;
-            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+        .bg-good {
+            background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+        }
+
+        .bg-caution {
+            background: linear-gradient(135deg, #ea580c, #fb923c) !important;
+        }
+
+        .bg-critical {
+            background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+            animation: pulse-red 2s infinite;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner-content h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.3px;
+        }
+
+        .banner-content p {
+            margin: 3px 0 0 0;
+            font-size: 14px;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        /* กล่อง AI Insight (ฟีเจอร์พิเศษของหน้า Personal) */
+        .ai-insight {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
@@ -2090,20 +2150,31 @@
                 renderTrendChart(records);
                 renderHandHeatmap(zoneAverages);
 
-                // Update Motivation Banner based on score
+                // Update Motivation Banner based on score - 5 Level System (KPI Target: 80%)
                 const motivationBanner = document.getElementById('motivationBanner');
                 if (motivationBanner) {
+                    // Remove all previous bg classes and reset
                     motivationBanner.className = 'motivation-banner';
 
-                    if (avgScore >= 80) {
-                        motivationBanner.classList.add('motivation-excellent');
-                        motivationBanner.innerHTML = '<span class="emoji-icon">🏆</span><span>สุดยอด! คุณล้างมือได้ดีมาก — รักษามาตรฐานนี้ต่อไปนะครับ! 🌟✨</span>';
-                    } else if (avgScore >= 60) {
-                        motivationBanner.classList.add('motivation-good');
-                        motivationBanner.innerHTML = '<span class="emoji-icon">💪</span><span>เกือบถึงเป้าหมายแล้ว! ฮึบอีกนิดเดียว — คุณทำได้! ✨</span>';
+                    // Parse avgScore as float to fix comparison issues
+                    const score = parseFloat(avgScore);
+
+                    // 5-Level Gamification System with bg-* classes (80% = Pass Threshold)
+                    if (score >= 95) {
+                        motivationBanner.classList.add('bg-perfect');
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>🏆 Perfect! (สะอาดไร้ที่ติ)</h2><p>ยอดเยี่ยมสมบูรณ์แบบครับ! คุณช่วยหยุดการแพร่กระจายเชื้อได้อย่างดีเยี่ยม</p></div>`;
+                    } else if (score >= 85) {
+                        motivationBanner.classList.add('bg-excellent');
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>✨ Excellent (ทำได้ดีมาก)</h2><p>ผ่านเกณฑ์ฉลุยครับ รักษามาตรฐานไว้นะครับ</p></div>`;
+                    } else if (score >= 80) {
+                        motivationBanner.classList.add('bg-good');
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>✅ Good (ผ่านเกณฑ์มาตรฐาน)</h2><p>ทำได้ดีครับ! ผ่านเกณฑ์ 80% แล้ว รักษาความสม่ำเสมอไว้นะครับ</p></div>`;
+                    } else if (score >= 60) {
+                        motivationBanner.classList.add('bg-caution');
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>⚠️ Almost there! (อีกนิดเดียวจะผ่าน)</h2><p>คะแนนยังไม่ถึง 80% ครับ ลองเน้นฟอก <strong>จุดที่ยังไม่ทั่วถึง</strong> เพิ่มอีกนิดนะครับ สู้ๆ!</p></div>`;
                     } else {
-                        motivationBanner.classList.add('motivation-improve');
-                        motivationBanner.innerHTML = '<span class="emoji-icon">📉</span><span>มาปรับปรุงการล้างมือให้ดีขึ้นด้วยกันนะครับ — เพื่อสุขภาพของคุณและผู้ป่วย! 😷❤️</span>';
+                        motivationBanner.classList.add('bg-critical');
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>🚨 Critical (ต้องล้างใหม่)</h2><p>ความสะอาดต่ำกว่าเกณฑ์มาก เสี่ยงต่อเชื้อโรค รบกวนล้างใหม่อย่างละเอียดเน้น <strong>จุดเสี่ยง</strong> ครับ</p></div>`;
                     }
                 }
 
