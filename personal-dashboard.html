@@ -859,6 +859,53 @@
             pointer-events: none;
         }
 
+        /* Interactive Zone Styles - Hospital Dashboard Style */
+        .interactive-zone {
+            cursor: pointer;
+            transition: all 0.3s;
+            stroke: transparent;
+            stroke-width: 15px;
+        }
+
+        .interactive-zone:hover {
+            stroke: rgba(245, 158, 11, 0.5);
+            stroke-width: 4px;
+        }
+
+        /* Hand Tooltip Styles - Hospital Dashboard Style */
+        .hand-tooltip {
+            position: absolute;
+            background: #0f172a;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 9999;
+            transform: translate(-50%, -100%);
+            margin-top: -10px;
+            white-space: nowrap;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .hand-tooltip.visible {
+            opacity: 1;
+        }
+
+        /* Hand Prominent Card - Yellow Background */
+        .hand-prominent-card {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fffbeb 100%) !important;
+            border: 3px solid #f59e0b !important;
+            padding: 30px;
+            border-radius: 28px;
+            position: relative;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
         /* Zones List View with Progress Bars */
         .zones-list-container {
             display: flex;
@@ -1566,12 +1613,21 @@
                     <span>ช่วงนี้เราการ์ดตกไปนิด — มาช่วยกันล้างมือให้ถูกวิธีเพื่อความปลอดภัยกันเถอะ! 😷❤️</span>
                 </div>
 
-                <!-- Hand Visualization - Frequent Unclean Zones (Featured) -->
-                <div class="card">
-                    <h2><i class="fa-solid fa-hand"></i> <span
-                            data-translate="header-risk-overview">จุดที่มักล้างไม่สะอาด (Frequent Unclean Zones)</span>
+                <!-- Hand Visualization - Prominent Yellow Card (Hospital Dashboard Style) -->
+                <div class="hand-prominent-card" id="handProminentCard">
+                    <h2
+                        style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; text-align: center;">
+                        <i class="fa-solid fa-hand-dots" style="color: #f59e0b;"></i>
+                        <span data-translate="header-risk-overview">จุดที่มักล้างไม่สะอาด (Frequent Unclean
+                            Zones)</span>
                     </h2>
-                    <div class="hand-visual">
+
+                    <!-- Hand Tooltip -->
+                    <div id="handTooltip" class="hand-tooltip"></div>
+
+                    <div class="hand-visual" id="handVisualCard"
+                        style="position: relative; background: rgba(255,255,255,0.7); border-radius: 20px; padding: 30px 20px;">
+
                         <div class="hand-view">
                             <p style="font-size: 14px; font-weight: 700; color: var(--text-sub); margin-bottom: 15px;">
                                 หน้ามือ (Palm)</p>
@@ -1635,6 +1691,10 @@
                                 </div>
                                 <span style="color: var(--text-sub); font-weight: 600;">80%+ (ดีเยี่ยม)</span>
                             </div>
+                        </div>
+                        <div style="margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px;">
+                            <span style="font-size: 11px; color: #64748b; font-style: italic;"><i
+                                    class="fa-solid fa-hand-pointer"></i> Hover บนโซนเพื่อดูคะแนน</span>
                         </div>
                     </div>
                 </div>
@@ -2150,7 +2210,7 @@
                 renderTrendChart(records);
                 renderHandHeatmap(zoneAverages);
 
-                // Update Motivation Banner based on score - 5 Level System (KPI Target: 80%)
+                // Update Motivation Banner based on score - 5 Level Humanized System (KPI Target: 80%)
                 const motivationBanner = document.getElementById('motivationBanner');
                 if (motivationBanner) {
                     // Remove all previous bg classes and reset
@@ -2159,22 +2219,22 @@
                     // Parse avgScore as float to fix comparison issues
                     const score = parseFloat(avgScore);
 
-                    // 5-Level Gamification System with bg-* classes (80% = Pass Threshold)
-                    if (score >= 95) {
+                    // 5-Level Humanized Thai Message System (Individual Encouragement Context)
+                    if (score >= 90) {
                         motivationBanner.classList.add('bg-perfect');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>🏆 Perfect! (สะอาดไร้ที่ติ)</h2><p>ยอดเยี่ยมสมบูรณ์แบบครับ! คุณช่วยหยุดการแพร่กระจายเชื้อได้อย่างดีเยี่ยม</p></div>`;
-                    } else if (score >= 85) {
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>🏆 Perfect !!! คุณช่วยลดโอกาสการแพร่กระจายเชื้อโรคได้อย่างสมบูรณ์แบบ</h2></div>`;
+                    } else if (score >= 75) {
                         motivationBanner.classList.add('bg-excellent');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>✨ Excellent (ทำได้ดีมาก)</h2><p>ผ่านเกณฑ์ฉลุยครับ รักษามาตรฐานไว้นะครับ</p></div>`;
-                    } else if (score >= 80) {
-                        motivationBanner.classList.add('bg-good');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>✅ Good (ผ่านเกณฑ์มาตรฐาน)</h2><p>ทำได้ดีครับ! ผ่านเกณฑ์ 80% แล้ว รักษาความสม่ำเสมอไว้นะครับ</p></div>`;
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>✨ ทำได้ดี !!! มือสะอาดเกือบทั้งหมดแล้ว พยายามเก็บรายละเอียดอีกนิดนะ</h2></div>`;
                     } else if (score >= 60) {
+                        motivationBanner.classList.add('bg-good');
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>👍 ความสะอาดอยู่ในเกณฑ์มาตรฐาน อย่าลืมเช็คจุดที่ล้างยากๆ ด้วยล่ะ</h2></div>`;
+                    } else if (score >= 50) {
                         motivationBanner.classList.add('bg-caution');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>⚠️ Almost there! (อีกนิดเดียวจะผ่าน)</h2><p>คะแนนยังไม่ถึง 80% ครับ ลองเน้นฟอก <strong>จุดที่ยังไม่ทั่วถึง</strong> เพิ่มอีกนิดนะครับ สู้ๆ!</p></div>`;
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>⚠️ พยายามได้ดี !!! แต่ความสะอาดระดับนี้ยังมีความเสี่ยงอยู่ ลองเก็บรายละเอียดดูอีกครั้งนะ!</h2></div>`;
                     } else {
                         motivationBanner.classList.add('bg-critical');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>🚨 Critical (ต้องล้างใหม่)</h2><p>ความสะอาดต่ำกว่าเกณฑ์มาก เสี่ยงต่อเชื้อโรค รบกวนล้างใหม่อย่างละเอียดเน้น <strong>จุดเสี่ยง</strong> ครับ</p></div>`;
+                        motivationBanner.innerHTML = `<div class="banner-content"><h2>🚨 ระวัง!!! ตรวจพบจุดเสี่ยงที่อาจมีเชื้อโรคปะปนหลายตำแหน่ง</h2></div>`;
                     }
                 }
 
@@ -2441,6 +2501,10 @@
                 const frontDefs = frontSvg.querySelector('defs');
                 const backDefs = backSvg.querySelector('defs');
 
+                // Tooltip and card references
+                const tooltip = document.getElementById('handTooltip');
+                const handCard = document.getElementById('handProminentCard');
+
                 // Helper functions
                 const getHeatColor = (score) => {
                     if (score >= 80) return '#10b981';
@@ -2452,6 +2516,36 @@
                     if (score >= 80) return 0.4;
                     if (score >= 60) return 0.65;
                     return 0.85;
+                };
+
+                // Helper function for tooltip color based on score
+                const getScoreColor = (score) => {
+                    if (score >= 80) return 'var(--success)';
+                    if (score >= 60) return 'var(--warning)';
+                    return 'var(--danger)';
+                };
+
+                // Add event listeners to a circle element
+                const addCircleEventListeners = (circle, zoneName, score) => {
+                    circle.addEventListener('mouseenter', (e) => {
+                        if (tooltip) {
+                            const color = getScoreColor(parseFloat(score));
+                            tooltip.innerHTML = `${zoneName}: <span style="color:${color};font-weight:800;">${score}%</span>`;
+                            tooltip.classList.add('visible');
+                        }
+                    });
+                    circle.addEventListener('mousemove', (e) => {
+                        if (tooltip && handCard) {
+                            const rect = handCard.getBoundingClientRect();
+                            tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+                            tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+                        }
+                    });
+                    circle.addEventListener('mouseleave', () => {
+                        if (tooltip) {
+                            tooltip.classList.remove('visible');
+                        }
+                    });
                 };
 
                 // Render front hand zones
@@ -2478,10 +2572,12 @@
                     circle.setAttribute('r', zone.r);
                     circle.setAttribute('fill', `url(#${gradientId})`);
                     circle.setAttribute('filter', 'url(#glow)');
+                    circle.setAttribute('data-zone', zone.name);
+                    circle.setAttribute('data-score', score);
+                    circle.style.cursor = 'pointer';
 
-                    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-                    title.textContent = `${zone.name}: ${score}%`;
-                    circle.appendChild(title);
+                    // Add hover event listeners
+                    addCircleEventListeners(circle, zone.name, score);
 
                     frontSvg.appendChild(circle);
                 });
@@ -2510,10 +2606,12 @@
                     circle.setAttribute('r', zone.r);
                     circle.setAttribute('fill', `url(#${gradientId})`);
                     circle.setAttribute('filter', 'url(#glow2)');
+                    circle.setAttribute('data-zone', zone.name);
+                    circle.setAttribute('data-score', score);
+                    circle.style.cursor = 'pointer';
 
-                    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-                    title.textContent = `${zone.name}: ${score}%`;
-                    circle.appendChild(title);
+                    // Add hover event listeners
+                    addCircleEventListeners(circle, zone.name, score);
 
                     backSvg.appendChild(circle);
                 });
