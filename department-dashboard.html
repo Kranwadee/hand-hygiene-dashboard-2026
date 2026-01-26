@@ -969,31 +969,7 @@
                 <span>ช่วงนี้เราการ์ดตกไปนิด — มาช่วยกันล้างมือให้ถูกวิธีเพื่อความปลอดภัยกันเถอะ! 😷❤️</span>
             </div>
 
-            <!-- KPI Row -->
-            <div class="kpi-row">
-                <div class="kpi-box">
-                    <div class="kpi-label">ค่าเฉลี่ยความสะอาดแผนก (Department Average Score)</div>
-                    <div class="kpi-value" id="deptAvg">0%</div>
-                    <div class="kpi-sub">Department Average</div>
-                </div>
-                <div class="kpi-box">
-                    <div class="kpi-label">ร้อยละการล้างผ่านเกณฑ์ในแผนก (% Pass Rate within Dept)</div>
-                    <div class="kpi-value" id="deptPass">12.5%</div>
-                    <div class="kpi-sub">Compliance Rate</div>
-                </div>
-                <div class="kpi-box">
-                    <div class="kpi-label">จำนวนครั้งการล้างมือ (Total Washing Count)</div>
-                    <div class="kpi-value" id="deptLogs">0</div>
-                    <div class="kpi-sub">Total Records</div>
-                </div>
-                <div class="kpi-box">
-                    <div class="kpi-label">สถานะเทียบกับเป้าหมาย (Status vs Target)</div>
-                    <div class="kpi-value" id="deptStatus" style="font-size: 22px;">-</div>
-                    <div class="kpi-sub">Target: 80%</div>
-                </div>
-            </div>
-
-            <!-- Hand Visualization - Prominent Full-Width Card -->
+            <!-- Hand Visualization - Prominent Full-Width Card (MOVED HERE) -->
             <div class="hand-prominent-card" id="handProminentCard" style="position: relative;">
                 <h3
                     style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; text-align: center;">
@@ -1028,7 +1004,7 @@
                                 data-zone="Middle นิ้วกลาง" />
                         </svg>
                         <div style="font-size: 16px; font-weight: 800; color: var(--danger); margin-top:10px;">หน้า:
-                            <span id="frontAvg">31.4</span>%
+                            <span id="frontAvg">0</span>%
                         </div>
                     </div>
                     <div class="hand-view">
@@ -1054,7 +1030,7 @@
                                 data-zone="Pinky นิ้วก้อย" />
                         </svg>
                         <div style="font-size: 16px; font-weight: 800; color: var(--danger); margin-top:10px;">หลัง:
-                            <span id="backAvg">27.8</span>%
+                            <span id="backAvg">0</span>%
                         </div>
                     </div>
                 </div>
@@ -1086,6 +1062,30 @@
                         <span style="font-size: 11px; color: #64748b; font-style: italic;"><i
                                 class="fa-solid fa-hand-pointer"></i> Hover บนโซนเพื่อดูคะแนน</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- KPI Row -->
+            <div class="kpi-row">
+                <div class="kpi-box">
+                    <div class="kpi-label">ค่าเฉลี่ยความสะอาดแผนก (Department Average Score)</div>
+                    <div class="kpi-value" id="deptAvg">0%</div>
+                    <div class="kpi-sub">Department Average</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-label">ร้อยละการล้างผ่านเกณฑ์ในแผนก (% Pass Rate within Dept)</div>
+                    <div class="kpi-value" id="deptPass">12.5%</div>
+                    <div class="kpi-sub">Compliance Rate</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-label">จำนวนครั้งการล้างมือ (Total Washing Count)</div>
+                    <div class="kpi-value" id="deptLogs">0</div>
+                    <div class="kpi-sub">Total Records</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-label">สถานะเทียบกับเป้าหมาย (Status vs Target)</div>
+                    <div class="kpi-value" id="deptStatus" style="font-size: 22px;">-</div>
+                    <div class="kpi-sub">Target: 80%</div>
                 </div>
             </div>
 
