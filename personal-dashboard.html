@@ -2667,7 +2667,8 @@
             // ============================================
             function handleLogout() {
                 sessionStorage.clear();
-                location.reload();
+                // Redirect to index.html for consistent behavior
+                window.location.href = 'index.html';
             }
 
             // ============================================
