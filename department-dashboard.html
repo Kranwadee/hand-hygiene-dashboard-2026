@@ -46,120 +46,6 @@
             color: var(--gray-800);
         }
 
-        /* ===== LOGIN OVERLAY ===== */
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 50%, #047857 100%);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .login-overlay.hidden {
-            display: none;
-        }
-
-        .login-card {
-            background: var(--white);
-            border-radius: 30px;
-            padding: 50px 40px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: var(--shadow-xl);
-            text-align: center;
-        }
-
-        .login-logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
-            font-size: 36px;
-            color: var(--white);
-            box-shadow: 0 10px 30px -5px rgba(16, 185, 129, 0.4);
-        }
-
-        .login-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--gray-800);
-            margin-bottom: 8px;
-        }
-
-        .login-subtitle {
-            font-size: 0.9rem;
-            color: var(--gray-500);
-            margin-bottom: 32px;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 16px 20px;
-            background: var(--gray-100);
-            border: 2px solid transparent;
-            border-radius: 14px;
-            font-family: 'Prompt', sans-serif;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        .login-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: var(--white);
-        }
-
-        .login-input::placeholder {
-            color: var(--gray-500);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none;
-            border-radius: 14px;
-            color: var(--white);
-            font-family: 'Prompt', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 8px;
-        }
-
-        .login-btn:hover {
-            transform: scale(1.02);
-            filter: brightness(1.1);
-        }
-
-        .login-error {
-            color: var(--danger);
-            font-size: 0.85rem;
-            margin-top: 12px;
-            display: none;
-        }
-
-        .login-error.show {
-            display: block;
-        }
-
         /* ===== APP LAYOUT ===== */
         .app-layout {
             display: grid;
@@ -501,118 +387,176 @@
             height: 200px;
         }
 
-        /* Bottom Grid */
+        /* ===== BOTTOM GRID - LEADERBOARD LAYOUT ===== */
         .bottom-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 65fr 35fr;
             gap: 20px;
+            height: 450px;
         }
 
+        /* Chart Section */
         .section-chart {
-            min-height: 300px;
             display: flex;
             flex-direction: column;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .section-chart .card-header {
+            flex-shrink: 0;
         }
 
         .section-chart .chart-container {
             flex: 1;
-            min-height: 220px;
+            min-height: 0;
+            position: relative;
         }
 
         .chart-container {
             position: relative;
+            height: 100%;
         }
 
-        /* Staff Table */
-        .section-table {
-            min-height: 300px;
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* ===== LEADERBOARD SECTION ===== */
+        .section-leaderboard {
             display: flex;
             flex-direction: column;
+            height: 100%;
+            min-height: 0;
+            overflow: hidden;
         }
 
-        .table-container {
+        .section-leaderboard .card-header {
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 12px;
+        }
+
+        .leaderboard-container {
             flex: 1;
             overflow-y: auto;
-            border: 1px solid var(--gray-200);
-            border-radius: 10px;
+            min-height: 0;
         }
 
-        table {
+        /* Thin scrollbar for leaderboard */
+        .leaderboard-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .leaderboard-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .leaderboard-container::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+        }
+
+        .leaderboard-container::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        /* Leaderboard Table */
+        .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        thead {
+        .leaderboard-table thead {
             position: sticky;
             top: 0;
-            background: var(--gray-100);
+            background: var(--white);
             z-index: 1;
         }
 
-        th,
-        td {
-            padding: 12px 14px;
+        .leaderboard-table th {
+            padding: 10px 8px;
             text-align: left;
-            font-size: 0.85rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             border-bottom: 1px solid var(--gray-200);
         }
 
-        th {
-            font-weight: 600;
-            color: var(--gray-700);
+        .leaderboard-table td {
+            padding: 10px 8px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--gray-100);
+            vertical-align: middle;
         }
 
-        tbody tr:hover {
+        .leaderboard-table tbody tr:hover {
             background: var(--gray-50);
         }
 
+        .leaderboard-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Rank Badge (Square/Rounded) */
         .rank-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
-        .rank-1 {
+        .rank-gold {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: white;
+            box-shadow: 0 2px 6px rgba(251, 191, 36, 0.4);
         }
 
-        .rank-2 {
-            background: linear-gradient(135deg, #9ca3af, #6b7280);
+        .rank-silver {
+            background: linear-gradient(135deg, #e5e7eb, #9ca3af);
             color: white;
+            box-shadow: 0 2px 6px rgba(156, 163, 175, 0.4);
         }
 
-        .rank-3 {
-            background: linear-gradient(135deg, #d97706, #b45309);
+        .rank-bronze {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
             color: white;
+            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.4);
         }
 
-        .rank-other {
-            background: var(--gray-200);
+        .rank-default {
+            background: var(--gray-100);
             color: var(--gray-600);
         }
 
-        .score-badge {
+        /* Name Column */
+        .staff-name-cell {
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+
+        /* Position Column */
+        .position-cell {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Score Badge (Green Pill) */
+        .score-pill {
             display: inline-block;
             padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
             font-weight: 600;
-        }
-
-        .score-pass {
             background: rgba(16, 185, 129, 0.15);
             color: #059669;
-        }
-
-        .score-fail {
-            background: rgba(239, 68, 68, 0.15);
-            color: #dc2626;
         }
 
         /* Tooltip */
@@ -627,9 +571,18 @@
             pointer-events: none;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1024px) {
             .bottom-grid {
                 grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .section-chart {
+                min-height: 320px;
+            }
+
+            .section-leaderboard {
+                min-height: 380px;
             }
         }
 
@@ -652,20 +605,6 @@
 </head>
 
 <body>
-    <!-- LOGIN OVERLAY -->
-    <div class="login-overlay" id="login-overlay">
-        <div class="login-card">
-            <div class="login-logo"><i class="fas fa-users"></i></div>
-            <h1 class="login-title">Department Dashboard</h1>
-            <p class="login-subtitle">กรุณาเข้าสู่ระบบด้วยรหัสพนักงาน</p>
-            <form class="login-form" id="login-form" onsubmit="handleLogin(event)">
-                <input type="text" class="login-input" id="emp-id" placeholder="รหัสพนักงาน (เช่น EMP001)" required>
-                <input type="password" class="login-input" id="password" placeholder="รหัสผ่าน" required>
-                <button type="submit" class="login-btn"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
-            </form>
-            <p class="login-error" id="login-error">รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง</p>
-        </div>
-    </div>
 
     <!-- APP LAYOUT -->
     <div class="app-layout">
@@ -780,22 +719,22 @@
                     </div>
                     <div class="chart-container"><canvas id="trendChart"></canvas></div>
                 </div>
-                <!-- Staff Ranking -->
-                <div class="card section-table">
+                <!-- Staff Ranking (Leaderboard) -->
+                <div class="card section-leaderboard">
                     <div class="card-header">
-                        <div class="card-title"><i class="fas fa-medal"></i> Staff Ranking</div>
+                        <div class="card-title"><i class="fas fa-trophy"></i> Staff Ranking</div>
                     </div>
-                    <div class="table-container">
-                        <table>
+                    <div class="leaderboard-container">
+                        <table class="leaderboard-table">
                             <thead>
                                 <tr>
-                                    <th>Rank</th>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Position</th>
                                     <th>Score</th>
                                 </tr>
                             </thead>
-                            <tbody id="staff-table"></tbody>
+                            <tbody id="leaderboard-body"></tbody>
                         </table>
                     </div>
                 </div>
@@ -804,35 +743,50 @@
     </div>
 
     <script>
-        // ===== MOCK DATA =====
+        // =============================================
+        // MOCK DATABASE
+        // =============================================
         const DEPTS = ["ER", "ICU", "OPD", "Ward A", "Ward B", "OR", "Lab"];
         const POSITIONS = ["แพทย์", "พยาบาล", "ผู้ช่วยพยาบาล", "เจ้าหน้าที่"];
         const ZONES = ["thumb", "index", "middle", "ring", "pinky", "palm", "wrist"];
         const NAMES = ["สมชาย ใจดี", "สมหญิง รักเรียน", "วิชัย มานะ", "นภา สดใส", "พิชัย เก่งกาจ", "รัตนา สุขสันต์", "ธนา พากเพียร", "มณี จริงใจ", "ชัยวัฒน์ มุ่งมั่น", "อารีย์ อ่อนโยน", "ประสิทธิ์ แข็งแกร่ง", "จันทรา สว่างใส"];
 
-        // Employee DB (Simulated)
+        // Employee Database
         const EMPLOYEES = {
-            'EMP001': { name: 'สมชาย ใจดี', dept: 'ER', pos: 'แพทย์', password: '1234' },
-            'EMP002': { name: 'สมหญิง รักเรียน', dept: 'ICU', pos: 'พยาบาล', password: '1234' },
-            'EMP003': { name: 'วิชัย มานะ', dept: 'OPD', pos: 'แพทย์', password: '1234' },
-            'EMP004': { name: 'นภา สดใส', dept: 'Ward A', pos: 'พยาบาล', password: '1234' },
-            'EMP005': { name: 'พิชัย เก่งกาจ', dept: 'OR', pos: 'แพทย์', password: '1234' }
+            'EMP001': { name: 'สมชาย ใจดี', dept: 'ER', pos: 'แพทย์' },
+            'EMP002': { name: 'สมหญิง รักเรียน', dept: 'ICU', pos: 'พยาบาล' },
+            'EMP003': { name: 'วิชัย มานะ', dept: 'OPD', pos: 'แพทย์' },
+            'EMP004': { name: 'นภา สดใส', dept: 'Ward A', pos: 'พยาบาล' },
+            'EMP005': { name: 'พิชัย เก่งกาจ', dept: 'OR', pos: 'แพทย์' },
+            'DEPT001': { name: 'Department User', dept: 'ER', pos: 'พยาบาล' }
         };
 
+        // =============================================
+        // GLOBAL VARIABLES
+        // =============================================
         let currentUser = null;
-        let allData = [], filteredData = [], charts = {};
+        let currentDept = null;
+        let allData = [];
+        let filteredData = [];
+        let charts = {};
 
-        // ===== GENERATE DATA =====
-        function genData(count = 200) {
-            const data = [], today = new Date();
+        // =============================================
+        // DATA GENERATOR
+        // =============================================
+        function generateData(targetDept, count = 200) {
+            const data = [];
+            const today = new Date();
+
             for (let i = 0; i < count; i++) {
                 const daysAgo = Math.floor(Math.random() * 30);
-                const date = new Date(today); date.setDate(date.getDate() - daysAgo);
+                const date = new Date(today);
+                date.setDate(date.getDate() - daysAgo);
                 const hour = 7 + Math.floor(Math.random() * 10);
                 const minute = Math.floor(Math.random() * 60);
                 date.setHours(hour, minute, 0, 0);
 
-                const dept = DEPTS[Math.floor(Math.random() * DEPTS.length)];
+                // สุ่ม Department (บางส่วนเป็น targetDept, บางส่วนเป็นอื่น)
+                const dept = Math.random() > 0.3 ? targetDept : DEPTS[Math.floor(Math.random() * DEPTS.length)];
                 const pos = POSITIONS[Math.floor(Math.random() * POSITIONS.length)];
                 const name = NAMES[Math.floor(Math.random() * NAMES.length)];
                 const gender = Math.random() > 0.45 ? "female" : "male";
@@ -842,59 +796,66 @@
                 baseScore = Math.min(100, Math.max(40, baseScore + (Math.random() - 0.5) * 15));
 
                 const zones = {};
-                ZONES.forEach(z => { let s = baseScore + (Math.random() - 0.5) * 25; if (z === "thumb" || z === "pinky") s -= 10; zones[z] = Math.min(100, Math.max(0, Math.round(s))); });
+                ZONES.forEach(z => {
+                    let s = baseScore + (Math.random() - 0.5) * 25;
+                    if (z === "thumb" || z === "pinky") s -= 10;
+                    zones[z] = Math.min(100, Math.max(0, Math.round(s)));
+                });
 
                 data.push({
                     id: i + 1,
                     timestamp: date.getTime(),
                     date: date.toISOString().split('T')[0],
                     time: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,
-                    dept, pos, name, gender,
+                    dept,
+                    pos,
+                    name,
+                    gender,
                     score: Math.round(baseScore),
                     zones
                 });
             }
+
             return data.sort((a, b) => a.timestamp - b.timestamp);
         }
 
-        // ===== LOGIN =====
-        function handleLogin(e) {
-            e.preventDefault();
-            const empId = document.getElementById('emp-id').value.toUpperCase();
-            const password = document.getElementById('password').value;
-            const emp = EMPLOYEES[empId];
+        // =============================================
+        // INITIALIZATION (หลัก!)
+        // =============================================
+        function initDashboard(deptId, userName = 'Department User') {
+            console.log('[DEBUG] initDashboard called with:', deptId, userName);
 
-            if (emp && emp.password === password) {
-                currentUser = { id: empId, ...emp };
-                sessionStorage.setItem('deptUser', JSON.stringify(currentUser));
-                initDashboard();
-            } else {
-                document.getElementById('login-error').classList.add('show');
+            if (!deptId) {
+                console.error('[ERROR] No department ID provided!');
+                // ใช้ default dept
+                deptId = 'ER';
             }
-        }
 
-        function logout() { sessionStorage.clear(); window.location.reload(); }
+            currentDept = deptId;
 
-        function checkSession() {
-            const saved = sessionStorage.getItem('deptUser');
-            if (saved) {
-                currentUser = JSON.parse(saved);
-                initDashboard();
+            // อัพเดท Sidebar
+            const sidebarDept = document.getElementById('sidebar-dept');
+            if (sidebarDept) {
+                sidebarDept.textContent = `${deptId} - ${userName}`;
             }
-        }
-
-        // ===== INIT =====
-        function initDashboard() {
-            document.getElementById('login-overlay').classList.add('hidden');
-            document.getElementById('sidebar-dept').textContent = `${currentUser.dept} - ${currentUser.name}`;
 
             // Lock dept filter
             const deptSelect = document.getElementById('filter-dept');
-            deptSelect.innerHTML = `<option value="${currentUser.dept}">${currentUser.dept}</option>`;
+            if (deptSelect) {
+                deptSelect.innerHTML = `<option value="${deptId}">${deptId}</option>`;
+            }
 
             // Generate & filter data for THIS department only
-            allData = genData(200).filter(d => d.dept === currentUser.dept);
+            const rawData = generateData(deptId, 300);
+            allData = rawData.filter(d => d.dept === deptId);
             filteredData = [...allData];
+
+            console.log('[DEBUG] Generated', rawData.length, 'records, filtered to', allData.length, 'for dept:', deptId);
+
+            // เช็คว่ามีข้อมูลไหม
+            if (allData.length === 0) {
+                console.warn('[WARN] No data found for department:', deptId);
+            }
 
             populateFilters();
             setupListeners();
@@ -902,113 +863,305 @@
         }
 
         function populateFilters() {
-            const add = (id, arr) => { const el = document.getElementById(id); arr.forEach(v => el.add(new Option(v, v))); };
-            add('filter-pos', POSITIONS);
+            const posSelect = document.getElementById('filter-pos');
+            if (posSelect) {
+                POSITIONS.forEach(v => posSelect.add(new Option(v, v)));
+            }
         }
 
         function setupListeners() {
-            ['filter-date-start', 'filter-date-end', 'filter-pos', 'filter-gender'].forEach(id =>
-                document.getElementById(id).addEventListener('change', applyFilters)
-            );
-            document.getElementById('btn-reset').addEventListener('click', resetFilters);
+            const filterIds = ['filter-date-start', 'filter-date-end', 'filter-pos', 'filter-gender'];
+            filterIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('change', applyFilters);
+                }
+            });
+
+            const btnReset = document.getElementById('btn-reset');
+            if (btnReset) {
+                btnReset.addEventListener('click', resetFilters);
+            }
         }
 
         function applyFilters() {
-            const v = id => document.getElementById(id).value;
+            const getValue = id => {
+                const el = document.getElementById(id);
+                return el ? el.value : '';
+            };
+
             filteredData = allData.filter(d => {
-                if (v('filter-pos') && d.pos !== v('filter-pos')) return false;
-                if (v('filter-gender') && d.gender !== v('filter-gender')) return false;
-                if (v('filter-date-start') && d.date < v('filter-date-start')) return false;
-                if (v('filter-date-end') && d.date > v('filter-date-end')) return false;
+                if (getValue('filter-pos') && d.pos !== getValue('filter-pos')) return false;
+                if (getValue('filter-gender') && d.gender !== getValue('filter-gender')) return false;
+                if (getValue('filter-date-start') && d.date < getValue('filter-date-start')) return false;
+                if (getValue('filter-date-end') && d.date > getValue('filter-date-end')) return false;
                 return true;
             });
             updateAll();
         }
 
         function resetFilters() {
-            ['filter-pos', 'filter-gender'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('filter-date-start').value = '';
-            document.getElementById('filter-date-end').value = '';
+            ['filter-pos', 'filter-gender'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            const startEl = document.getElementById('filter-date-start');
+            const endEl = document.getElementById('filter-date-end');
+            if (startEl) startEl.value = '';
+            if (endEl) endEl.value = '';
+
             filteredData = [...allData];
             updateAll();
         }
 
-        function updateAll() { updateKPIs(); updateHands(); updateTimeline(); updateTrend(); updateStaffTable(); }
-
-        // ===== KPIs =====
-        function updateKPIs() {
-            if (!filteredData.length) { document.getElementById('kpi-avg').textContent = '--'; document.getElementById('kpi-pass').textContent = '--'; document.getElementById('kpi-total').textContent = '--'; return; }
-            const avg = (filteredData.reduce((s, d) => s + d.score, 0) / filteredData.length).toFixed(0);
-            const pass = ((filteredData.filter(d => d.score >= 80).length / filteredData.length) * 100).toFixed(0);
-            document.getElementById('kpi-avg').textContent = avg + '%';
-            document.getElementById('kpi-pass').textContent = pass + '%';
-            document.getElementById('kpi-total').textContent = filteredData.length;
+        function updateAll() {
+            updateKPIs();
+            updateHands();
+            updateTimeline();
+            updateTrend();
+            updateStaffTable();
         }
 
-        // ===== TIMELINE =====
+        // =============================================
+        // KPIs
+        // =============================================
+        function updateKPIs() {
+            const kpiAvg = document.getElementById('kpi-avg');
+            const kpiPass = document.getElementById('kpi-pass');
+            const kpiTotal = document.getElementById('kpi-total');
+
+            if (!filteredData.length) {
+                if (kpiAvg) kpiAvg.textContent = '--';
+                if (kpiPass) kpiPass.textContent = '--';
+                if (kpiTotal) kpiTotal.textContent = '0';
+                return;
+            }
+
+            const avg = (filteredData.reduce((s, d) => s + d.score, 0) / filteredData.length).toFixed(0);
+            const pass = ((filteredData.filter(d => d.score >= 80).length / filteredData.length) * 100).toFixed(0);
+
+            if (kpiAvg) kpiAvg.textContent = avg + '%';
+            if (kpiPass) kpiPass.textContent = pass + '%';
+            if (kpiTotal) kpiTotal.textContent = filteredData.length;
+        }
+
+        // =============================================
+        // TIMELINE CHART
+        // =============================================
         function updateTimeline() {
-            const ctx = document.getElementById('timelineChart').getContext('2d');
+            const canvas = document.getElementById('timelineChart');
+            if (!canvas) {
+                console.warn('[WARN] timelineChart canvas not found');
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
             if (charts.timeline) charts.timeline.destroy();
+
             const events = filteredData.slice(-50);
+            if (events.length === 0) return;
+
             const minWidth = events.length * 30;
             const wrapper = document.getElementById('timeline-wrapper');
-            wrapper.style.width = Math.max(minWidth, wrapper.parentElement.clientWidth) + 'px';
-            const labels = events.map(e => { const [y, m, d] = e.date.split('-'); return `${d}/${m} ${e.time}`; });
+            if (wrapper) {
+                wrapper.style.width = Math.max(minWidth, wrapper.parentElement.clientWidth) + 'px';
+            }
+
+            const labels = events.map(e => {
+                const [y, m, d] = e.date.split('-');
+                return `${d}/${m} ${e.time}`;
+            });
             const colors = events.map(e => e.score >= 80 ? '#10b981' : e.score >= 50 ? '#f59e0b' : '#ef4444');
+
             charts.timeline = new Chart(ctx, {
                 type: 'bar',
-                data: { labels, datasets: [{ data: events.map(e => e.score), backgroundColor: colors, borderRadius: 4, barThickness: 18 }] },
+                data: {
+                    labels,
+                    datasets: [{
+                        data: events.map(e => e.score),
+                        backgroundColor: colors,
+                        borderRadius: 4,
+                        barThickness: 18
+                    }]
+                },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { callbacks: { title: ctx => events[ctx[0].dataIndex].name, label: ctx => `Score: ${events[ctx.dataIndex].score}%` } } },
-                    scales: { x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 9 } } }, y: { beginAtZero: true, max: 100 } }
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: ctx => events[ctx[0].dataIndex].name,
+                                label: ctx => `Score: ${events[ctx.dataIndex].score}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { maxRotation: 45, minRotation: 45, font: { size: 9 } } },
+                        y: { beginAtZero: true, max: 100 }
+                    }
                 }
             });
         }
 
-        // ===== TREND =====
+        // =============================================
+        // TREND CHART
+        // =============================================
         function updateTrend() {
-            const ctx = document.getElementById('trendChart').getContext('2d');
+            const canvas = document.getElementById('trendChart');
+            if (!canvas) {
+                console.warn('[WARN] trendChart canvas not found');
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
             if (charts.trend) charts.trend.destroy();
+
+            if (filteredData.length === 0) return;
+
             const byDate = {};
-            filteredData.forEach(d => { if (!byDate[d.date]) byDate[d.date] = []; byDate[d.date].push(d.score); });
+            filteredData.forEach(d => {
+                if (!byDate[d.date]) byDate[d.date] = [];
+                byDate[d.date].push(d.score);
+            });
+
             const labels = Object.keys(byDate).sort();
             const data = labels.map(dt => (byDate[dt].reduce((a, b) => a + b, 0) / byDate[dt].length).toFixed(1));
+
             charts.trend = new Chart(ctx, {
                 type: 'line',
-                data: { labels: labels.map(d => d.substring(5)), datasets: [{ label: 'Avg Score', data, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#10b981' }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100 } } }
+                data: {
+                    labels: labels.map(d => d.substring(5)),
+                    datasets: [{
+                        label: 'Avg Score',
+                        data,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16,185,129,0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#10b981'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
             });
         }
 
-        // ===== STAFF TABLE =====
+        // =============================================
+        // STAFF LEADERBOARD (Ranking Style)
+        // =============================================
         function updateStaffTable() {
+            const tbody = document.getElementById('leaderboard-body');
+            if (!tbody) {
+                console.warn('[WARN] leaderboard-body tbody not found');
+                return;
+            }
+
+            if (filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#6b7280;padding:30px;">ไม่พบข้อมูล</td></tr>';
+                return;
+            }
+
+            // Aggregate scores by name
             const byName = {};
-            filteredData.forEach(d => { if (!byName[d.name]) byName[d.name] = { name: d.name, pos: d.pos, scores: [] }; byName[d.name].scores.push(d.score); });
-            const staff = Object.values(byName).map(s => ({ ...s, avg: s.scores.reduce((a, b) => a + b, 0) / s.scores.length })).sort((a, b) => b.avg - a.avg);
-            const tbody = document.getElementById('staff-table');
-            tbody.innerHTML = staff.slice(0, 10).map((s, i) => `
-                <tr>
-                    <td><span class="rank-badge ${i < 3 ? 'rank-' + (i + 1) : 'rank-other'}">${i + 1}</span></td>
-                    <td>${s.name}</td>
-                    <td>${s.pos}</td>
-                    <td><span class="score-badge ${s.avg >= 80 ? 'score-pass' : 'score-fail'}">${s.avg.toFixed(0)}%</span></td>
-                </tr>
-            `).join('');
+            filteredData.forEach(d => {
+                if (!byName[d.name]) {
+                    byName[d.name] = {
+                        name: d.name,
+                        pos: d.pos,
+                        scores: []
+                    };
+                }
+                byName[d.name].scores.push(d.score);
+            });
+
+            // Calculate average and sort by score (High to Low)
+            const staff = Object.values(byName)
+                .map(s => ({ ...s, avg: s.scores.reduce((a, b) => a + b, 0) / s.scores.length }))
+                .sort((a, b) => b.avg - a.avg);
+
+            // Helper: Get position from name or original data
+            function getPosition(person) {
+                // Use original position from data if available
+                if (person.pos) return person.pos;
+
+                // Try to infer from name prefix
+                const name = person.name.toLowerCase();
+                if (name.includes('dr.') || name.includes('นพ.') || name.includes('พญ.')) return 'แพทย์';
+                if (name.includes('nurse') || name.includes('พยาบาล')) return 'พยาบาล';
+                return 'เจ้าหน้าที่';
+            }
+
+            // Helper: Get rank badge class
+            function getRankClass(rank) {
+                if (rank === 1) return 'rank-gold';
+                if (rank === 2) return 'rank-silver';
+                if (rank === 3) return 'rank-bronze';
+                return 'rank-default';
+            }
+
+            // Render leaderboard rows
+            tbody.innerHTML = staff.slice(0, 20).map((s, i) => {
+                const rank = i + 1;
+                const rankClass = getRankClass(rank);
+                const position = getPosition(s);
+                const scoreText = s.avg.toFixed(0) + '%';
+
+                return `
+                    <tr>
+                        <td>
+                            <span class="rank-badge ${rankClass}">${rank}</span>
+                        </td>
+                        <td class="staff-name-cell">${s.name}</td>
+                        <td class="position-cell">${position}</td>
+                        <td>
+                            <span class="score-pill">${scoreText}</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
-        // ===== HANDS =====
+        // =============================================
+        // HAND VISUALIZATION
+        // =============================================
         function updateHands() {
-            const avgZ = {}; ZONES.forEach(z => avgZ[z] = []);
-            filteredData.forEach(d => { if (d.zones) ZONES.forEach(z => { if (d.zones[z] !== undefined) avgZ[z].push(d.zones[z]); }); });
-            const scores = {}; ZONES.forEach(z => { const a = avgZ[z]; scores[z] = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 50; });
+            const avgZ = {};
+            ZONES.forEach(z => avgZ[z] = []);
+
+            filteredData.forEach(d => {
+                if (d.zones) {
+                    ZONES.forEach(z => {
+                        if (d.zones[z] !== undefined) avgZ[z].push(d.zones[z]);
+                    });
+                }
+            });
+
+            const scores = {};
+            ZONES.forEach(z => {
+                const a = avgZ[z];
+                scores[z] = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 50;
+            });
+
             ['hand-lf', 'hand-lb', 'hand-rf', 'hand-rb'].forEach(id => renderHand(id, scores));
         }
 
-        function getColor(s) { return s >= 80 ? '#10b981' : s >= 50 ? '#f59e0b' : '#ef4444'; }
+        function getColor(s) {
+            return s >= 80 ? '#10b981' : s >= 50 ? '#f59e0b' : '#ef4444';
+        }
 
         function renderHand(id, scores) {
             const svg = document.getElementById(id);
+            if (!svg) {
+                console.warn('[WARN] SVG not found:', id);
+                return;
+            }
+
             svg.innerHTML = '';
             const paths = [
                 { zone: 'thumb', d: 'M22,95 C8,82 2,60 10,42 C18,26 32,24 40,36 C46,48 44,68 40,82 C36,92 30,100 24,102 Z' },
@@ -1019,6 +1172,7 @@
                 { zone: 'palm', d: 'M24,102 C20,112 20,128 26,138 L106,138 C114,128 118,112 114,100 C112,94 108,92 104,92 L46,92 C38,94 28,98 24,102 Z' },
                 { zone: 'wrist', d: 'M26,138 L26,164 C26,168 106,168 106,164 L106,138 Z' }
             ];
+
             paths.forEach(p => {
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 path.setAttribute('d', p.d);
@@ -1035,12 +1189,84 @@
             });
         }
 
-        function showTip(e) { const t = document.createElement('div'); t.className = 'zone-tooltip'; t.id = 'zt'; t.textContent = `${e.target.dataset.zone}: ${e.target.dataset.score}%`; document.body.appendChild(t); t.style.left = e.clientX + 12 + 'px'; t.style.top = e.clientY + 12 + 'px'; }
-        function moveTip(e) { const t = document.getElementById('zt'); if (t) { t.style.left = e.clientX + 12 + 'px'; t.style.top = e.clientY + 12 + 'px'; } }
-        function hideTip() { const t = document.getElementById('zt'); if (t) t.remove(); }
+        function showTip(e) {
+            const t = document.createElement('div');
+            t.className = 'zone-tooltip';
+            t.id = 'zt';
+            t.textContent = `${e.target.dataset.zone}: ${e.target.dataset.score}%`;
+            document.body.appendChild(t);
+            t.style.left = e.clientX + 12 + 'px';
+            t.style.top = e.clientY + 12 + 'px';
+        }
 
-        // ===== INIT =====
-        document.addEventListener('DOMContentLoaded', checkSession);
+        function moveTip(e) {
+            const t = document.getElementById('zt');
+            if (t) {
+                t.style.left = e.clientX + 12 + 'px';
+                t.style.top = e.clientY + 12 + 'px';
+            }
+        }
+
+        function hideTip() {
+            const t = document.getElementById('zt');
+            if (t) t.remove();
+        }
+
+        // =============================================
+        // LOGOUT
+        // =============================================
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // =============================================
+        // MAIN ENTRY POINT (DOMContentLoaded)
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('[DEBUG] DOMContentLoaded fired');
+
+            let deptId = null;
+            let userName = 'Department User';
+
+            // 1. ลองดึงจาก URL Parameters (มาจาก index.html)
+            const urlParams = new URLSearchParams(window.location.search);
+            const empIdFromUrl = urlParams.get('empId');
+            if (empIdFromUrl && EMPLOYEES[empIdFromUrl.toUpperCase()]) {
+                const emp = EMPLOYEES[empIdFromUrl.toUpperCase()];
+                deptId = emp.dept;
+                userName = emp.name;
+                console.log('[DEBUG] Got from URL params:', deptId, userName);
+            }
+
+            // 2. ลองดึงจาก SessionStorage
+            if (!deptId) {
+                const saved = sessionStorage.getItem('deptUser');
+                if (saved) {
+                    try {
+                        const userData = JSON.parse(saved);
+                        deptId = userData.dept;
+                        userName = userData.name || 'Department User';
+                        console.log('[DEBUG] Got from sessionStorage:', deptId, userName);
+                    } catch (e) {
+                        console.warn('[WARN] Failed to parse sessionStorage');
+                    }
+                }
+            }
+
+            // 3. ถ้าไม่มีข้อมูลเลย ให้ใช้ Default Department (ER)
+            if (!deptId) {
+                console.log('[DEBUG] No user info found, using default dept: ER');
+                deptId = 'ER';
+                userName = 'Demo User';
+            }
+
+            // บันทึกลง sessionStorage เผื่อ refresh
+            sessionStorage.setItem('deptUser', JSON.stringify({ dept: deptId, name: userName }));
+
+            // Initialize Dashboard
+            initDashboard(deptId, userName);
+        });
     </script>
 </body>
 
