@@ -4,32 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Hand Hygiene Dashboard</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap"
-        rel="stylesheet">
+    <title>Personal Dashboard - Hand Hygiene</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <style>
         :root {
-            --primary-blue: #0ea5e9;
-            --secondary-blue: #3e4346;
-            --accent-blue: #38bdf8;
-            --bg-canvas: #f0f4f8;
-            --card-white: #ffffff;
-            --text-main: #0f172a;
-            --text-sub: #64748b;
-            --danger: #f43f5e;
+            --primary: #f97316;
+            --primary-dark: #ea580c;
             --success: #10b981;
             --warning: #f59e0b;
-            --ai-primary: #8b5cf6;
-            --ai-bg: #f5f3ff;
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
-            --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.1);
+            --danger: #ef4444;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --slate-100: #f1f5f9;
+            --radius: 12px;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
         }
 
         * {
@@ -38,2776 +37,739 @@
             box-sizing: border-box;
         }
 
-        /* =========================================
-           GLOBAL STYLES
-           ========================================= */
         body {
             font-family: 'Prompt', sans-serif;
-            background-color: var(--bg-canvas);
-            color: var(--text-main);
-            padding: 15px;
-            line-height: 1.6;
-            overflow-x: hidden;
+            background: var(--slate-100);
+            color: var(--gray-800);
         }
 
-        /* =========================================
-           LOGIN SCREEN STYLES (Red Theme)
-           ========================================= */
-        #loginScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #dc2626 0%, #ef4444 30%, #f87171 70%, #fca5a5 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            overflow: hidden;
-        }
-
-        /* Animated Particles */
-        #loginScreen::before {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            top: -100px;
-            right: -100px;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        #loginScreen::after {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
-            bottom: -50px;
-            left: -50px;
-            animation: float 10s ease-in-out infinite reverse;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-20px) rotate(5deg);
-            }
-        }
-
-        .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 50px 40px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-            max-width: 420px;
-            width: 100%;
-            position: relative;
-            z-index: 10;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .login-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #dc2626, #ef4444);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 25px;
-            font-size: 36px;
-            color: white;
-            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .login-card h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 26px;
-            font-weight: 700;
-            color: #dc2626;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .login-card p {
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 16px;
-            font-family: 'Prompt', sans-serif;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            background: #f8fafc;
-        }
-
-        .login-input:focus {
-            outline: none;
-            border-color: #ef4444;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
-        }
-
-        /* Password Input Container */
-        .password-container {
-            position: relative;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .password-container .login-input {
-            margin-bottom: 0;
-            padding-right: 50px;
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #64748b;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 4px;
-            transition: color 0.3s ease;
-        }
-
-        .toggle-password:hover {
-            color: #ef4444;
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #dc2626, #ef4444);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 700;
-            font-family: 'Prompt', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .login-button:hover {
-            background: linear-gradient(135deg, #b91c1c, #dc2626);
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
-        }
-
-        .login-hint {
-            margin-top: 25px;
-            padding: 18px;
-            background: #fef2f2;
-            border-radius: 14px;
-            font-size: 13px;
-            color: #991b1b;
-            border: 1px solid #fecaca;
-            text-align: center;
-        }
-
-        .back-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 20px;
-            padding: 14px;
-            color: #dc2626;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            border: 2px solid #fecaca;
-            border-radius: 14px;
-            transition: all 0.3s ease;
-            background: #fef2f2;
-        }
-
-        .back-link:hover {
-            background: #fee2e2;
-            border-color: #ef4444;
-        }
-
-        .error-message {
-            background: linear-gradient(135deg, #fef2f2, #fee2e2);
-            border: 1px solid #fecaca;
-            color: #dc2626;
-            padding: 14px 18px;
-            border-radius: 12px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #dashboardContent {
-            display: none;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        /* Dashboard */
-        .dashboard {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .dashboard-header {
-            background: white;
-            padding: 30px 40px;
-            border-radius: 24px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-md);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .user-info h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 28px;
-            color: var(--text-main);
-            margin-bottom: 5px;
-        }
-
-        .user-info p {
-            color: var(--text-sub);
-            font-size: 14px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn-export {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, var(--primary-blue), #3b82f6);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-export:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
-        }
-
-        /* Top Navigation Bar */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            margin-bottom: 15px;
-            background-color: transparent;
-            box-shadow: none;
-            border: none;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .btn-back {
-            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-            color: white;
-        }
-
-        .btn-back:hover {
-            background: linear-gradient(135deg, #0284c7, #0ea5e9);
-            box-shadow: 0 8px 24px rgba(14, 165, 233, 0.5);
-        }
-
-        .btn-logout {
-            padding: 12px 24px;
-            background: var(--danger);
-            border: none;
-            color: white;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
-        }
-
-        .btn-logout:hover {
-            background: #dc2626;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(244, 63, 94, 0.4);
-        }
-
-        /* KPI Cards Enhanced */
-        .kpi-grid {
+        .app-layout {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-bottom: 30px;
+            grid-template-rows: auto 1fr;
+            grid-template-columns: 280px 1fr;
+            height: 100vh;
+        }
+
+        /* ORANGE/WARM HEADER */
+        .header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .user-text h1 {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .user-text p {
+            font-size: 0.75rem;
+            opacity: 0.85;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .kpi-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav-btn-ghost {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--white);
+        }
+
+        .nav-btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-btn-logout {
+            background: #ef4444;
+            border: none;
+            color: var(--white);
+        }
+
+        .nav-btn-logout:hover {
+            background: #dc2626;
         }
 
         .kpi-card {
-            background: white;
-            padding: 28px 20px;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 12px 22px;
+            min-width: 180px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .kpi-label {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .kpi-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .kpi-value.success {
+            color: var(--success);
+        }
+
+        .kpi-value.warning {
+            color: var(--warning);
+        }
+
+        .kpi-value.danger {
+            color: var(--danger);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background: var(--white);
+            border-right: 1px solid var(--gray-200);
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* MOTIVATION BANNER */
+        .motivation-banner {
+            border-radius: var(--radius);
+            padding: 20px;
             text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid #f0f4f8;
+            color: var(--white);
         }
 
-        .kpi-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        .motivation-banner.level-perfect {
+            background: linear-gradient(135deg, #10b981, #059669);
         }
 
-        .kpi-card h3 {
-            font-size: 14px;
-            color: var(--text-sub);
-            margin-bottom: 12px;
-            font-weight: 600;
+        .motivation-banner.level-excellent {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        .motivation-banner.level-good {
+            background: linear-gradient(135deg, #84cc16, #65a30d);
+        }
+
+        .motivation-banner.level-improve {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .motivation-banner.level-warning {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .motivation-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .motivation-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .motivation-text {
+            font-size: 0.8rem;
+            opacity: 0.95;
             line-height: 1.4;
         }
 
-        .kpi-card .value {
-            font-family: 'Outfit', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 10px;
+        .filter-section {
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
         }
 
-        .kpi-card.pass .value {
-            color: var(--success);
+        .sidebar-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .kpi-card.fail .value {
-            color: var(--danger);
+        .sidebar-title i {
+            color: var(--primary);
         }
 
-        .kpi-card.neutral .value {
-            color: var(--primary-blue);
+        .filter-group {
+            margin-bottom: 12px;
         }
 
-        .kpi-card .status {
-            font-size: 13px;
-            font-weight: 700;
-            padding: 6px 16px;
-            border-radius: 20px;
-            display: inline-block;
+        .filter-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+            font-weight: 500;
         }
 
-        .kpi-card.pass .status {
-            background: #d1fae5;
-            color: var(--success);
+        .filter-group input {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.8rem;
         }
 
-        .kpi-card.fail .status {
-            background: #ffe4e6;
-            color: var(--danger);
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
-        /* Main Content Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
             gap: 20px;
-            margin-bottom: 20px;
+            background: var(--slate-100);
         }
 
         .card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
+            background: var(--white);
+            border-radius: var(--radius);
             box-shadow: var(--shadow-md);
-            margin-bottom: 20px;
+            padding: 18px 20px;
         }
 
-        .card h2 {
-            font-size: 20px;
-            color: var(--text-main);
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* 11 Zones Visualization */
-        .zones-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .zone-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 12px;
-            border-left: 4px solid var(--text-sub);
-            transition: all 0.3s ease;
-        }
-
-        .zone-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .zone-item.excellent {
-            border-left-color: var(--success);
-        }
-
-        .zone-item.good {
-            border-left-color: var(--warning);
-        }
-
-        .zone-item.poor {
-            border-left-color: var(--danger);
-        }
-
-        .zone-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .zone-item.excellent .zone-icon {
-            background: #d1fae5;
-            color: var(--success);
-        }
-
-        .zone-item.good .zone-icon {
-            background: #fef3c7;
-            color: var(--warning);
-        }
-
-        .zone-item.poor .zone-icon {
-            background: #ffe4e6;
-            color: var(--danger);
-        }
-
-        .zone-info h4 {
-            font-size: 14px;
-            color: var(--text-main);
-            margin-bottom: 4px;
-        }
-
-        .zone-info .score {
-            font-family: 'Outfit', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        /* AI Recommendations */
-        .recommendations {
-            background: var(--ai-bg);
-            border: 2px solid var(--ai-primary);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 20px;
-        }
-
-        .recommendations h2 {
-            color: var(--ai-primary);
-            font-size: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .recommendation-item {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--ai-primary);
-        }
-
-        .recommendation-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .recommendation-item h3 {
-            color: var(--danger);
-            font-size: 16px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .recommendation-item p {
-            color: var(--text-sub);
-            font-size: 14px;
+        .card-header {
             margin-bottom: 12px;
-            line-height: 1.6;
         }
 
-        .recommendation-item .tip {
-            background: #f0fdf4;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            color: var(--success);
+        .card-title {
+            font-size: 0.95rem;
             font-weight: 600;
+            color: var(--gray-700);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Chart Container */
-        .chart-container {
-            height: 300px;
-            margin-top: 20px;
+        .card-title i {
+            color: var(--primary);
         }
 
-        /* Calendar Heatmap */
-        .calendar-heatmap {
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: var(--shadow-md);
-            margin-bottom: 20px;
+        /* Hands */
+        .section-hands {
+            min-height: 300px;
         }
 
-        .calendar-header {
+        .hands-grid {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .calendar-header-day {
-            text-align: center;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-sub);
-            padding: 8px 0;
-        }
-
-        .calendar-month-label {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary-blue);
-            margin-top: 15px;
-            margin-bottom: 10px;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .calendar-day:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 10;
-        }
-
-        .calendar-day.empty {
-            background: transparent;
-        }
-
-        .calendar-day.no-data {
-            background: #f1f5f9;
-            color: var(--text-sub);
-        }
-
-        .calendar-day.score-excellent {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-
-        .calendar-day.score-good {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-        }
-
-        .calendar-day.score-poor {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-        }
-
-        .day-number {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .day-score {
-            font-size: 10px;
-            opacity: 0.9;
-        }
-
-        /* Comparison Card */
-        .comparison-card {
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            border: 2px solid var(--primary-blue);
-        }
-
-        .comparison-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-            margin-top: 20px;
+            justify-items: center;
+            padding: 10px 0 16px 0;
         }
 
-        .comparison-item {
+        .hand-wrapper {
             text-align: center;
         }
 
-        .comparison-item .label {
-            font-size: 12px;
-            color: var(--text-sub);
+        .hand-label {
+            font-size: 0.8rem;
+            color: var(--gray-600);
             margin-bottom: 8px;
-        }
-
-        .comparison-item .value {
-            font-family: 'Outfit', sans-serif;
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-
-        .comparison-item .diff {
-            font-size: 13px;
-            font-weight: 600;
-            margin-top: 5px;
-        }
-
-        .comparison-item .diff.positive {
-            color: var(--success);
-        }
-
-        .comparison-item .diff.negative {
-            color: var(--danger);
-        }
-
-        @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Hand Visualization - Department Dashboard Style */
-        .hand-visual {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            gap: 60px;
-            flex-wrap: wrap;
-            padding: 40px 30px;
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-            border: 2px solid #f59e0b;
-            border-radius: 20px;
-            margin-top: 30px;
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
-        }
-
-        .hand-view {
-            text-align: center;
+            font-weight: 500;
         }
 
         .hand-svg {
-            width: 300px;
-            max-width: 300px;
-            height: auto;
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
-            transition: transform 0.3s ease;
+            width: 90px;
+            height: 126px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
-        .hand-svg:hover {
-            transform: scale(1.03);
-        }
-
-        .hand-path {
-            fill: #f1f5f9;
-            stroke: #cbd5e1;
-            stroke-width: 2;
-        }
-
-        .heat-zone {
-            transition: all 0.3s ease;
+        .hand-zone {
+            transition: all 0.2s;
             cursor: pointer;
         }
 
-        .heat-zone:hover {
-            opacity: 0.8;
-            filter: brightness(1.2);
+        .hand-zone:hover {
+            filter: brightness(1.1);
         }
 
-        .zone-label {
-            font-size: 10px;
-            font-weight: 700;
-            fill: white;
-            text-anchor: middle;
-            pointer-events: none;
+        .hand-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding-top: 12px;
+            border-top: 1px solid var(--gray-200);
         }
 
-        /* Interactive Zone Styles - Hospital Dashboard Style */
-        .interactive-zone {
-            cursor: pointer;
-            transition: all 0.3s;
-            stroke: transparent;
-            stroke-width: 15px;
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--gray-600);
         }
 
-        .interactive-zone:hover {
-            stroke: rgba(245, 158, 11, 0.5);
-            stroke-width: 4px;
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
         }
 
-        /* Hand Tooltip Styles - Hospital Dashboard Style */
-        .hand-tooltip {
-            position: absolute;
-            background: #0f172a;
-            color: white;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s;
-            z-index: 9999;
-            transform: translate(-50%, -100%);
-            margin-top: -10px;
-            white-space: nowrap;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        .legend-clean {
+            background: var(--success);
         }
 
-        .hand-tooltip.visible {
-            opacity: 1;
+        .legend-moderate {
+            background: var(--warning);
         }
 
-        /* Hand Prominent Card - Yellow Background */
-        .hand-prominent-card {
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fffbeb 100%) !important;
-            border: 3px solid #f59e0b !important;
-            padding: 30px;
-            border-radius: 28px;
+        .legend-dirty {
+            background: var(--danger);
+        }
+
+        /* History Chart */
+        .section-history {
+            min-height: 260px;
+        }
+
+        .section-history .chart-container {
+            height: 180px;
+        }
+
+        .chart-container {
             position: relative;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.08);
         }
 
-        /* Zones List View with Progress Bars */
-        .zones-list-container {
+        /* Recommendations */
+        .section-recs {}
+
+        .rec-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-        }
-
-        .zone-list-item {
-            background: white;
-            padding: 16px 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
-            border-left: 4px solid transparent;
-        }
-
-        .zone-list-item:hover {
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .zone-list-item.poor {
-            border-left-color: var(--danger);
-        }
-
-        .zone-list-item.good {
-            border-left-color: var(--warning);
-        }
-
-        .zone-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .zone-name {
-            display: flex;
-            align-items: center;
             gap: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-main);
         }
 
-        .zone-icon-small {
-            width: 28px;
-            height: 28px;
+        .rec-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--gray-50);
+            border-radius: 8px;
+            border-left: 4px solid var(--danger);
+        }
+
+        .rec-item.good {
+            border-left-color: var(--success);
+        }
+
+        .rec-icon {
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            font-weight: 700;
+            color: var(--white);
+            flex-shrink: 0;
         }
 
-        .zone-icon-small.poor {
-            background: #ffe4e6;
-            color: var(--danger);
+        .rec-icon.bad {
+            background: var(--danger);
         }
 
-        .zone-icon-small.good {
-            background: #fef3c7;
-            color: var(--warning);
+        .rec-icon.good {
+            background: var(--success);
         }
 
-        .zone-score-text {
-            font-family: 'Outfit', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
+        .rec-text {
+            flex: 1;
         }
 
-        .zone-score-text.poor {
-            color: var(--danger);
+        .rec-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 2px;
         }
 
-        .zone-score-text.good {
-            color: var(--warning);
+        .rec-desc {
+            font-size: 0.75rem;
+            color: var(--gray-500);
         }
 
-        .progress-track {
-            width: 100%;
-            height: 8px;
-            background: #f1f5f9;
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
+        .zone-tooltip {
+            position: fixed;
+            background: var(--gray-800);
+            color: var(--white);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            pointer-events: none;
         }
 
-        .progress-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.6s ease;
-            position: relative;
-        }
-
-        .progress-fill.poor {
-            background: linear-gradient(90deg, #ef4444, #dc2626);
-        }
-
-        .progress-fill.good {
-            background: linear-gradient(90deg, #f59e0b, #d97706);
-        }
-
-        .success-message {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-            border-radius: 16px;
-            border: 2px solid var(--success);
-        }
-
-        .success-message i {
-            font-size: 48px;
-            color: var(--success);
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .success-message h3 {
-            color: var(--success);
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .success-message p {
-            color: var(--text-sub);
-            font-size: 14px;
-        }
-
-        @media (max-width: 1200px) {
-            .kpi-grid {
+        @media (max-width: 900px) {
+            .hands-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-                margin-bottom: 15px;
-            }
-
-            .content-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-                margin-bottom: 15px;
-            }
-
-            .zones-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-        }
-
-        @media (max-width: 1024px) {
-            .kpi-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-
-            .kpi-card .value {
-                font-size: 38px;
-            }
-
-            .content-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .card {
-                padding: 25px;
-            }
-
-            .zones-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-
-            .comparison-stats {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 15px;
-            }
-
-            .hand-visual {
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
             }
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .login-card {
-                padding: 30px 20px;
-                max-width: 100%;
-            }
-
-            .login-card h1 {
-                font-size: 24px;
-            }
-
-            .dashboard-header {
-                flex-direction: column;
-                gap: 20px;
-                padding: 20px;
-                text-align: center;
-            }
-
-            .user-info h1 {
-                font-size: 22px;
-            }
-
-            .user-info p {
-                font-size: 12px;
-            }
-
-            .header-actions {
-                width: 100%;
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .btn-export,
-            .btn-logout {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .kpi-grid {
+            .app-layout {
                 grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .header {
+                flex-direction: column;
                 gap: 12px;
-                margin-bottom: 15px;
+            }
+
+            .kpi-row {
+                width: 100%;
             }
 
             .kpi-card {
-                padding: 20px;
+                flex: 1;
+                min-width: auto;
             }
-
-            .kpi-card .value {
-                font-size: 36px;
-            }
-
-            .comparison-card {
-                padding: 20px;
-                margin-bottom: 15px;
-            }
-
-            .comparison-stats {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .comparison-item .value {
-                font-size: 28px;
-            }
-
-            .card {
-                padding: 20px;
-                margin-bottom: 15px;
-            }
-
-            .card h2 {
-                font-size: 18px;
-                margin-bottom: 15px;
-            }
-
-            .zones-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .zone-item {
-                padding: 12px;
-            }
-
-            .zone-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-
-            .recommendations {
-                padding: 20px;
-                margin-bottom: 15px;
-            }
-
-            .recommendation-item {
-                padding: 15px;
-            }
-
-            .recommendation-item h3 {
-                font-size: 14px;
-            }
-
-            .recommendation-item p {
-                font-size: 13px;
-            }
-
-            .calendar-heatmap {
-                padding: 15px;
-                overflow-x: auto;
-                margin-bottom: 15px;
-            }
-
-            .calendar-grid {
-                gap: 4px;
-                min-width: 300px;
-            }
-
-            .calendar-day {
-                font-size: 10px;
-            }
-
-            .hand-visual {
-                flex-direction: column;
-                align-items: center;
-                gap: 25px;
-                padding: 20px;
-            }
-
-            .hand-svg {
-                width: 160px;
-            }
-
-            .chart-container {
-                height: 250px;
-            }
-
-            .demo-ids {
-                padding: 15px;
-                font-size: 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 8px;
-            }
-
-            .login-card {
-                padding: 25px 15px;
-            }
-
-            .login-card h1 {
-                font-size: 20px;
-            }
-
-            .login-card p {
-                font-size: 13px;
-            }
-
-            .login-input {
-                padding: 14px 18px;
-                font-size: 14px;
-            }
-
-            .btn-login {
-                padding: 14px;
-                font-size: 14px;
-            }
-
-            .dashboard-header {
-                padding: 15px;
-            }
-
-            .user-info h1 {
-                font-size: 18px;
-            }
-
-            .user-info p {
-                font-size: 11px;
-                line-height: 1.4;
-            }
-
-            .btn-export,
-            .btn-logout {
-                padding: 10px 16px;
-                font-size: 13px;
-            }
-
-            .kpi-card {
-                padding: 15px;
-                margin-bottom: 12px;
-            }
-
-            .kpi-card h3 {
-                font-size: 12px;
-            }
-
-            .kpi-card .value {
-                font-size: 30px;
-            }
-
-            .kpi-card .status {
-                font-size: 11px;
-                padding: 4px 12px;
-            }
-
-            .comparison-card {
-                padding: 15px;
-                margin-bottom: 12px;
-            }
-
-            .comparison-card h2 {
-                font-size: 16px;
-            }
-
-            .comparison-item .label {
-                font-size: 11px;
-            }
-
-            .comparison-item .value {
-                font-size: 24px;
-            }
-
-            .comparison-item .diff {
-                font-size: 11px;
-            }
-
-            .card {
-                padding: 15px;
-                margin-bottom: 12px;
-            }
-
-            .card h2 {
-                font-size: 16px;
-            }
-
-            .zone-item {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-
-            .zone-info h4 {
-                font-size: 13px;
-            }
-
-            .zone-info .score {
-                font-size: 16px;
-            }
-
-            .recommendations {
-                padding: 15px;
-                margin-bottom: 12px;
-            }
-
-            .recommendations h2 {
-                font-size: 16px;
-            }
-
-            .recommendation-item {
-                padding: 12px;
-            }
-
-            .recommendation-item h3 {
-                font-size: 13px;
-            }
-
-            .recommendation-item p {
-                font-size: 12px;
-            }
-
-            .recommendation-item .tip {
-                padding: 10px 12px;
-                font-size: 12px;
-            }
-
-            .calendar-heatmap {
-                padding: 12px;
-            }
-
-            .calendar-month-label {
-                font-size: 14px;
-            }
-
-            .calendar-grid {
-                gap: 3px;
-            }
-
-            .calendar-day {
-                font-size: 9px;
-            }
-
-            .day-number {
-                font-size: 12px;
-            }
-
-            .day-score {
-                font-size: 8px;
-            }
-
-            .hand-visual {
-                padding: 15px;
-                gap: 20px;
-            }
-
-            .hand-svg {
-                width: 140px;
-            }
-
-            .chart-container {
-                height: 200px;
-            }
-        }
-
-        /* Motivation Banner Styles - Compact Professional Design */
-        .motivation-banner {
-            padding: 12px 20px;
-            border-radius: 12px;
-            margin: 15px 0 25px 0;
-            color: white !important;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            position: relative;
-            overflow: hidden;
-            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .motivation-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes bounceIn {
-            0% {
-                transform: scale(0.7);
-                opacity: 0;
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                left: -100%;
-            }
-
-            50%,
-            100% {
-                left: 100%;
-            }
-        }
-
-        @keyframes pulse-red {
-
-            0%,
-            100% {
-                opacity: 1;
-                box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
-            }
-
-            50% {
-                opacity: 0.9;
-                box-shadow: 0 12px 25px rgba(220, 38, 38, 0.6);
-            }
-        }
-
-        /* Gradient 5 ระดับ (เหมือน Department เป๊ะๆ) */
-        .bg-perfect {
-            background: linear-gradient(135deg, #059669, #10b981) !important;
-        }
-
-        .bg-excellent {
-            background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
-        }
-
-        .bg-good {
-            background: linear-gradient(135deg, #d97706, #f59e0b) !important;
-        }
-
-        .bg-caution {
-            background: linear-gradient(135deg, #ea580c, #fb923c) !important;
-        }
-
-        .bg-critical {
-            background: linear-gradient(135deg, #dc2626, #ef4444) !important;
-            animation: pulse-red 2s infinite;
-        }
-
-        .banner-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .banner-content h2 {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 700;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            letter-spacing: 0.3px;
-        }
-
-        .banner-content p {
-            margin: 3px 0 0 0;
-            font-size: 14px;
-            opacity: 0.95;
-            font-weight: 400;
-        }
-
-        /* กล่อง AI Insight (ฟีเจอร์พิเศษของหน้า Personal) */
-        .ai-insight {
-            background: rgba(255, 255, 255, 0.25);
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-            z-index: 1;
         }
     </style>
 </head>
 
 <body>
-
-    <!-- Login Screen -->
-    <div id="loginScreen">
-        <div class="login-card">
-            <div class="login-icon">
-                <i class="fa-solid fa-user-doctor"></i>
+    <div class="app-layout">
+        <!-- WARM HEADER -->
+        <header class="header">
+            <div class="user-section">
+                <div class="user-avatar"><i class="fas fa-user-md"></i></div>
+                <div class="user-text">
+                    <h1 id="user-name">Dr. Somchai</h1>
+                    <p>พยาบาลวิชาชีพ • ICU</p>
+                </div>
             </div>
-            <h1>Personal Dashboard Login</h1>
-            <p>เข้าสู่ระบบด้วย Employee ID เพื่อดูข้อมูลของคุณ (Enter Employee ID to view your data)</p>
+            <div class="header-right">
+                <div class="kpi-row">
+                    <div class="kpi-card">
+                        <div class="kpi-label">คะแนนเฉลี่ย (My Average)</div>
+                        <div class="kpi-value" id="kpi-avg">--</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">จำนวนครั้ง (Total Scans)</div>
+                        <div class="kpi-value success" id="kpi-total">--</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">อัตราผ่าน (Pass Rate)</div>
+                        <div class="kpi-value" id="kpi-pass">--</div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <a href="index.html" class="nav-btn nav-btn-ghost"><i class="fas fa-home"></i> Home</a>
+                    <button class="nav-btn nav-btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i>
+                        Logout</button>
+                </div>
+            </div>
+        </header>
 
-            <div class="error-message" id="errorMessage">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <span>ไม่พบ Employee ID นี้ในระบบ กรุณาลองใหม่ (Employee ID not found, please try again)</span>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="motivation-banner level-good" id="motivation-banner">
+                <div class="motivation-icon">🌟</div>
+                <div class="motivation-title" id="motivation-title">ยอดเยี่ยม!</div>
+                <div class="motivation-text" id="motivation-text">คุณกำลังทำได้ดีมาก ให้ความสำคัญกับโซนนิ้วโป้งมากขึ้น
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="sidebar-title"><i class="fas fa-calendar"></i> ช่วงเวลา</div>
+                <div class="filter-group"><label>วันที่เริ่มต้น</label><input type="date" id="filter-date-start"></div>
+                <div class="filter-group"><label>วันที่สิ้นสุด</label><input type="date" id="filter-date-end"></div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- 1. My Unclean Zones -->
+            <div class="card section-hands">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-hand-paper"></i> My Unclean Zones</div>
+                </div>
+                <div class="hands-grid">
+                    <div class="hand-wrapper">
+                        <div class="hand-label">Left Front</div><svg class="hand-svg" viewBox="0 0 120 168"
+                            preserveAspectRatio="xMidYMid meet" id="hand-lf"></svg>
+                    </div>
+                    <div class="hand-wrapper">
+                        <div class="hand-label">Left Back</div><svg class="hand-svg" viewBox="0 0 120 168"
+                            preserveAspectRatio="xMidYMid meet" id="hand-lb"></svg>
+                    </div>
+                    <div class="hand-wrapper">
+                        <div class="hand-label">Right Front</div><svg class="hand-svg" viewBox="0 0 120 168"
+                            preserveAspectRatio="xMidYMid meet" id="hand-rf"></svg>
+                    </div>
+                    <div class="hand-wrapper">
+                        <div class="hand-label">Right Back</div><svg class="hand-svg" viewBox="0 0 120 168"
+                            preserveAspectRatio="xMidYMid meet" id="hand-rb"></svg>
+                    </div>
+                </div>
+                <div class="hand-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot legend-clean"></div>สะอาด (80-100%)
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot legend-moderate"></div>ปานกลาง (50-79%)
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot legend-dirty"></div>ไม่สะอาด (0-49%)
+                    </div>
+                </div>
             </div>
 
-            <div class="password-container">
-                <input type="password" id="empIdInput" class="login-input" placeholder="Employee ID (เช่น EMP001)"
-                    autocomplete="off">
+            <!-- 2. My History Log -->
+            <div class="card section-history">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-history"></i> My History Log</div>
+                </div>
+                <div class="chart-container"><canvas id="historyChart"></canvas></div>
             </div>
 
-            <button class="login-button" onclick="handleLogin()">
-                <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                <span>เข้าสู่ระบบ (Login)</span>
-            </button>
-
-            <div class="login-hint">
-                <i class="fa-solid fa-info-circle"></i>
-                <strong>Demo IDs:</strong> EMP001, EMP002, EMP003, EMP004
+            <!-- 3. Improvement Recommendations -->
+            <div class="card section-recs">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-lightbulb"></i> Improvement Recommendations</div>
+                </div>
+                <div class="rec-list" id="rec-list"></div>
             </div>
-
-            <a href="index.html" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span>กลับหน้าหลัก (Back to Home)</span>
-            </a>
-        </div>
+        </main>
     </div>
 
-    <!-- Dashboard Content -->
-    <div id="dashboardContent">
+    <script>
+        const ZONES = ["thumb", "index", "middle", "ring", "pinky", "palm", "wrist"];
+        const ZONE_NAMES = { thumb: "นิ้วโป้ง", index: "นิ้วชี้", middle: "นิ้วกลาง", ring: "นิ้วนาง", pinky: "นิ้วก้อย", palm: "ฝ่ามือ", wrist: "ข้อมือ" };
 
-        <div class="container">
-            <div id="dashboardScreen" class="dashboard">
-                <!-- Top Navigation Bar -->
-                <nav class="top-nav">
-                    <div id="backButtonContainer" style="display: none;">
-                        <button class="btn btn-back" id="backButton" onclick="goBack()">
-                            <i class="fa-solid fa-arrow-left"></i>
-                            <span>กลับ Dashboard แผนก (Back to Dept Dashboard)</span>
-                        </button>
-                    </div>
-                    <div style="flex: 1;"></div>
-                    <button class="btn btn-logout" id="logoutButton" onclick="handleLogout()">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>ออกจากระบบ (Logout)</span>
-                    </button>
-                </nav>
+        function genData(count = 30) {
+            const data = [], today = new Date();
+            for (let i = 0; i < count; i++) {
+                const daysAgo = Math.floor(i / 2);
+                const date = new Date(today); date.setDate(date.getDate() - daysAgo);
+                const hour = 7 + Math.floor(Math.random() * 10);
+                const minute = Math.floor(Math.random() * 60);
+                date.setHours(hour, minute, 0, 0);
 
-                <!-- Header -->
-                <div class="dashboard-header">
-                    <div class="user-info">
-                        <h1 id="userName">Dashboard ส่วนตัว (Personal Dashboard)</h1>
-                        <p id="userDept">แผนก (Department): ER | รหัสพนักงาน (Employee ID): EMP001</p>
-                    </div>
-                </div>
+                let baseScore = 72 + Math.random() * 22;
+                baseScore = Math.min(100, Math.max(45, baseScore + (Math.random() - 0.5) * 15));
 
-                <!-- Motivation Banner -->
-                <div id="motivationBanner" class="motivation-banner motivation-improve">
-                    <span class="emoji-icon">📉</span>
-                    <span>ช่วงนี้เราการ์ดตกไปนิด — มาช่วยกันล้างมือให้ถูกวิธีเพื่อความปลอดภัยกันเถอะ! 😷❤️</span>
-                </div>
-
-                <!-- Hand Visualization - Prominent Yellow Card (Hospital Dashboard Style) -->
-                <div class="hand-prominent-card" id="handProminentCard">
-                    <h2
-                        style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; text-align: center;">
-                        <i class="fa-solid fa-hand-dots" style="color: #f59e0b;"></i>
-                        <span data-translate="header-risk-overview">จุดที่มักล้างไม่สะอาด (Frequent Unclean
-                            Zones)</span>
-                    </h2>
-
-                    <!-- Hand Tooltip -->
-                    <div id="handTooltip" class="hand-tooltip"></div>
-
-                    <div class="hand-visual" id="handVisualCard"
-                        style="position: relative; background: rgba(255,255,255,0.7); border-radius: 20px; padding: 30px 20px;">
-
-                        <div class="hand-view">
-                            <p style="font-size: 14px; font-weight: 700; color: var(--text-sub); margin-bottom: 15px;">
-                                หน้ามือ (Palm)</p>
-                            <svg id="frontHandSvg" class="hand-svg" viewBox="0 0 200 250">
-                                <defs>
-                                    <filter id="glow">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                                        <feMerge>
-                                            <feMergeNode in="coloredBlur" />
-                                            <feMergeNode in="SourceGraphic" />
-                                        </feMerge>
-                                    </filter>
-                                </defs>
-                                <path class="hand-path"
-                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                                <!-- Heat zones will be added by JavaScript -->
-                            </svg>
-                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-blue); margin-top: 15px;"
-                                id="frontScore">-</div>
-                        </div>
-                        <div class="hand-view">
-                            <p style="font-size: 14px; font-weight: 700; color: var(--text-sub); margin-bottom: 15px;">
-                                หลังมือ (Back of Hand)</p>
-                            <svg id="backHandSvg" class="hand-svg" viewBox="0 0 200 250">
-                                <defs>
-                                    <filter id="glow2">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                                        <feMerge>
-                                            <feMergeNode in="coloredBlur" />
-                                            <feMergeNode in="SourceGraphic" />
-                                        </feMerge>
-                                    </filter>
-                                </defs>
-                                <path class="hand-path"
-                                    d="M100 240 Q70 240 55 210 Q45 190 40 160 Q30 150 15 110 Q5 90 15 70 Q25 50 35 60 L45 90 L40 30 Q40 10 55 10 Q70 10 70 40 L75 95 L85 15 Q85 -5 100 -5 Q115 -5 115 25 L115 95 L125 20 Q125 0 140 0 Q155 0 155 30 L155 100 L165 50 Q165 35 180 35 Q195 35 185 80 Q175 120 180 160 Q180 200 160 230 Q140 240 100 240 Z" />
-                                <!-- Heat zones will be added by JavaScript -->
-                            </svg>
-                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-blue); margin-top: 15px;"
-                                id="backScore">-</div>
-                        </div>
-                    </div>
-                    <div
-                        style="margin-top: 25px; padding: 18px; background: #f8fafc; border-radius: 12px; font-size: 13px; text-align: center;">
-                        <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div
-                                    style="width: 24px; height: 24px; background: #ef4444; border-radius: 50%; opacity: 0.9;">
-                                </div>
-                                <span style="color: var(--text-sub); font-weight: 600;">ต่ำกว่า 60%
-                                    (ต้องปรับปรุง)</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div
-                                    style="width: 24px; height: 24px; background: #f59e0b; border-radius: 50%; opacity: 0.7;">
-                                </div>
-                                <span style="color: var(--text-sub); font-weight: 600;">60-79% (พอใช้)</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div
-                                    style="width: 24px; height: 24px; background: #10b981; border-radius: 50%; opacity: 0.5;">
-                                </div>
-                                <span style="color: var(--text-sub); font-weight: 600;">80%+ (ดีเยี่ยม)</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px;">
-                            <span style="font-size: 11px; color: #64748b; font-style: italic;"><i
-                                    class="fa-solid fa-hand-pointer"></i> Hover บนโซนเพื่อดูคะแนน</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- KPI Cards (Profile Summary) -->
-                <div class="kpi-grid" style="margin-top: 20px; grid-template-columns: repeat(2, 1fr);">
-                    <div class="kpi-card neutral">
-                        <h3><i class="fa-solid fa-chart-line"></i> ค่าเฉลี่ยของฉัน (My Average Score)</h3>
-                        <div class="value" id="avgScore">-</div>
-                        <span class="status" id="passStatus">-</span>
-                    </div>
-                    <div class="kpi-card neutral">
-                        <h3><i class="fa-solid fa-hand-dots"></i> จำนวนครั้งที่ล้าง (Total Wash Count)</h3>
-                        <div class="value" id="totalScans">-</div>
-                    </div>
-                </div>
-
-                <!-- History Table -->
-                <div class="calendar-heatmap">
-                    <h2 style="font-size: 20px; color: var(--text-main); margin-bottom: 5px;">
-                        <i class="fa-solid fa-clock-rotate-left"></i> <span
-                            data-translate="header-last-5">ประวัติการล้างมือ</span>
-                    </h2>
-                    <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 20px;">
-                        บันทึกการสแกนล้างมือล่าสุดของคุณ (Your recent hand hygiene scans)
-                    </p>
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                                    <th
-                                        style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                        #</th>
-                                    <th
-                                        style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                        วัน/เดือน/ปี (Date)</th>
-                                    <th
-                                        style="padding: 12px; text-align: left; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                        เวลา (Time)</th>
-                                    <th
-                                        style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                        หน้ามือ (Palm)</th>
-                                    <th
-                                        style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                        หลังมือ (Back)</th>
-                                    <th
-                                        style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                        เฉลี่ย (Average)</th>
-                                    <th
-                                        style="padding: 12px; text-align: center; font-size: 13px; color: var(--text-main); font-weight: 700;">
-                                        สถานะ (Status)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="historyTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Main Content -->
-                <div class="content-grid">
-                    <!-- Trend Chart -->
-                    <div class="card">
-                        <h2><i class="fa-solid fa-chart-area"></i> <span
-                                data-translate="header-trend">ผลการล้างมือแต่ละครั้ง
-                                (Score per Washing Session)</span></h2>
-                        <div class="chart-container">
-                            <canvas id="trendChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Top 3 Weak Zones -->
-                <div class="card">
-                    <h2><i class="fa-solid fa-exclamation-triangle"></i> <span
-                            data-translate="header-improvement">โซนที่ต้องเน้นเป็นพิเศษ (Urgent Zones to Improve)</span>
-                    </h2>
-                    <div class="zones-grid" id="zonesGrid"></div>
-                </div>
-
-                <!-- AI Recommendations (HIDDEN) -->
-                <div class="recommendations" style="display: none;">
-                    <h2><i class="fa-solid fa-brain"></i> คำแนะนำจาก AI (Personalized Recommendations)</h2>
-                    <div id="recommendationsContent"></div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            // ============================================
-            // MOCK DATA - SINGLE SOURCE OF TRUTH
-            // ============================================
-            const mockEmployees = {
-                'EMP001': {
-                    id: 'EMP001',
-                    name: 'Dr. Somchai Ruangsri',
-                    position: 'Doctor',
-                    department: 'ER',
-                    records: [
-                        { date: '30/10/2025', time: '08:15', front: 88, back: 85, zones: [92, 88, 85, 90, 84, 86, 89, 91, 87, 85, 88] },
-                        { date: '30/10/2025', time: '11:30', front: 90, back: 84, zones: [94, 90, 84, 92, 86, 88, 91, 93, 89, 84, 90] },
-                        { date: '30/10/2025', time: '14:45', front: 87, back: 80, zones: [91, 87, 80, 89, 83, 85, 88, 90, 86, 80, 87] },
-                        { date: '31/10/2025', time: '09:00', front: 89, back: 83, zones: [93, 89, 83, 91, 85, 87, 90, 92, 88, 83, 89] },
-                        { date: '31/10/2025', time: '13:20', front: 88, back: 82, zones: [92, 88, 82, 90, 84, 86, 89, 91, 87, 82, 88] },
-                        { date: '01/11/2025', time: '08:30', front: 90, back: 85, zones: [94, 90, 85, 92, 86, 88, 91, 93, 89, 85, 90] }
-                    ]
-                },
-                'EMP002': {
-                    id: 'EMP002',
-                    name: 'Nurse Pranee Sukjai',
-                    position: 'Registered Nurse',
-                    department: 'ER',
-                    records: [
-                        { date: '30/10/2025', time: '08:45', front: 82, back: 78, zones: [86, 82, 78, 84, 76, 78, 81, 83, 79, 78, 82] },
-                        { date: '30/10/2025', time: '12:15', front: 80, back: 75, zones: [84, 80, 75, 82, 74, 76, 79, 81, 77, 75, 80] },
-                        { date: '30/10/2025', time: '15:30', front: 79, back: 77, zones: [83, 79, 77, 81, 75, 77, 80, 82, 78, 77, 79] },
-                        { date: '31/10/2025', time: '09:30', front: 81, back: 76, zones: [85, 81, 76, 83, 75, 77, 80, 82, 78, 76, 81] },
-                        { date: '31/10/2025', time: '14:00', front: 80, back: 78, zones: [84, 80, 78, 82, 76, 78, 81, 83, 79, 78, 80] }
-                    ]
-                },
-                'EMP003': {
-                    id: 'EMP003',
-                    name: 'Dr. Wanida Pongpan',
-                    position: 'Doctor',
-                    department: 'ICU',
-                    records: [
-                        { date: '30/10/2025', time: '09:15', front: 50, back: 45, zones: [54, 50, 45, 52, 43, 45, 48, 50, 46, 45, 50] },
-                        { date: '30/10/2025', time: '13:00', front: 48, back: 42, zones: [52, 48, 42, 50, 40, 42, 46, 48, 44, 42, 48] },
-                        { date: '30/10/2025', time: '16:20', front: 46, back: 40, zones: [50, 46, 40, 48, 38, 40, 44, 46, 42, 40, 46] },
-                        { date: '31/10/2025', time: '10:00', front: 49, back: 43, zones: [53, 49, 43, 51, 41, 43, 47, 49, 45, 43, 49] },
-                        { date: '31/10/2025', time: '14:45', front: 47, back: 44, zones: [51, 47, 44, 49, 42, 44, 46, 48, 45, 44, 47] }
-                    ]
-                },
-                'EMP004': {
-                    id: 'EMP004',
-                    name: 'Nurse Suwan Thongdee',
-                    position: 'Registered Nurse',
-                    department: 'ICU',
-                    records: [
-                        { date: '30/10/2025', time: '08:00', front: 38, back: 32, zones: [42, 38, 32, 40, 30, 32, 36, 38, 34, 32, 38] },
-                        { date: '30/10/2025', time: '11:45', front: 35, back: 30, zones: [39, 35, 30, 37, 28, 30, 33, 35, 31, 30, 35] },
-                        { date: '30/10/2025', time: '15:00', front: 34, back: 29, zones: [38, 34, 29, 36, 27, 29, 32, 34, 30, 29, 34] },
-                        { date: '31/10/2025', time: '09:45', front: 36, back: 31, zones: [40, 36, 31, 38, 29, 31, 34, 36, 32, 31, 36] },
-                        { date: '31/10/2025', time: '13:30', front: 33, back: 30, zones: [37, 33, 30, 35, 28, 30, 31, 33, 31, 30, 33] }
-                    ]
-                }
-            };
-
-
-            // ============================================
-            // GOOGLE TRANSLATE WIDGET
-            // ============================================
-            function googleTranslateElementInit() {
-                new google.translate.TranslateElement({
-                    pageLanguage: 'th',
-                    includedLanguages: 'en,th,zh-CN,ja,ko',
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    autoDisplay: false
-                }, 'google_translate_element');
-            }
-
-            // Keep existing translations for backward compatibility
-            const translations = {
-                th: {
-                    // Login Screen
-                    'login-title': 'Personal Dashboard Login',
-                    'login-subtitle': 'เข้าสู่ระบบด้วย Employee ID เพื่อดูข้อมูลส่วนตัวของคุณ',
-                    'login-button': 'เข้าสู่ระบบ',
-                    'login-error': 'ไม่พบ Employee ID นี้ในระบบ กรุณาลองใหม่อีกครั้ง',
-                    'back-home': 'กลับหน้าหลัก',
-
-                    // Navigation
-                    'btn-back': 'ย้อนกลับ',
-                    'btn-logout': 'ออกจากระบบ',
-
-                    // Headers
-                    'header-comparison': 'เทียบกับเพื่อนร่วมงาน',
-                    'header-comparison-sub': 'เปรียบเทียบผลงานของคุณกับค่าเฉลี่ยของแผนกและโรงพยาบาล',
-                    'header-last-5': 'ประวัติการล้างมือ',
-                    'header-last-5-sub': 'บันทึกการสแกนล้างมือล่าสุดของคุณ',
-                    'header-trend': 'แนวโน้มการล้างมือ',
-                    'header-risk-overview': 'จุดที่มักล้างไม่สะอาด (Frequent Unclean Zones)',
-                    'header-improvement': 'จุดที่ต้องปรับปรุง',
-
-                    // KPI Labels
-                    'kpi-avg-score': 'คะแนนเฉลี่ยรวม',
-                    'kpi-avg-score-sub': 'Overall Average Score',
-                    'kpi-avg-score-status': 'ต่ำกว่าเกณฑ์',
-                    'kpi-total-scans': 'จำนวนครั้งที่สแกน',
-                    'kpi-total-scans-sub': 'Total Scans',
-                    'kpi-pass-count': 'ครั้งที่ผ่านเกณฑ์',
-                    'kpi-pass-count-sub': 'Passed Scans',
-                    'kpi-period': 'ช่วงเวลา',
-                    'kpi-period-sub': 'Time Period',
-
-                    // Comparison Labels
-                    'comp-you': 'คุณ',
-                    'comp-your-score': 'คะแนนของคุณ',
-                    'comp-dept-avg': 'เฉลี่ยแผนก',
-                    'comp-hospital-avg': 'เฉลี่ยโรงพยาบาล',
-                    'comp-below': 'ต่ำกว่า',
-                    'comp-department': 'แผนก',
-
-                    // Table Headers
-                    'th-number': '#',
-                    'th-date': 'วัน/เดือน/ปี',
-                    'th-time': 'เวลา',
-                    'th-front': 'หน้ามือ',
-                    'th-back': 'หลังมือ',
-                    'th-avg': 'เฉลี่ย',
-                    'th-status': 'สถานะ',
-
-                    // Status
-                    'status-fail': 'ไม่ผ่าน',
-
-                    // Quality Levels
-                    'quality-needs-improvement': 'ต้องปรับปรุง',
-                    'quality-fair': 'พอใช้',
-                    'quality-excellent': 'ดีเยี่ยม',
-
-                    // Hand Zones (11 zones)
-                    'zone-thumb': 'นิ้วหัวแม่มือ',
-                    'zone-palm': 'ฝ่ามือ',
-                    'zone-wrist': 'ข้อมือ',
-                    'zone-side': 'ด้านข้างมือ',
-                    'zone-knuckles': 'ข้อนิ้ว',
-                    'zone-nails': 'เล็บมือ',
-                    'zone-between-fingers': 'ระหว่างนิ้ว',
-                    'zone-base-fingers': 'ฐานนิ้ว',
-                    'zone-little-finger': 'บริเวณนิ้วก้อย',
-                    'zone-fingertips': 'ปลายนิ้วมือ',
-                    'zone-back-hand': 'หลังมือ'
-                },
-                en: {
-                    // Login Screen
-                    'login-title': 'Personal Dashboard Login',
-                    'login-subtitle': 'Enter your Employee ID to view your personal data',
-                    'login-button': 'Login',
-                    'login-error': 'Employee ID not found. Please try again',
-                    'back-home': 'Back to Home',
-
-                    // Navigation
-                    'btn-back': 'Back',
-                    'btn-logout': 'Logout',
-
-                    // Headers
-                    'header-comparison': 'Compare with Colleagues',
-                    'header-comparison-sub': 'Compare your performance with department and hospital averages',
-                    'header-last-5': 'History',
-                    'header-last-5-sub': 'Your Recent Hand Hygiene Scans',
-                    'header-trend': 'Hand Hygiene Trend',
-                    'header-risk-overview': 'Frequent Unclean Zones',
-                    'header-improvement': 'Areas for Improvement',
-
-                    // KPI Labels
-                    'kpi-avg-score': 'Overall Average Score',
-                    'kpi-avg-score-sub': 'Overall Average Score',
-                    'kpi-avg-score-status': 'Below Standard',
-                    'kpi-total-scans': 'Total Scans',
-                    'kpi-total-scans-sub': 'Total Scans',
-                    'kpi-pass-count': 'Passed Scans',
-                    'kpi-pass-count-sub': 'Passed Scans',
-                    'kpi-period': 'Time Period',
-                    'kpi-period-sub': 'Time Period',
-
-                    // Comparison Labels
-                    'comp-you': 'You',
-                    'comp-your-score': 'Your Score',
-                    'comp-dept-avg': 'Department Average',
-                    'comp-hospital-avg': 'Hospital Average',
-                    'comp-below': 'below',
-                    'comp-department': 'Department',
-
-                    // Table Headers
-                    'th-number': '#',
-                    'th-date': 'Date',
-                    'th-time': 'Time',
-                    'th-front': 'Palm',
-                    'th-back': 'Back',
-                    'th-avg': 'Average',
-                    'th-status': 'Status',
-
-                    // Status
-                    'status-fail': 'Fail',
-
-                    // Quality Levels
-                    'quality-needs-improvement': 'Needs Improvement',
-                    'quality-fair': 'Fair',
-                    'quality-excellent': 'Excellent',
-
-                    // Hand Zones (11 zones)
-                    'zone-thumb': 'Thumb',
-                    'zone-palm': 'Palm',
-                    'zone-wrist': 'Wrist',
-                    'zone-side': 'Side of Hand',
-                    'zone-knuckles': 'Knuckles',
-                    'zone-nails': 'Fingernails',
-                    'zone-between-fingers': 'Between Fingers',
-                    'zone-base-fingers': 'Base of Fingers',
-                    'zone-little-finger': 'Little Finger Area',
-                    'zone-fingertips': 'Fingertips',
-                    'zone-back-hand': 'Back of Hand'
-                }
-            };
-
-            // Auto-add data-translate attributes to elements
-            function autoAddTranslateAttributes() {
-                const mappings = {
-                    // Department
-                    'แผนก': 'comp-department',
-
-                    // Section Sub-headers
-                    'เปรียบเทียบผลงานของคุณกับค่าเฉลี่ยของแผนกและโรงพยาบาล': 'header-comparison-sub',
-                    'บันทึกการสแกนล้างมือล่าสุดของคุณ': 'header-last-5-sub',
-
-                    // KPI Status
-                    'ต่ำกว่าเกณฑ์': 'kpi-avg-score-status',
-
-                    // Comparison
-                    'คะแนนของคุณ': 'comp-your-score',
-                    'เฉลี่ยแผนก': 'comp-dept-avg',
-                    'ต่ำกว่า': 'comp-below',
-                    'เฉลี่ยโรงพยาบาล': 'comp-hospital-avg',
-
-                    // Table Headers
-                    '#': 'th-number',
-                    'วัน/เดือน/ปี': 'th-date',
-                    'เวลา': 'th-time',
-                    'หน้ามือ': 'th-front',
-                    'หลังมือ': 'th-back',
-                    'เฉลี่ย': 'th-avg',
-                    'สถานะ': 'th-status',
-
-                    // Hand Zones
-                    'นิ้วหัวแม่มือ': 'zone-thumb',
-                    'ฝ่ามือ': 'zone-palm',
-                    'ข้อมือ': 'zone-wrist',
-                    'ด้านข้างมือ': 'zone-side',
-                    'ข้อนิ้ว': 'zone-knuckles',
-                    'เล็บมือ': 'zone-nails',
-                    'ระหว่างนิ้ว': 'zone-between-fingers',
-                    'ฐานนิ้ว': 'zone-base-fingers',
-                    'บริเวณนิ้วก้อย': 'zone-little-finger',
-                    'ปลายนิ้วมือ': 'zone-fingertips',
-
-                    // Quality Levels
-                    'ต้องปรับปรุง': 'quality-needs-improvement',
-                    'พอใช้': 'quality-fair',
-                    'ดีเยี่ยม': 'quality-excellent',
-
-                    // Status
-                    'ไม่ผ่าน': 'status-fail'
-                };
-
-                // Add data-translate to matching elements
-                document.querySelectorAll('label, th, h3, h4, h2, span, div, p').forEach(el => {
-                    if (el.children.length === 0 && !el.hasAttribute('data-translate')) {
-                        const text = el.textContent.trim();
-                        // Handle text with icons/emojis
-                        const cleanText = text.replace(/[❌✓✗↓]/g, '').trim();
-                        if (mappings[text] || mappings[cleanText]) {
-                            el.setAttribute('data-translate', mappings[text] || mappings[cleanText]);
-                        }
-                    }
-                });
-            }
-
-
-            // Apply language to all translatable elements
-            function updateLanguage(lang) {
-                const trans = translations[lang] || translations['th'];
-
-                // Apply translations to elements with data-translate attribute
-                document.querySelectorAll('[data-translate]').forEach(el => {
-                    const key = el.getAttribute('data-translate');
-                    if (trans[key]) {
-                        if (el.tagName === 'INPUT') {
-                            el.placeholder = trans[key];
-                        } else {
-                            el.textContent = trans[key];
-                        }
-                    }
-                });
-            }
-
-            // Initialize language on page load
-            (function () {
-                const savedLang = localStorage.getItem('selectedLanguage') || localStorage.getItem('preferredLanguage') || 'th';
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', () => {
-                        autoAddTranslateAttributes();
-                        updateLanguage(savedLang);
-                    });
-                } else {
-                    autoAddTranslateAttributes();
-                    updateLanguage(savedLang);
-                }
-            })();
-
-            // ============================================
-            // GLOBAL VARIABLES
-            // ============================================
-            let currentUser = null;
-
-            // ============================================
-            // SAFE ELEMENT GETTER
-            // ============================================
-            function safeGetElement(id) {
-                return document.getElementById(id);
-            }
-
-            // ============================================
-            // LOAD EMPLOYEE DATA
-            // ============================================
-            function loadEmployeeData(empId) {
-                try {
-                    const employee = mockEmployees[empId];
-                    if (!employee || !employee.records) {
-                        console.error('❌ Employee not found or missing records:', empId);
-                        alert('ไม่พบข้อมูลพนักงาน ID: ' + empId);
-                        return false;
-                    }
-
-                    currentUser = employee;
-
-                    // Update header
-                    const userName = safeGetElement('userName');
-                    const userDept = safeGetElement('userDept');
-
-                    if (userName) userName.textContent = employee.name;
-                    if (userDept) userDept.textContent = `แผนก ${employee.department} | Employee ID: ${empId}`;
-
-                    console.log('✅ Data loaded successfully:', empId);
-                    console.log('   Name:', employee.name);
-                    console.log('   Records:', employee.records.length);
-
-                    return true;
-                } catch (error) {
-                    console.error('❌ Error loading employee data:', error);
-                    alert('เกิดข้อผิดพลาดในการโหลดข้อมูล');
-                    return false;
-                }
-            }
-
-            // ============================================
-            // CALCULATE AND RENDER DASHBOARD DATA
-            // ============================================
-            function calculateAndRenderDashboard(empId) {
-                const employee = mockEmployees[empId];
-                if (!employee || !employee.records) return;
-
-                const records = employee.records;
-                const totalScans = records.length;
-
-                // Calculate statistics
-                let totalScore = 0, passCount = 0, frontTotal = 0, backTotal = 0;
-                const zoneAverages = Array(11).fill(0);
-
-                records.forEach(record => {
-                    const avg = (record.front + record.back) / 2;
-                    totalScore += avg;
-                    frontTotal += record.front;
-                    backTotal += record.back;
-                    if (avg >= 80) passCount++;
-                    record.zones.forEach((score, idx) => zoneAverages[idx] += score);
+                const zones = {};
+                ZONES.forEach(z => {
+                    let s = baseScore + (Math.random() - 0.5) * 25;
+                    if (z === "thumb") s -= 15;
+                    if (z === "pinky") s -= 12;
+                    if (z === "wrist") s -= 8;
+                    zones[z] = Math.min(100, Math.max(0, Math.round(s)));
                 });
 
-                const avgScore = (totalScore / totalScans).toFixed(1);
-                const frontAvg = (frontTotal / totalScans).toFixed(1);
-                const backAvg = (backTotal / totalScans).toFixed(1);
-                zoneAverages.forEach((sum, idx) => zoneAverages[idx] = (sum / totalScans).toFixed(1));
-
-                // Update KPI cards
-                const avgScoreEl = safeGetElement('avgScore');
-                const totalScansEl = safeGetElement('totalScans');
-                const passCountEl = safeGetElement('passCount');
-                const dateRangeEl = safeGetElement('dateRange');
-                const frontScoreEl = safeGetElement('frontScore');
-                const backScoreEl = safeGetElement('backScore');
-                const passStatusEl = safeGetElement('passStatus');
-
-                if (avgScoreEl) {
-                    avgScoreEl.textContent = avgScore + '%';
-                    const kpiCard = avgScoreEl.closest('.kpi-card');
-                    if (kpiCard) {
-                        if (avgScore >= 80) {
-                            kpiCard.classList.add('pass');
-                            kpiCard.classList.remove('fail', 'neutral');
-                            if (passStatusEl) {
-                                passStatusEl.textContent = '✓ ผ่านเกณฑ์';
-                                passStatusEl.parentElement.classList.add('pass');
-                            }
-                        } else {
-                            kpiCard.classList.add('fail');
-                            kpiCard.classList.remove('pass', 'neutral');
-                            if (passStatusEl) {
-                                passStatusEl.textContent = '✗ ต่ำกว่าเกณฑ์';
-                                passStatusEl.parentElement.classList.add('fail');
-                            }
-                        }
-                    }
-                }
-
-                if (totalScansEl) totalScansEl.textContent = totalScans;
-                if (passCountEl) passCountEl.textContent = `${passCount}/${totalScans}`;
-                if (dateRangeEl) dateRangeEl.textContent = `${records[0].date} - ${records[records.length - 1].date}`;
-                if (frontScoreEl) frontScoreEl.textContent = frontAvg + '%';
-                if (backScoreEl) backScoreEl.textContent = backAvg + '%';
-
-                // Render all visualizations
-                renderComparison(avgScore, employee.department);
-                renderCalendar(records);
-                renderZones(zoneAverages);
-                renderTrendChart(records);
-                renderHandHeatmap(zoneAverages);
-
-                // Update Motivation Banner based on score - 5 Level Humanized System (KPI Target: 80%)
-                const motivationBanner = document.getElementById('motivationBanner');
-                if (motivationBanner) {
-                    // Remove all previous bg classes and reset
-                    motivationBanner.className = 'motivation-banner';
-
-                    // Parse avgScore as float to fix comparison issues
-                    const score = parseFloat(avgScore);
-
-                    // 5-Level Humanized Thai Message System (Individual Encouragement Context)
-                    if (score >= 90) {
-                        motivationBanner.classList.add('bg-perfect');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>🏆 Perfect !!! คุณช่วยลดโอกาสการแพร่กระจายเชื้อโรคได้อย่างสมบูรณ์แบบ</h2></div>`;
-                    } else if (score >= 75) {
-                        motivationBanner.classList.add('bg-excellent');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>✨ ทำได้ดี !!! มือสะอาดเกือบทั้งหมดแล้ว พยายามเก็บรายละเอียดอีกนิดนะ</h2></div>`;
-                    } else if (score >= 60) {
-                        motivationBanner.classList.add('bg-good');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>👍 ความสะอาดอยู่ในเกณฑ์มาตรฐาน อย่าลืมเช็คจุดที่ล้างยากๆ ด้วยล่ะ</h2></div>`;
-                    } else if (score >= 50) {
-                        motivationBanner.classList.add('bg-caution');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>⚠️ พยายามได้ดี !!! แต่ความสะอาดระดับนี้ยังมีความเสี่ยงอยู่ ลองเก็บรายละเอียดดูอีกครั้งนะ!</h2></div>`;
-                    } else {
-                        motivationBanner.classList.add('bg-critical');
-                        motivationBanner.innerHTML = `<div class="banner-content"><h2>🚨 ระวัง!!! ตรวจพบจุดเสี่ยงที่อาจมีเชื้อโรคปะปนหลายตำแหน่ง</h2></div>`;
-                    }
-                }
-
-                console.log('✅ Dashboard rendered successfully');
-            }
-
-            // ============================================
-            // RENDER COMPARISON
-            // ============================================
-            function renderComparison(userScore, department) {
-                const deptAverages = { 'ER': 82, 'ICU': 45, 'OR': 91, 'Ward': 78 };
-                const hospitalAvg = 75;
-                const deptAvg = deptAverages[department] || 78;
-
-                const yourScoreEl = safeGetElement('yourScore');
-                const deptAvgEl = safeGetElement('deptAvg');
-                const hospitalAvgEl = safeGetElement('hospitalAvg');
-                const deptDiffEl = safeGetElement('deptDiff');
-                const hospitalDiffEl = safeGetElement('hospitalDiff');
-
-                if (yourScoreEl) yourScoreEl.textContent = userScore + '%';
-                if (deptAvgEl) deptAvgEl.textContent = deptAvg + '%';
-                if (hospitalAvgEl) hospitalAvgEl.textContent = hospitalAvg + '%';
-
-                const deptDiff = (userScore - deptAvg).toFixed(1);
-                const hospitalDiff = (userScore - hospitalAvg).toFixed(1);
-
-                if (deptDiffEl) {
-                    if (deptDiff > 0) {
-                        deptDiffEl.textContent = `↑ สูงกว่า ${deptDiff}%`;
-                        deptDiffEl.className = 'diff positive';
-                    } else if (deptDiff < 0) {
-                        deptDiffEl.textContent = `↓ ต่ำกว่า ${Math.abs(deptDiff)}%`;
-                        deptDiffEl.className = 'diff negative';
-                    } else {
-                        deptDiffEl.textContent = '= เท่ากัน';
-                        deptDiffEl.className = 'diff';
-                    }
-                }
-
-                if (hospitalDiffEl) {
-                    if (hospitalDiff > 0) {
-                        hospitalDiffEl.textContent = `↑ สูงกว่า ${hospitalDiff}%`;
-                        hospitalDiffEl.className = 'diff positive';
-                    } else if (hospitalDiff < 0) {
-                        hospitalDiffEl.textContent = `↓ ต่ำกว่า ${Math.abs(hospitalDiff)}%`;
-                        hospitalDiffEl.className = 'diff negative';
-                    } else {
-                        hospitalDiffEl.textContent = '= เท่ากัน';
-                        hospitalDiffEl.className = 'diff';
-                    }
-                }
-            }
-
-            // ============================================
-            // RENDER CALENDAR (HISTORY TABLE)
-            // ============================================
-            function renderCalendar(records) {
-                const tbody = safeGetElement('historyTableBody');
-                if (!tbody) return;
-
-                tbody.innerHTML = '';
-                const reversedRecords = [...records].reverse().slice(0, 5);
-
-                reversedRecords.forEach((record, index) => {
-                    const avgScore = ((record.front + record.back) / 2).toFixed(1);
-                    const isPassed = avgScore >= 80;
-                    const [day, month, year] = record.date.split('/');
-                    const shortYear = year.substring(2);
-                    const dateStr = `${day}/${month}/${shortYear}`;
-
-                    const row = document.createElement('tr');
-                    row.style.borderBottom = '1px solid #f1f5f9';
-                    row.innerHTML = `
-                        <td style="padding: 12px; font-size: 13px;">${reversedRecords.length - index}</td>
-                        <td style="padding: 12px; font-size: 13px;">${dateStr}</td>
-                        <td style="padding: 12px; font-size: 13px;">${record.time}</td>
-                        <td style="padding: 12px; text-align: center; font-size: 13px; font-weight: 600; color: ${record.front >= 80 ? 'var(--success)' : 'var(--danger)'};">${record.front}%</td>
-                        <td style="padding: 12px; text-align: center; font-size: 13px; font-weight: 600; color: ${record.back >= 80 ? 'var(--success)' : 'var(--danger)'};">${record.back}%</td>
-                        <td style="padding: 12px; text-align: center; font-size: 14px; font-weight: 700; color: ${isPassed ? 'var(--success)' : 'var(--danger)'};">${avgScore}%</td>
-                        <td style="padding: 12px; text-align: center;">
-                            <span style="padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; background: ${isPassed ? '#d1fae5' : '#ffe4e6'}; color: ${isPassed ? 'var(--success)' : 'var(--danger)'};">
-                                ${isPassed ? '✓ ผ่าน' : '✗ ไม่ผ่าน'}
-                            </span>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
+                data.push({
+                    id: i + 1,
+                    timestamp: date.getTime(),
+                    date: date.toISOString().split('T')[0],
+                    time: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,
+                    score: Math.round(baseScore),
+                    zones
                 });
             }
+            return data.sort((a, b) => a.timestamp - b.timestamp);
+        }
 
-            // ============================================
-            // RENDER ZONES (CLEAN LIST VIEW WITH PROGRESS BARS)
-            // ============================================
-            function renderZones(zoneAverages) {
-                const container = safeGetElement('zonesGrid');
-                if (!container) return;
+        let allData = genData(), filteredData = [...allData], chart = null;
 
-                container.innerHTML = '';
-                container.className = 'zones-list-container';
+        document.addEventListener('DOMContentLoaded', () => { setupListeners(); updateAll(); });
 
-                const zoneNames = [
-                    'ปลายนิ้วมือ', 'ระหว่างนิ้ว', 'ฝ่ามือ', 'หลังมือ', 'นิ้วหัวแม่มือ',
-                    'ข้อมือ', 'เล็บมือ', 'ฐานนิ้ว', 'ข้อนิ้ว', 'ด้านข้างมือ', 'บริเวณนิ้วก้อย'
-                ];
+        function setupListeners() {
+            ['filter-date-start', 'filter-date-end'].forEach(id =>
+                document.getElementById(id).addEventListener('change', applyFilters)
+            );
+        }
 
-                const zoneIcons = ['👆', '🤞', '✋', '🤚', '👍', '⌚', '💅', '🖐️', '✊', '🫲', '🤙'];
+        function applyFilters() {
+            const start = document.getElementById('filter-date-start').value;
+            const end = document.getElementById('filter-date-end').value;
+            filteredData = allData.filter(d => {
+                if (start && d.date < start) return false;
+                if (end && d.date > end) return false;
+                return true;
+            });
+            updateAll();
+        }
 
-                // Show ALL zones that are below 80%
-                const failingZones = zoneAverages
-                    .map((score, idx) => ({ score: parseFloat(score), idx }))
-                    .filter(zone => zone.score < 80)
-                    .sort((a, b) => a.score - b.score);
+        function updateAll() { updateKPIs(); updateMotivation(); updateHands(); updateHistory(); updateRecommendations(); }
 
-                if (failingZones.length === 0) {
-                    container.innerHTML = `
-                        <div class="success-message">
-                            <i class="fa-solid fa-trophy"></i>
-                            <h3>ยอดเยี่ยม!</h3>
-                            <p>ทุกโซนผ่านเกณฑ์ 80% แล้ว คุณล้างมือได้ดีมาก!</p>
-                        </div>
-                    `;
-                    return;
-                }
+        function updateKPIs() {
+            if (!filteredData.length) { document.getElementById('kpi-avg').textContent = '--'; document.getElementById('kpi-total').textContent = '--'; document.getElementById('kpi-pass').textContent = '--'; return; }
+            const avg = (filteredData.reduce((s, d) => s + d.score, 0) / filteredData.length).toFixed(1);
+            const pass = ((filteredData.filter(d => d.score >= 80).length / filteredData.length) * 100).toFixed(1);
+            document.getElementById('kpi-avg').textContent = avg + '%';
+            document.getElementById('kpi-avg').className = 'kpi-value ' + (parseFloat(avg) >= 80 ? 'success' : parseFloat(avg) >= 50 ? 'warning' : 'danger');
+            document.getElementById('kpi-total').textContent = filteredData.length;
+            document.getElementById('kpi-pass').textContent = pass + '%';
+            document.getElementById('kpi-pass').className = 'kpi-value ' + (parseFloat(pass) >= 80 ? 'success' : 'warning');
+        }
 
-                failingZones.forEach(zone => {
-                    const score = zone.score;
-                    const rating = score >= 60 ? 'good' : 'poor';
-                    const icon = score >= 60 ? '⚠️' : '❌';
+        function updateMotivation() {
+            const avg = filteredData.length ? filteredData.reduce((s, d) => s + d.score, 0) / filteredData.length : 0;
+            const banner = document.getElementById('motivation-banner');
+            const title = document.getElementById('motivation-title');
+            const text = document.getElementById('motivation-text');
 
-                    const zoneEl = document.createElement('div');
-                    zoneEl.className = `zone-list-item ${rating}`;
-                    zoneEl.innerHTML = `
-                        <div class="zone-header">
-                            <div class="zone-name">
-                                <div class="zone-icon-small ${rating}">${icon}</div>
-                                <span>${zoneNames[zone.idx]}</span>
-                            </div>
-                            <div class="zone-score-text ${rating}">${score}%</div>
-                        </div>
-                        <div class="progress-track">
-                            <div class="progress-fill ${rating}" style="width: ${score}%"></div>
-                        </div>
-                    `;
-                    container.appendChild(zoneEl);
-                });
-            }
+            let level, icon, titleTxt, textTxt;
+            if (avg >= 95) { level = 'perfect'; icon = '🏆'; titleTxt = 'Perfect!'; textTxt = 'คุณเป็นตัวอย่างที่ดีให้ทีม มือสะอาดหมดจด!'; }
+            else if (avg >= 85) { level = 'excellent'; icon = '🌟'; titleTxt = 'ยอดเยี่ยม!'; textTxt = 'ผลงานดีมาก รักษามาตรฐานนี้ต่อไป!'; }
+            else if (avg >= 75) { level = 'good'; icon = '👍'; titleTxt = 'ดีมาก!'; textTxt = 'กำลังพัฒนาได้ดี เน้นโซนนิ้วโป้งและนิ้วก้อยเพิ่ม'; }
+            else if (avg >= 60) { level = 'improve'; icon = '💪'; titleTxt = 'ต้องปรับปรุง'; textTxt = 'มาทำให้ดีขึ้นกันนะ! ดูคำแนะนำด้านล่าง'; }
+            else { level = 'warning'; icon = '⚠️'; titleTxt = 'ต้องใส่ใจ!'; textTxt = 'คะแนนต่ำเกินไป กรุณาทบทวนวิธีการล้างมือ'; }
 
-            // ============================================
-            // RENDER TREND CHART
-            // ============================================
-            let trendChart = null;
-            function renderTrendChart(records) {
-                const canvas = safeGetElement('trendChart');
-                if (!canvas) return;
+            banner.className = 'motivation-banner level-' + level;
+            banner.querySelector('.motivation-icon').textContent = icon;
+            title.textContent = titleTxt;
+            text.textContent = textTxt;
+        }
 
-                const ctx = canvas.getContext('2d');
-                if (trendChart) {
-                    trendChart.destroy();
-                }
+        function updateHistory() {
+            const ctx = document.getElementById('historyChart').getContext('2d');
+            if (chart) chart.destroy();
 
-                const labels = records.map(r => `${r.date} ${r.time}`);
-                const scores = records.map(r => ((r.front + r.back) / 2).toFixed(1));
-                const pointColors = scores.map(score => parseFloat(score) >= 80 ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)');
+            const events = filteredData.slice(-20);
+            const labels = events.map(e => { const [y, m, d] = e.date.split('-'); return `${d}/${m} ${e.time}`; });
+            const colors = events.map(e => e.score >= 80 ? '#10b981' : e.score >= 50 ? '#f59e0b' : '#ef4444');
 
-                trendChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'คะแนนการล้างมือ (%)',
-                            data: scores,
-                            borderColor: 'rgb(14, 165, 233)',
-                            backgroundColor: 'rgba(14, 165, 233, 0.1)',
-                            borderWidth: 3,
-                            tension: 0.4,
-                            fill: true,
-                            pointRadius: 7,
-                            pointBackgroundColor: pointColors,
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 2,
-                            pointHoverRadius: 10
-                        }, {
-                            label: 'เกณฑ์ผ่าน (80%)',
-                            data: Array(records.length).fill(80),
-                            borderColor: 'rgb(16, 185, 129)',
-                            borderWidth: 2,
-                            borderDash: [10, 5],
-                            pointRadius: 0,
-                            fill: false
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'top',
-                                labels: { font: { size: 12, weight: 'bold' }, padding: 15 }
-                            },
-                            tooltip: {
-                                backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                                padding: 12,
-                                titleFont: { size: 13, weight: 'bold' },
-                                bodyFont: { size: 12 },
-                                callbacks: {
-                                    label: function (context) {
-                                        const score = context.parsed.y;
-                                        const status = score >= 80 ? '✓ ผ่าน' : '✗ ไม่ผ่าน';
-                                        return `คะแนน: ${score}% (${status})`;
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                ticks: {
-                                    callback: function (value) { return value + '%'; },
-                                    font: { size: 11 }
-                                },
-                                grid: { color: 'rgba(226, 232, 240, 0.5)' }
-                            },
-                            x: {
-                                ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 45 },
-                                grid: { display: false }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // ============================================
-            // RENDER HAND HEATMAP
-            // ============================================
-            function renderHandHeatmap(zoneAverages) {
-                // Zone coordinates for front and back hands
-                const frontZones = [
-                    { x: 100, y: 10, r: 25, name: 'ปลายนิ้ว', idx: 0 },
-                    { x: 105, y: 85, r: 30, name: 'ระหว่างนิ้ว', idx: 1 },
-                    { x: 100, y: 150, r: 50, name: 'ฝ่ามือ', idx: 2 },
-                    { x: 30, y: 100, r: 28, name: 'นิ้วโป้ง', idx: 4 },
-                    { x: 70, y: 200, r: 25, name: 'ข้อมือ', idx: 5 },
-                    { x: 50, y: 25, r: 20, name: 'เล็บ', idx: 6 }
-                ];
-
-                const backZones = [
-                    { x: 100, y: 160, r: 55, name: 'หลังมือ', idx: 3 },
-                    { x: 100, y: 80, r: 28, name: 'ซอกนิ้ว', idx: 1 },
-                    { x: 100, y: 15, r: 25, name: 'ข้อนิ้ว', idx: 8 },
-                    { x: 70, y: 200, r: 25, name: 'ข้อมือ', idx: 5 },
-                    { x: 170, y: 180, r: 22, name: 'ด้านข้าง', idx: 9 }
-                ];
-
-                const frontSvg = safeGetElement('frontHandSvg');
-                const backSvg = safeGetElement('backHandSvg');
-                if (!frontSvg || !backSvg) return;
-
-                // Clear existing zones
-                frontSvg.querySelectorAll('.heat-zone, .heat-gradient').forEach(el => el.remove());
-                backSvg.querySelectorAll('.heat-zone, .heat-gradient').forEach(el => el.remove());
-
-                const frontDefs = frontSvg.querySelector('defs');
-                const backDefs = backSvg.querySelector('defs');
-
-                // Tooltip and card references
-                const tooltip = document.getElementById('handTooltip');
-                const handCard = document.getElementById('handProminentCard');
-
-                // Helper functions
-                const getHeatColor = (score) => {
-                    if (score >= 80) return '#10b981';
-                    if (score >= 60) return '#f59e0b';
-                    return '#ef4444';
-                };
-
-                const getHeatIntensity = (score) => {
-                    if (score >= 80) return 0.4;
-                    if (score >= 60) return 0.65;
-                    return 0.85;
-                };
-
-                // Helper function for tooltip color based on score
-                const getScoreColor = (score) => {
-                    if (score >= 80) return 'var(--success)';
-                    if (score >= 60) return 'var(--warning)';
-                    return 'var(--danger)';
-                };
-
-                // Add event listeners to a circle element
-                const addCircleEventListeners = (circle, zoneName, score) => {
-                    circle.addEventListener('mouseenter', (e) => {
-                        if (tooltip) {
-                            const color = getScoreColor(parseFloat(score));
-                            tooltip.innerHTML = `${zoneName}: <span style="color:${color};font-weight:800;">${score}%</span>`;
-                            tooltip.classList.add('visible');
-                        }
-                    });
-                    circle.addEventListener('mousemove', (e) => {
-                        if (tooltip && handCard) {
-                            const rect = handCard.getBoundingClientRect();
-                            tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
-                            tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
-                        }
-                    });
-                    circle.addEventListener('mouseleave', () => {
-                        if (tooltip) {
-                            tooltip.classList.remove('visible');
-                        }
-                    });
-                };
-
-                // Render front hand zones
-                frontZones.forEach((zone, index) => {
-                    const score = parseFloat(zoneAverages[zone.idx]);
-                    const color = getHeatColor(score);
-                    const intensity = getHeatIntensity(score);
-                    const gradientId = `frontGradient${index}`;
-
-                    const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
-                    gradient.setAttribute('id', gradientId);
-                    gradient.setAttribute('class', 'heat-gradient');
-                    gradient.innerHTML = `
-                        <stop offset="0%" style="stop-color:${color};stop-opacity:${intensity}" />
-                        <stop offset="50%" style="stop-color:${color};stop-opacity:${intensity * 0.6}" />
-                        <stop offset="100%" style="stop-color:${color};stop-opacity:0" />
-                    `;
-                    frontDefs.appendChild(gradient);
-
-                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                    circle.setAttribute('class', 'heat-zone');
-                    circle.setAttribute('cx', zone.x);
-                    circle.setAttribute('cy', zone.y);
-                    circle.setAttribute('r', zone.r);
-                    circle.setAttribute('fill', `url(#${gradientId})`);
-                    circle.setAttribute('filter', 'url(#glow)');
-                    circle.setAttribute('data-zone', zone.name);
-                    circle.setAttribute('data-score', score);
-                    circle.style.cursor = 'pointer';
-
-                    // Add hover event listeners
-                    addCircleEventListeners(circle, zone.name, score);
-
-                    frontSvg.appendChild(circle);
-                });
-
-                // Render back hand zones
-                backZones.forEach((zone, index) => {
-                    const score = parseFloat(zoneAverages[zone.idx]);
-                    const color = getHeatColor(score);
-                    const intensity = getHeatIntensity(score);
-                    const gradientId = `backGradient${index}`;
-
-                    const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
-                    gradient.setAttribute('id', gradientId);
-                    gradient.setAttribute('class', 'heat-gradient');
-                    gradient.innerHTML = `
-                        <stop offset="0%" style="stop-color:${color};stop-opacity:${intensity}" />
-                        <stop offset="50%" style="stop-color:${color};stop-opacity:${intensity * 0.6}" />
-                        <stop offset="100%" style="stop-color:${color};stop-opacity:0" />
-                    `;
-                    backDefs.appendChild(gradient);
-
-                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                    circle.setAttribute('class', 'heat-zone');
-                    circle.setAttribute('cx', zone.x);
-                    circle.setAttribute('cy', zone.y);
-                    circle.setAttribute('r', zone.r);
-                    circle.setAttribute('fill', `url(#${gradientId})`);
-                    circle.setAttribute('filter', 'url(#glow2)');
-                    circle.setAttribute('data-zone', zone.name);
-                    circle.setAttribute('data-score', score);
-                    circle.style.cursor = 'pointer';
-
-                    // Add hover event listeners
-                    addCircleEventListeners(circle, zone.name, score);
-
-                    backSvg.appendChild(circle);
-                });
-            }
-
-            // Update loadEmployeeData to call rendering
-            const originalLoadEmployeeData = loadEmployeeData;
-            loadEmployeeData = function (empId) {
-                const result = originalLoadEmployeeData(empId);
-                if (result) {
-                    calculateAndRenderDashboard(empId);
-                }
-                return result;
-            };
-
-            // ============================================
-            // LOGIN HANDLER
-            // ============================================
-            function handleLogin() {
-                try {
-                    const empInput = safeGetElement('empIdInput');
-                    if (!empInput) {
-                        console.error('❌ Login input not found');
-                        return;
-                    }
-
-                    const empId = empInput.value.trim().toUpperCase();
-                    const errorMsg = safeGetElement('errorMessage');
-
-                    if (mockEmployees[empId]) {
-                        sessionStorage.setItem('personal_authenticated', 'true');
-                        sessionStorage.setItem('personal_empId', empId);
-
-                        const loginScreen = safeGetElement('loginScreen');
-                        const dashboardContent = safeGetElement('dashboardContent');
-
-                        if (loginScreen) loginScreen.style.display = 'none';
-                        if (dashboardContent) dashboardContent.style.display = 'block';
-
-                        loadEmployeeData(empId);
-                    } else {
-                        if (errorMsg) errorMsg.style.display = 'flex';
-                        empInput.value = '';
-                        console.warn('⚠️ Invalid employee ID:', empId);
-                    }
-                } catch (error) {
-                    console.error('❌ Login error:', error);
-                }
-            }
-
-            // ============================================
-            // LOGOUT HANDLER
-            // ============================================
-            function handleLogout() {
-                sessionStorage.clear();
-                // Redirect to index.html for consistent behavior
-                window.location.href = 'index.html';
-            }
-
-            // ============================================
-            // BACK BUTTON HANDLER
-            // ============================================
-            function goBack() {
-                const source = sessionStorage.getItem('personal_source');
-                const referrer = sessionStorage.getItem('personal_referrer');
-
-                if (source === 'ic_drilldown') {
-                    // Check if we came from department dashboard
-                    if (referrer && referrer.includes('department-dashboard.html')) {
-                        // Extract dept parameter from referrer and go back to it
-                        location.href = referrer;
-                    } else {
-                        // Go directly to hospital dashboard
-                        location.href = 'hospital-dashboard.html';
-                    }
-                } else if (source === 'dept_drilldown') {
-                    location.href = 'department-dashboard.html?source=ic';
-                } else {
-                    location.href = 'index.html';
-                }
-            }
-
-            // ============================================
-            // INITIALIZATION
-            // ============================================
-            document.addEventListener('DOMContentLoaded', function () {
-                console.log('🚀 Personal Dashboard Initializing...');
-
-                try {
-                    const params = new URLSearchParams(window.location.search);
-                    const isICView = params.get('source') === 'ic';
-                    const targetID = params.get('id');
-
-                    const loginScreen = safeGetElement('loginScreen');
-                    const dashboardContent = safeGetElement('dashboardContent');
-
-                    if (isICView && targetID) {
-                        // IC ADMIN BYPASS
-                        console.log('✅ IC Admin access detected for:', targetID);
-
-                        sessionStorage.setItem('personal_authenticated', 'true');
-                        sessionStorage.setItem('personal_empId', targetID);
-                        sessionStorage.setItem('personal_source', 'ic_drilldown');
-
-                        // Store the referrer URL for proper back navigation
-                        const referrer = document.referrer;
-                        if (referrer.includes('department-dashboard.html')) {
-                            sessionStorage.setItem('personal_referrer', referrer);
-                        }
-
-                        if (loginScreen) loginScreen.style.display = 'none';
-                        if (dashboardContent) dashboardContent.style.display = 'block';
-
-                        // Show back button container, hide logout
-                        const backBtnContainer = safeGetElement('backButtonContainer');
-                        const logoutBtn = safeGetElement('logoutButton');
-
-                        if (backBtnContainer) {
-                            backBtnContainer.style.display = 'block';
-                        }
-                        if (logoutBtn) logoutBtn.style.display = 'none';
-
-                        loadEmployeeData(targetID);
-
-                    } else if (targetID) {
-                        // REGULAR ACCESS WITH ID
-                        const isAuth = sessionStorage.getItem('personal_authenticated');
-
-                        if (isAuth === 'true') {
-                            if (loginScreen) loginScreen.style.display = 'none';
-                            if (dashboardContent) dashboardContent.style.display = 'block';
-                            loadEmployeeData(targetID);
-                        } else {
-                            if (loginScreen) loginScreen.style.display = 'flex';
-                            if (dashboardContent) dashboardContent.style.display = 'none';
-                        }
-
-                    } else {
-                        // NO ID - SHOW LOGIN
-                        const isAuth = sessionStorage.getItem('personal_authenticated');
-                        const storedEmpId = sessionStorage.getItem('personal_empId');
-
-                        if (isAuth === 'true' && storedEmpId) {
-                            if (loginScreen) loginScreen.style.display = 'none';
-                            if (dashboardContent) dashboardContent.style.display = 'block';
-                            loadEmployeeData(storedEmpId);
-                        } else {
-                            if (loginScreen) loginScreen.style.display = 'flex';
-                            if (dashboardContent) dashboardContent.style.display = 'none';
-                        }
-                    }
-
-                    // ENTER KEY SUPPORT
-                    const empInput = safeGetElement('empIdInput');
-                    if (empInput) {
-                        empInput.addEventListener('keypress', function (e) {
-                            if (e.key === 'Enter') handleLogin();
-                        });
-                    }
-
-                    console.log('✅ Initialization complete');
-
-                } catch (error) {
-                    console.error('❌ Initialization error:', error);
-                    alert('เกิดข้อผิดพลาดในการเริ่มต้นระบบ กรุณารีเฟรชหน้าเว็บ');
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets: [{ data: events.map(e => e.score), backgroundColor: colors, borderRadius: 4, barThickness: 18 }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { title: ctx => `Session ${ctx[0].dataIndex + 1}`, label: ctx => `Score: ${events[ctx.dataIndex].score}%` } } },
+                    scales: { x: { ticks: { maxRotation: 45, font: { size: 9 } } }, y: { beginAtZero: true, max: 100 } }
                 }
             });
+        }
 
-            // ============================================
-            // AUTO-LOGOUT AFTER 5 MINUTES OF INACTIVITY
-            // ============================================
-            (function () {
-                let idleTimeout;
-                const IDLE_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+        function updateRecommendations() {
+            const avgZ = {}; ZONES.forEach(z => avgZ[z] = []);
+            filteredData.forEach(d => { if (d.zones) ZONES.forEach(z => { if (d.zones[z] !== undefined) avgZ[z].push(d.zones[z]); }); });
+            const scores = {}; ZONES.forEach(z => { const a = avgZ[z]; scores[z] = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 50; });
 
-                function resetIdleTimer() {
-                    clearTimeout(idleTimeout);
-                    idleTimeout = setTimeout(function () {
-                        alert('Session Timeout - หมดเวลาการใช้งาน');
-                        sessionStorage.clear();
-                        window.location.href = 'index.html';
-                    }, IDLE_TIME);
-                }
+            const sorted = ZONES.map(z => ({ zone: z, score: scores[z] })).sort((a, b) => a.score - b.score);
+            const recs = sorted.slice(0, 3).map(item => {
+                const isGood = item.score >= 80;
+                return `
+            <div class="rec-item ${isGood ? 'good' : ''}">
+                <div class="rec-icon ${isGood ? 'good' : 'bad'}"><i class="fas ${isGood ? 'fa-check' : 'fa-exclamation'}"></i></div>
+                <div class="rec-text">
+                    <div class="rec-title">${ZONE_NAMES[item.zone]} (${Math.round(item.score)}%)</div>
+                    <div class="rec-desc">${isGood ? 'ทำได้ดี! รักษาระดับนี้ต่อไป' : 'ต้องเน้นล้างบริเวณนี้ให้มากขึ้น ใช้เวลาถู 20 วินาที'}</div>
+                </div>
+            </div>
+        `;
+            });
+            document.getElementById('rec-list').innerHTML = recs.join('');
+        }
 
-                // Start the timer and listen for user activity
-                document.addEventListener('DOMContentLoaded', function () {
-                    resetIdleTimer();
-                    document.addEventListener('mousemove', resetIdleTimer);
-                    document.addEventListener('keypress', resetIdleTimer);
-                    document.addEventListener('click', resetIdleTimer);
-                    document.addEventListener('scroll', resetIdleTimer);
-                });
-            })();
+        function updateHands() {
+            const avgZ = {}; ZONES.forEach(z => avgZ[z] = []);
+            filteredData.forEach(d => { if (d.zones) ZONES.forEach(z => { if (d.zones[z] !== undefined) avgZ[z].push(d.zones[z]); }); });
+            const scores = {}; ZONES.forEach(z => { const a = avgZ[z]; scores[z] = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 50; });
+            ['hand-lf', 'hand-lb', 'hand-rf', 'hand-rb'].forEach(id => renderHand(id, scores));
+        }
 
-        </script>
-    </div> <!-- Close dashboardContent -->
+        function getColor(s) { return s >= 80 ? '#10b981' : s >= 50 ? '#f59e0b' : '#ef4444'; }
+
+        function renderHand(id, scores) {
+            const svg = document.getElementById(id);
+            svg.innerHTML = '';
+            const paths = [
+                { zone: 'thumb', d: 'M22,95 C8,82 2,60 10,42 C18,26 32,24 40,36 C46,48 44,68 40,82 C36,92 30,100 24,102 Z' },
+                { zone: 'index', d: 'M40,86 C38,70 36,48 35,28 C34,16 40,8 50,8 C60,8 64,16 64,28 C63,48 60,70 58,86 C57,90 52,92 50,92 C46,92 41,90 40,86 Z' },
+                { zone: 'middle', d: 'M58,86 C57,68 56,42 56,18 C56,6 62,0 72,0 C82,0 86,6 86,18 C86,42 84,68 82,86 C82,90 78,92 72,92 C66,92 59,90 58,86 Z' },
+                { zone: 'ring', d: 'M82,86 C81,70 80,48 80,28 C80,16 84,8 92,8 C100,8 104,16 104,28 C104,48 102,70 100,86 C100,90 96,92 92,92 C88,92 83,90 82,86 Z' },
+                { zone: 'pinky', d: 'M100,86 C100,74 102,58 104,42 C106,32 110,26 116,26 C122,26 124,32 124,42 C124,58 120,74 118,86 C118,90 114,92 110,92 C106,92 101,90 100,86 Z' },
+                { zone: 'palm', d: 'M24,102 C20,112 20,128 26,138 L106,138 C114,128 118,112 114,100 C112,94 108,92 104,92 L46,92 C38,94 28,98 24,102 Z' },
+                { zone: 'wrist', d: 'M26,138 L26,164 C26,168 106,168 106,164 L106,138 Z' }
+            ];
+            paths.forEach(p => {
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', p.d);
+                path.setAttribute('fill', getColor(scores[p.zone]));
+                path.setAttribute('stroke', '#fff');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('class', 'hand-zone');
+                path.dataset.zone = p.zone;
+                path.dataset.score = Math.round(scores[p.zone]);
+                path.addEventListener('mouseenter', showTip);
+                path.addEventListener('mousemove', moveTip);
+                path.addEventListener('mouseleave', hideTip);
+                svg.appendChild(path);
+            });
+        }
+
+        function showTip(e) { const t = document.createElement('div'); t.className = 'zone-tooltip'; t.id = 'zt'; t.textContent = `${ZONE_NAMES[e.target.dataset.zone]}: ${e.target.dataset.score}%`; document.body.appendChild(t); t.style.left = e.clientX + 12 + 'px'; t.style.top = e.clientY + 12 + 'px'; }
+        function moveTip(e) { const t = document.getElementById('zt'); if (t) { t.style.left = e.clientX + 12 + 'px'; t.style.top = e.clientY + 12 + 'px'; } }
+        function hideTip() { const t = document.getElementById('zt'); if (t) t.remove(); }
+        function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+    </script>
 </body>
 
 </html>
