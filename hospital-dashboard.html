@@ -4,1503 +4,905 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IC Strategic Dashboard</title>
+    <title>IC Dashboard - Hand Hygiene Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --primary: #2563eb;
-            --secondary: #10b981;
-            --bg: #f1f5f9;
-            --card: #fff;
-            --border: #e2e8f0;
-            --text: #1e293b;
-            --muted: #64748b
+            --primary: #0d6efd;
+            --primary-dark: #0a58ca;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --slate-100: #f1f5f9;
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
         }
 
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Prompt', sans-serif;
-            background: var(--bg);
-            color: var(--text)
+            background: var(--slate-100);
+            color: var(--gray-800);
         }
 
-        #login {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999
-        }
-
-        .login-box {
-            background: #fff;
-            border-radius: 16px;
-            padding: 40px;
-            max-width: 380px;
-            width: 100%;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, .25)
-        }
-
-        .login-box h1 {
-            text-align: center;
-            font-size: 22px;
-            color: var(--primary);
-            margin-bottom: 8px
-        }
-
-        .login-box p {
-            text-align: center;
-            color: var(--muted);
-            font-size: 14px;
-            margin-bottom: 24px
-        }
-
-        .login-box input {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 15px;
-            font-family: inherit;
-            margin-bottom: 16px
-        }
-
-        .login-box input:focus {
-            outline: none;
-            border-color: var(--primary)
-        }
-
-        .login-box button {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer
-        }
-
-        .login-box .hint {
-            margin-top: 20px;
-            padding: 12px;
-            background: #eff6ff;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 13px;
-            color: var(--primary)
-        }
-
-        .login-box .hint code {
-            background: #dbeafe;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 700
-        }
-
-        .login-box .back {
-            display: block;
-            text-align: center;
-            margin-top: 16px;
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 14px
-        }
-
-        .error {
-            background: #fef2f2;
-            color: #dc2626;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            font-size: 14px;
-            display: none
-        }
-
-        #dashboard {
-            display: none
+        .app-layout {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            grid-template-columns: 260px 1fr;
+            height: 100vh;
         }
 
         .header {
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            color: #fff;
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
             padding: 14px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100
+            flex-shrink: 0;
         }
 
-        .header h1 {
-            font-size: 18px;
-            font-weight: 600
-        }
-
-        .header-btns {
+        .logo-section {
             display: flex;
-            gap: 8px
+            align-items: center;
+            gap: 12px;
         }
 
-        .header-btns button {
-            padding: 8px 14px;
-            border: 1px solid rgba(255, 255, 255, .3);
-            background: rgba(255, 255, 255, .1);
-            color: #fff;
-            border-radius: 8px;
-            font-size: 13px;
-            font-family: inherit;
-            cursor: pointer
-        }
-
-        .header-btns .out {
-            background: rgba(239, 68, 68, .3);
-            border-color: rgba(239, 68, 68, .5)
-        }
-
-        .main-layout {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 20px;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto
-        }
-
-        .sidebar {
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
             display: flex;
-            flex-direction: column;
-            gap: 16px;
-            position: sticky;
-            top: 80px;
-            align-self: start
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
         }
 
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px
-        }
-
-        .card-title {
-            font-size: 11px;
+        .logo-text h1 {
+            font-size: 1.15rem;
             font-weight: 600;
-            color: var(--muted);
-            margin-bottom: 12px;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            opacity: 0.85;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .kpi-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
             display: flex;
             align-items: center;
             gap: 6px;
-            text-transform: uppercase;
-            letter-spacing: .5px
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav-btn-ghost {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--white);
+        }
+
+        .nav-btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-btn-logout {
+            background: var(--danger);
+            border: none;
+            color: var(--white);
+        }
+
+        .nav-btn-logout:hover {
+            background: #dc2626;
+        }
+
+        .kpi-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 12px 22px;
+            min-width: 200px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .kpi-label {
+            font-size: 0.7rem;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .kpi-value {
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .kpi-value.success {
+            color: var(--success);
+        }
+
+        .kpi-value.warning {
+            color: var(--warning);
+        }
+
+        .sidebar {
+            background: var(--white);
+            border-right: 1px solid var(--gray-200);
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .sidebar-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-title i {
+            color: var(--primary);
+        }
+
+        .filter-group {
+            margin-bottom: 12px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.8rem;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn-reset {
+            width: 100%;
+            padding: 9px;
+            background: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            color: var(--gray-700);
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .btn-reset:hover {
+            background: var(--gray-200);
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
+            gap: 20px;
+            background: var(--slate-100);
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 18px 20px;
+            flex-shrink: 0;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .card-title i {
             color: var(--primary);
-            font-size: 13px
         }
 
-        .kpi-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px
+        .section-hands {
+            min-height: 340px;
         }
 
-        .kpi-box {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
-            border-radius: 16px;
-            padding: 24px 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1)
-        }
-
-        .kpi-box.green {
-            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1)
-        }
-
-        .kpi-box .label {
-            font-size: 11px;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            margin-bottom: 8px;
-            font-weight: 500
-        }
-
-        .kpi-box .value {
-            font-size: 42px;
-            font-weight: 700;
-            color: var(--primary);
-            line-height: 1;
-            text-shadow: 0 2px 4px rgba(37, 99, 235, 0.15)
-        }
-
-        .kpi-box.green .value {
-            color: var(--secondary);
-            text-shadow: 0 2px 4px rgba(16, 185, 129, 0.15)
-        }
-
-        .kpi-box.purple {
-            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
-            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.1)
-        }
-
-        .kpi-box.purple .value {
-            color: #7c3aed;
-            text-shadow: 0 2px 4px rgba(147, 51, 234, 0.15)
-        }
-
-        .kpi-box .helper {
-            font-size: 11px;
-            color: var(--muted);
-            margin-top: 8px;
-            font-weight: 400
-        }
-
-        .filter-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 8px
-        }
-
-        .filter-item select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 12px;
-            font-family: inherit;
-            background: #fff;
-            cursor: pointer
-        }
-
-        .filter-item select:focus {
-            outline: none;
-            border-color: var(--primary)
-        }
-
-        .filter-item.active select {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary)
-        }
-
-        .reset-btn {
-            padding: 10px;
-            background: #f8fafc;
-            border: 1px dashed var(--border);
-            border-radius: 8px;
-            font-size: 12px;
-            font-family: inherit;
-            cursor: pointer;
-            color: var(--muted);
-            margin-top: 4px
-        }
-
-        .reset-btn:hover {
-            background: #fef2f2;
-            border-color: #fca5a5;
-            color: #dc2626
-        }
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 16px
-        }
-
-        /* Hand Section */
-        .hand-wrapper {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px
-        }
-
-        .hand-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px
-        }
-
-        .hand-header i {
-            color: #f59e0b;
-            font-size: 16px
-        }
-
-        .hand-header h2 {
-            font-size: 14px;
-            font-weight: 600
-        }
-
-        .hand-grid {
+        .hands-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            justify-items: center;
+            padding: 10px 0 20px 0;
         }
 
-        .hand-card {
-            background: linear-gradient(135deg, #fffbeb, #fef3c7);
-            border: 1px solid #fcd34d;
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center
+        .hand-wrapper {
+            text-align: center;
         }
 
-        .hand-card .name {
-            font-size: 12px;
-            font-weight: 600;
-            color: #92400e;
-            margin-bottom: 10px
+        .hand-label {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+            font-weight: 500;
         }
 
         .hand-svg {
-            width: 140px;
-            height: auto;
-            cursor: pointer
+            width: 100px;
+            height: 140px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
-        .hand-path {
-            fill: #fef3c7;
-            stroke: #fcd34d;
-            stroke-width: 2
-        }
-
-        .heat-zone {
+        .hand-zone {
+            transition: all 0.2s;
             cursor: pointer;
-            transition: all .2s;
-            opacity: .7
         }
 
-        .heat-zone:hover {
-            opacity: 1;
-            transform: scale(1.1)
+        .hand-zone:hover {
+            filter: brightness(1.1);
         }
 
-        .hand-score {
-            font-size: 26px;
-            font-weight: 700;
-            margin-top: 10px
-        }
-
-        .hand-score.low {
-            color: #ef4444
-        }
-
-        .hand-score.medium {
-            color: #f59e0b
-        }
-
-        .hand-score.high {
-            color: #10b981
-        }
-
-        /* Legend */
         .hand-legend {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
             justify-content: center;
-            margin-top: 16px;
+            gap: 24px;
             padding-top: 16px;
-            border-top: 1px dashed var(--border)
+            border-top: 1px solid var(--gray-200);
+            margin-top: 10px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 11px;
-            color: var(--muted)
+            font-size: 0.8rem;
+            color: var(--gray-600);
         }
 
         .legend-dot {
             width: 14px;
             height: 14px;
-            border-radius: 4px
-        }
-
-        .legend-dot.red {
-            background: #f87171
-        }
-
-        .legend-dot.yellow {
-            background: #facc15
-        }
-
-        .legend-dot.green {
-            background: #4ade80
-        }
-
-        .hand-hint {
-            text-align: center;
-            font-size: 10px;
-            color: var(--muted);
-            margin-top: 10px;
-            font-style: italic
-        }
-
-        /* Tab Navigation */
-        .hand-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px
-        }
-
-        .hand-tab {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid var(--border);
-            background: #fff;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--muted);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px
-        }
-
-        .hand-tab:hover {
-            border-color: var(--primary);
-            color: var(--primary)
-        }
-
-        .hand-tab.active {
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            border-color: #2563eb;
-            color: #fff
-        }
-
-        .hand-tab i {
-            font-size: 16px
-        }
-
-        /* Hand Panels */
-        .hand-content {
-            position: relative
-        }
-
-        .hand-panel {
-            display: none
-        }
-
-        .hand-panel.active {
-            display: block
-        }
-
-        /* WHO Style Hand Visualization */
-        .who-style .hand-header {
-            flex-direction: column;
-            text-align: center;
-            gap: 4px
-        }
-
-        .who-style .hand-header .subtitle {
-            font-size: 12px;
-            color: var(--muted);
-            font-weight: 400
-        }
-
-        .who-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 24px
-        }
-
-        .who-card {
-            background: #fff;
-            border: 2px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center
-        }
-
-        .hand-label {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 12px;
-            letter-spacing: 1px
-        }
-
-        .hand-label .th {
-            font-size: 12px;
-            font-weight: 500;
-            color: #64748b
-        }
-
-        .who-svg {
-            width: 180px;
-            height: auto
-        }
-
-        .who-path {
-            fill: #fefce8;
-            stroke: #a3a3a3;
-            stroke-width: 1.5
-        }
-
-        .who-zone {
-            cursor: pointer;
-            transition: all 0.2s;
-            opacity: 0.85;
-            stroke: rgba(0, 0, 0, 0.2);
-            stroke-width: 1
-        }
-
-        .who-zone:hover {
-            opacity: 1;
-            stroke-width: 2;
-            stroke: #1e293b
-        }
-
-        .zone-label {
-            font-size: 14px;
-            font-weight: 700;
-            fill: #1e293b;
-            text-anchor: middle;
-            dominant-baseline: middle;
-            pointer-events: none
-        }
-
-        .zone-label.small {
-            font-size: 10px
-        }
-
-        .zone-pct {
-            font-size: 10px;
-            fill: #64748b;
-            text-anchor: middle;
-            pointer-events: none
-        }
-
-        .who-score {
-            font-size: 28px;
-            font-weight: 700;
-            margin-top: 16px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            display: inline-block
-        }
-
-        /* WHO Legend */
-        .who-legend {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 20px;
-            padding: 16px;
-            background: #f8fafc;
-            border-radius: 12px
-        }
-
-        .legend-section {
-            text-align: left
-        }
-
-        .legend-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            margin-bottom: 8px
-        }
-
-        .zone-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 16px
-        }
-
-        .zone-item {
-            font-size: 11px;
-            color: #475569
-        }
-
-        .zone-item b {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            background: #e2e8f0;
             border-radius: 4px;
-            text-align: center;
-            line-height: 18px;
-            margin-right: 4px;
-            font-size: 10px
         }
 
-        .status-list {
+        .legend-clean {
+            background: var(--success);
+        }
+
+        .legend-moderate {
+            background: var(--warning);
+        }
+
+        .legend-dirty {
+            background: var(--danger);
+        }
+
+        /* Timeline with Horizontal Scroll */
+        .section-timeline {
+            min-height: 300px;
+        }
+
+        .timeline-scroll-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 10px;
+        }
+
+        .timeline-canvas-wrapper {
+            min-width: 100%;
+            height: 220px;
+        }
+
+        .section-charts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .section-charts .card {
+            min-height: 300px;
             display: flex;
-            gap: 16px
+            flex-direction: column;
         }
 
-        .status-item {
+        .section-charts .chart-container {
+            flex: 1;
+            min-height: 200px;
+        }
+
+        .chart-container {
+            position: relative;
+        }
+
+        .gender-toggle {
+            display: none;
+            gap: 3px;
+        }
+
+        .gender-toggle.visible {
             display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            color: #475569
         }
 
-        .status-item .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px
+        .gender-btn {
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            border: 1px solid var(--gray-300);
+            background: var(--white);
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
         }
 
-        .status-item .dot.green {
-            background: #22c55e
+        .gender-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
         }
 
-        .status-item .dot.yellow {
-            background: #eab308
-        }
-
-        .status-item .dot.red {
-            background: #ef4444
-        }
-
-        /* Tooltip */
         .zone-tooltip {
             position: fixed;
-            background: #1e293b;
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            pointer-events: none;
-            z-index: 1000;
-            display: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .2)
-        }
-
-        .mode-bar {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between
-        }
-
-        .mode-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            background: var(--gray-800);
+            color: var(--white);
             padding: 6px 12px;
-            background: #eff6ff;
-            color: var(--primary);
             border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500
+            font-size: 0.8rem;
+            z-index: 1000;
+            pointer-events: none;
         }
 
-        .mode-badge.drill {
-            background: #fef3c7;
-            color: #92400e
-        }
-
-        .sub-filter {
-            display: none;
-            align-items: center;
-            gap: 8px
-        }
-
-        .sub-filter.show {
-            display: flex
-        }
-
-        .sub-filter label {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        .sub-filter select {
-            padding: 6px 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 12px;
-            font-family: inherit
-        }
-
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px
-        }
-
-        .chart-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px
-        }
-
-        .chart-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px
-        }
-
-        .chart-header i {
-            color: var(--primary);
-            font-size: 13px
-        }
-
-        .chart-header h3 {
-            font-size: 12px;
-            font-weight: 600
-        }
-
-        .chart-wrap {
-            height: 180px;
-            position: relative
-        }
-
-        .drill-area {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            display: none
-        }
-
-        .drill-area.show {
-            display: block
-        }
-
-        .drill-wrap {
-            height: 250px;
-            position: relative
-        }
-
-        #loading {
-            position: fixed;
-            inset: 0;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999
-        }
-
-        .spin {
-            width: 36px;
-            height: 36px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin .8s linear infinite
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg)
+        @media (max-width: 1200px) {
+            .section-charts {
+                grid-template-columns: 1fr 1fr;
             }
         }
 
-        @media(max-width:900px) {
-            .main-layout {
-                grid-template-columns: 1fr
+        @media (max-width: 900px) {
+            .section-charts {
+                grid-template-columns: 1fr;
+            }
+
+            .hands-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-hands {
+                min-height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-layout {
+                grid-template-columns: 1fr;
             }
 
             .sidebar {
-                position: static
+                display: none;
             }
 
-            .charts-grid,
-            .hand-grid {
-                grid-template-columns: 1fr
-            }
-        }
-
-        @media(max-width:500px) {
             .header {
                 flex-direction: column;
-                gap: 10px
+                gap: 12px;
             }
 
-            .kpi-grid,
-            .filter-grid {
-                grid-template-columns: 1fr
+            .kpi-row {
+                width: 100%;
             }
 
-            .reset-btn {
-                grid-column: span 1
-            }
-
-            .hand-legend {
-                flex-direction: column;
-                align-items: center
+            .kpi-card {
+                flex: 1;
+                min-width: auto;
             }
         }
     </style>
 </head>
 
 <body>
-    <div id="login">
-        <div class="login-box">
-            <h1><i class="fa-solid fa-shield-halved"></i> IC Dashboard</h1>
-            <p>เข้าสู่ระบบสำหรับทีม Infection Control</p>
-            <div class="error" id="err">รหัสผ่านไม่ถูกต้อง</div>
-            <input type="password" id="pwd" placeholder="รหัสผ่าน" onkeypress="if(event.key==='Enter')doLogin()">
-            <button onclick="doLogin()">เข้าสู่ระบบ</button>
-            <div class="hint">Demo: <code>ic2026</code></div>
-            <a href="index.html" class="back"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</a>
-        </div>
-    </div>
-
-    <!-- Tooltip -->
-    <div class="zone-tooltip" id="tooltip"></div>
-
-    <div id="dashboard">
-        <div id="loading">
-            <div class="spin"></div>
-            <p style="margin-top:14px;color:var(--muted)">กำลังโหลด...</p>
-        </div>
-
+    <div class="app-layout">
         <header class="header">
-            <h1><i class="fa-solid fa-shield-virus"></i> IC Strategic Dashboard</h1>
-            <div class="header-btns">
-                <button onclick="location.href='index.html'"><i class="fa-solid fa-home"></i> หน้าหลัก</button>
-                <button class="out" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> ออก</button>
+            <div class="logo-section">
+                <div class="logo-icon"><i class="fas fa-hand-sparkles"></i></div>
+                <div class="logo-text">
+                    <h1>IC Dashboard</h1>
+                    <p>Infection Control Monitoring</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="kpi-row">
+                    <div class="kpi-card">
+                        <div class="kpi-label" id="kpi-avg-label"></div>
+                        <div class="kpi-value success" id="kpi-avg-value">--</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label" id="kpi-pass-label"></div>
+                        <div class="kpi-value" id="kpi-pass-value">--</div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <a href="index.html" class="nav-btn nav-btn-ghost"><i class="fas fa-home"></i> Home</a>
+                    <button class="nav-btn nav-btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i>
+                        Logout</button>
+                </div>
             </div>
         </header>
 
-        <div class="main-layout">
-            <!-- LEFT SIDEBAR -->
-            <aside class="sidebar">
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-chart-line"></i> ตัวชี้วัด (KPIs)</div>
-                    <div class="kpi-grid">
-                        <div class="kpi-box purple">
-                            <div class="label">จำนวนการตรวจ</div>
-                            <div class="value" id="kpiTotal">--</div>
-                            <div class="helper">ครั้ง</div>
-                        </div>
-                        <div class="kpi-box">
-                            <div class="label">ค่าเฉลี่ยรวม</div>
-                            <div class="value" id="kpiAvg">--%</div>
-                            <div class="helper">ความสะอาดของมือ</div>
-                        </div>
-                        <div class="kpi-box green">
-                            <div class="label">อัตราผ่านเกณฑ์</div>
-                            <div class="value" id="kpiPass">--%</div>
-                            <div class="helper">คะแนน ≥80%</div>
-                        </div>
+        <aside class="sidebar">
+            <div class="sidebar-title"><i class="fas fa-filter"></i> ตัวกรองข้อมูล</div>
+            <div class="filter-group"><label>วันที่เริ่มต้น</label><input type="date" id="filter-date-start"></div>
+            <div class="filter-group"><label>วันที่สิ้นสุด</label><input type="date" id="filter-date-end"></div>
+            <div class="filter-group"><label>โรงพยาบาล</label><select id="filter-hospital">
+                    <option value="">ทั้งหมด</option>
+                </select></div>
+            <div class="filter-group"><label>แผนก</label><select id="filter-dept">
+                    <option value="">ทั้งหมด</option>
+                </select></div>
+            <div class="filter-group"><label>ตำแหน่ง</label><select id="filter-pos">
+                    <option value="">ทั้งหมด</option>
+                </select></div>
+            <!-- NEW: Activity Type Filter -->
+            <div class="filter-group"><label>ประเภทกิจกรรม</label><select id="filter-activity">
+                    <option value="">ทั้งหมด</option>
+                </select></div>
+            <div class="filter-group"><label>ช่วงอายุ</label><select id="filter-age">
+                    <option value="">ทั้งหมด</option>
+                </select></div>
+            <div class="filter-group"><label>ประสบการณ์</label><select id="filter-tenure">
+                    <option value="">ทั้งหมด</option>
+                </select></div>
+            <div class="filter-group"><label>เพศ</label><select id="filter-gender">
+                    <option value="">ทั้งหมด</option>
+                    <option value="male">ชาย</option>
+                    <option value="female">หญิง</option>
+                </select></div>
+            <button class="btn-reset" id="btn-reset"><i class="fas fa-redo"></i> รีเซ็ต</button>
+        </aside>
+
+        <main class="main-content">
+            <div class="card section-hands">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-hand-paper"></i><span id="viz-hand-label"></span></div>
+                </div>
+                <div class="hands-grid">
+                    <div class="hand-wrapper">
+                        <div class="hand-label">Left Front</div><svg class="hand-svg" viewBox="0 0 120 168"
+                            preserveAspectRatio="xMidYMid meet" id="hand-lf"></svg>
+                    </div>
+                    <div class="hand-wrapper">
+                        <div class="hand-label">Left Back</div><svg class="hand-svg" viewBox="0 0 120 168"
+                            preserveAspectRatio="xMidYMid meet" id="hand-lb"></svg>
+                    </div>
+                    <div class="hand-wrapper">
+                        <div class="hand-label">Right Front</div><svg class="hand-svg" viewBox="0 0 120 168"
+                            preserveAspectRatio="xMidYMid meet" id="hand-rf"></svg>
+                    </div>
+                    <div class="hand-wrapper">
+                        <div class="hand-label">Right Back</div><svg class="hand-svg" viewBox="0 0 120 168"
+                            preserveAspectRatio="xMidYMid meet" id="hand-rb"></svg>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-title"><i class="fa-solid fa-filter"></i> ตัวกรอง (Filters)</div>
-                    <div class="filter-grid">
-                        <div class="filter-item" id="f1"><select id="fEvent" onchange="applyFilter()">
-                                <option value="">Event</option>
-                                <option>30 Oct 2025</option>
-                                <option>31 Oct 2025</option>
-                            </select></div>
-                        <div class="filter-item" id="f2"><select id="fHosp" onchange="applyFilter()">
-                                <option value="">Hospital</option>
-                                <option>BDMS ภูเก็ต</option>
-                                <option>DBH ดีบุก</option>
-                                <option>BSI สิริโรจน์</option>
-                            </select></div>
-                        <div class="filter-item" id="f3"><select id="fDept" onchange="applyFilter()">
-                                <option value="">Dept</option>
-                            </select></div>
-                        <div class="filter-item" id="f4"><select id="fPos" onchange="applyFilter()">
-                                <option value="">Position</option>
-                            </select></div>
-                        <div class="filter-item" id="f5"><select id="fAge" onchange="applyFilter()">
-                                <option value="">Age</option>
-                                <option>20-30</option>
-                                <option>31-40</option>
-                                <option>41-50</option>
-                                <option>51-60</option>
-                            </select></div>
-                        <div class="filter-item" id="f6"><select id="fTenure" onchange="applyFilter()">
-                                <option value="">Tenure</option>
-                                <option>0-5y</option>
-                                <option>6-10y</option>
-                                <option>11-20y</option>
-                                <option>21-30y</option>
-                            </select></div>
-                        <div class="filter-item" id="f7"><select id="fGender" onchange="applyFilter()">
-                                <option value="">Gender</option>
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select></div>
-                        <button class="reset-btn" onclick="resetFilters()"><i class="fa-solid fa-rotate-left"></i>
-                            รีเซ็ตทั้งหมด</button>
+                <div class="hand-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot legend-clean"></div>สะอาด (80-100%)
                     </div>
-                </div>
-            </aside>
-
-            <!-- RIGHT CONTENT -->
-            <div class="content">
-                <!-- Hand Hygiene Visualization with Tabs -->
-                <div class="hand-wrapper">
-                    <div class="hand-header">
-                        <i class="fa-solid fa-hand-sparkles"></i>
-                        <h2>จุดที่ล้างไม่สะอาด (Unclean Zones)</h2>
+                    <div class="legend-item">
+                        <div class="legend-dot legend-moderate"></div>ปานกลาง (50-79%)
                     </div>
-
-                    <!-- Tab Navigation -->
-                    <div class="hand-tabs">
-                        <button class="hand-tab active" data-hand="left" onclick="switchHandTab('left')">
-                            <i class="fa-solid fa-hand"></i> LEFT HAND (มือซ้าย)
-                        </button>
-                        <button class="hand-tab" data-hand="right" onclick="switchHandTab('right')">
-                            <i class="fa-solid fa-hand"></i> RIGHT HAND (มือขวา)
-                        </button>
-                    </div>
-
-                    <!-- Hand Content -->
-                    <div class="hand-content">
-                        <!-- Left Hand Panel -->
-                        <div class="hand-panel active" id="leftPanel">
-                            <div class="hand-grid">
-                                <div class="hand-card">
-                                    <div class="name"><i class="fa-solid fa-hand"></i> Front (หน้ามือ)</div>
-                                    <svg class="hand-svg" viewBox="0 0 200 300">
-                                        <!-- Wrist -->
-                                        <rect x="65" y="265" width="70" height="30" rx="8" fill="#E8D4B8"
-                                            stroke="#2a2a2a" stroke-width="2" />
-
-                                        <!-- Hand Outline -->
-                                        <path
-                                            d="M 70 265 L 70 230 Q 68 210 65 190 Q 62 175 60 160 L 58 145 Q 56 130 56 115 Q 56 100 58 90 L 62 75 L 65 60 Q 67 50 68 40 L 70 25 Q 71 18 73 15 Q 76 12 80 15 Q 82 18 83 25 L 84 40 Q 84 55 85 70 L 86 85 Q 87 92 90 90 L 92 80 Q 93 65 94 50 Q 95 35 96 20 Q 97 10 99 7 Q 102 4 106 7 Q 108 10 109 20 L 110 40 Q 110 60 110 80 L 111 92 Q 112 95 115 92 L 117 75 Q 118 55 119 35 Q 120 18 121 10 Q 122 4 125 3 Q 129 2 132 5 Q 134 10 135 20 L 136 45 Q 136 65 136 85 L 137 95 Q 138 98 141 95 L 143 80 Q 144 60 145 40 Q 146 22 147 12 Q 148 5 151 4 Q 155 3 158 7 Q 160 12 160 22 L 160 45 Q 160 70 159 90 L 157 110 Q 155 130 152 150 L 148 175 Q 145 195 142 215 L 140 235 L 138 265 Q 138 270 133 270 L 75 270 Q 70 270 70 265 Z"
-                                            fill="#FFF" stroke="#2a2a2a" stroke-width="2.5" stroke-linejoin="round" />
-
-                                        <!-- Palm (Yellow) -->
-                                        <path class="heat-zone" id="LF1"
-                                            d="M 72 265 L 72 230 Q 70 210 68 190 Q 66 175 65 160 L 64 145 Q 65 135 70 130 L 78 122 Q 85 118 92 122 L 102 130 Q 112 137 122 130 L 130 122 Q 137 118 142 125 L 145 140 Q 145 160 143 180 L 140 205 L 138 235 L 136 265 Z"
-                                            fill="#FFD700" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="ฝ่ามือ (Palm)" />
-
-                                        <!-- Thumb (Red) -->
-                                        <path class="heat-zone" id="LF2"
-                                            d="M 62 75 L 65 60 Q 67 50 68 40 L 70 25 Q 71 18 73 15 Q 76 12 80 15 Q 82 18 83 25 L 84 40 Q 84 55 85 70 L 86 85 Q 84 92 80 91 Q 75 89 70 86 L 64 82 Z"
-                                            fill="#FF6B6B" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="หัวแม่มือ (Thumb)" />
-
-                                        <!-- Index (Orange) -->
-                                        <path class="heat-zone" id="LF3"
-                                            d="M 90 90 L 92 80 Q 93 65 94 50 Q 95 35 96 20 Q 97 10 99 7 Q 102 4 106 7 Q 108 10 109 20 L 110 40 Q 110 60 110 80 L 111 92 Q 109 96 105 96 Q 100 95 95 93 Z"
-                                            fill="#FF8C42" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="นิ้วชี้ (Index)" />
-
-                                        <!-- Middle (Yellow) -->
-                                        <path class="heat-zone" id="LF4"
-                                            d="M 115 92 L 117 75 Q 118 55 119 35 Q 120 18 121 10 Q 122 4 125 3 Q 129 2 132 5 Q 134 10 135 20 L 136 45 Q 136 65 136 85 L 137 95 Q 134 98 129 98 Q 123 97 118 95 Z"
-                                            fill="#FFC952" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="นิ้วกลาง (Middle)" />
-
-                                        <!-- Ring (Beige) -->
-                                        <path class="heat-zone" id="LF5"
-                                            d="M 141 95 L 143 80 Q 144 60 145 40 Q 146 22 147 12 Q 148 5 151 4 Q 155 3 158 7 Q 160 12 160 22 L 160 45 Q 160 70 159 90 Q 157 96 152 96 Q 146 95 142 94 Z"
-                                            fill="#F5F5DC" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="นิ้วนาง (Ring)" />
-
-                                        <!-- Pinky -->
-                                        <ellipse class="heat-zone" id="LF6" cx="160" cy="120" rx="7" ry="20"
-                                            fill="#FFB380" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="นิ้วก้อย (Pinky)" />
-
-                                        <!-- Palm Lines -->
-                                        <path d="M 70 170 Q 90 165 110 170" fill="none" stroke="#2a2a2a"
-                                            stroke-width="1.5" opacity="0.35" />
-                                        <path d="M 75 195 Q 100 190 125 195" fill="none" stroke="#2a2a2a"
-                                            stroke-width="1.5" opacity="0.35" />
-                                        <path d="M 75 150 Q 102 147 128 152" fill="none" stroke="#2a2a2a"
-                                            stroke-width="1.3" opacity="0.3" />
-                                    </svg>
-                                    <div class="hand-score" id="leftFrontScore">--%</div>
-                                </div>
-                                <div class="hand-card">
-                                    <div class="name"><i class="fa-regular fa-hand"></i> Back (หลังมือ)</div>
-                                    <svg class="hand-svg" viewBox="0 0 200 300">
-                                        <!-- Wrist -->
-                                        <rect x="65" y="265" width="70" height="30" rx="8" fill="#E8D4B8"
-                                            stroke="#2a2a2a" stroke-width="2" />
-
-                                        <!-- Hand Outline -->
-                                        <path
-                                            d="M 70 265 L 70 230 Q 68 210 65 190 Q 62 175 60 160 L 58 145 Q 56 130 56 115 Q 56 100 58 90 L 62 75 L 65 60 Q 67 50 68 40 L 70 25 Q 71 18 73 15 Q 76 12 80 15 Q 82 18 83 25 L 84 40 Q 84 55 85 70 L 86 85 Q 87 92 90 90 L 92 80 Q 93 65 94 50 Q 95 35 96 20 Q 97 10 99 7 Q 102 4 106 7 Q 108 10 109 20 L 110 40 Q 110 60 110 80 L 111 92 Q 112 95 115 92 L 117 75 Q 118 55 119 35 Q 120 18 121 10 Q 122 4 125 3 Q 129 2 132 5 Q 134 10 135 20 L 136 45 Q 136 65 136 85 L 137 95 Q 138 98 141 95 L 143 80 Q 144 60 145 40 Q 146 22 147 12 Q 148 5 151 4 Q 155 3 158 7 Q 160 12 160 22 L 160 45 Q 160 70 159 90 L 157 110 Q 155 130 152 150 L 148 175 Q 145 195 142 215 L 140 235 L 138 265 Q 138 270 133 270 L 75 270 Q 70 270 70 265 Z"
-                                            fill="#FFF" stroke="#2a2a2a" stroke-width="2.5" stroke-linejoin="round" />
-
-                                        <!-- Back of Hand (Pink) -->
-                                        <path class="heat-zone" id="LB1"
-                                            d="M 72 265 L 72 230 Q 70 210 68 190 Q 66 175 65 160 L 64 145 Q 65 135 70 130 L 78 122 Q 85 118 92 122 L 102 130 Q 112 137 122 130 L 130 122 Q 137 118 142 125 L 145 140 Q 145 160 143 180 L 140 205 L 138 235 L 136 265 Z"
-                                            fill="#FF9999" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="หลังมือ (Back)" />
-
-                                        <!-- Thumb (White) -->
-                                        <path class="heat-zone" id="LB2"
-                                            d="M 62 75 L 65 60 Q 67 50 68 40 L 70 25 Q 71 18 73 15 Q 76 12 80 15 Q 82 18 83 25 L 84 40 Q 84 55 85 70 L 86 85 Q 84 92 80 91 Q 75 89 70 86 L 64 82 Z"
-                                            fill="#FFFFFF" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="หัวแม่มือ (Thumb)" />
-
-                                        <!-- Index Knuckle (Red) -->
-                                        <ellipse class="heat-zone" id="LB3" cx="102" cy="110" rx="9" ry="12"
-                                            fill="#FF6B6B" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="ข้อนิ้วชี้ (Index Knuckle)" />
-
-                                        <!-- Middle Knuckle (Pink) -->
-                                        <ellipse class="heat-zone" id="LB4" cx="121" cy="105" rx="9" ry="12"
-                                            fill="#F5A9BC" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="ข้อนิ้วกลาง (Middle Knuckle)" />
-
-                                        <!-- Ring Knuckle (Light Pink) -->
-                                        <ellipse class="heat-zone" id="LB5" cx="140" cy="110" rx="9" ry="12"
-                                            fill="#FFB6C1" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="ข้อนิ้วนาง (Ring Knuckle)" />
-                                    </svg>
-                                    <div class="hand-score" id="leftBackScore">--%</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Hand Panel -->
-                        <div class="hand-panel" id="rightPanel">
-                            <div class="hand-grid">
-                                <div class="hand-card">
-                                    <div class="name"><i class="fa-solid fa-hand"></i> Front (หน้ามือ)</div>
-                                    <svg class="hand-svg" viewBox="0 0 200 300" style="transform: scaleX(-1);">
-                                        <!-- Right Hand Front - Same as Left Hand Front, mirrored -->
-                                        <rect x="65" y="265" width="70" height="30" rx="8" fill="#E8D4B8"
-                                            stroke="#2a2a2a" stroke-width="2" />
-
-                                        <path
-                                            d="M 70 265 L 70 230 Q 68 210 65 190 Q 62 175 60 160 L 58 145 Q 56 130 56 115 Q 56 100 58 90 L 62 75 L 65 60 Q 67 50 68 40 L 70 25 Q 71 18 73 15 Q 76 12 80 15 Q 82 18 83 25 L 84 40 Q 84 55 85 70 L 86 85 Q 87 92 90 90 L 92 80 Q 93 65 94 50 Q 95 35 96 20 Q 97 10 99 7 Q 102 4 106 7 Q 108 10 109 20 L 110 40 Q 110 60 110 80 L 111 92 Q 112 95 115 92 L 117 75 Q 118 55 119 35 Q 120 18 121 10 Q 122 4 125 3 Q 129 2 132 5 Q 134 10 135 20 L 136 45 Q 136 65 136 85 L 137 95 Q 138 98 141 95 L 143 80 Q 144 60 145 40 Q 146 22 147 12 Q 148 5 151 4 Q 155 3 158 7 Q 160 12 160 22 L 160 45 Q 160 70 159 90 L 157 110 Q 155 130 152 150 L 148 175 Q 145 195 142 215 L 140 235 L 138 265 Q 138 270 133 270 L 75 270 Q 70 270 70 265 Z"
-                                            fill="#FFF" stroke="#2a2a2a" stroke-width="2.5" stroke-linejoin="round" />
-
-                                        <path class="heat-zone" id="RF1"
-                                            d="M 72 265 L 72 230 Q 70 210 68 190 Q 66 175 65 160 L 64 145 Q 65 135 70 130 L 78 122 Q 85 118 92 122 L 102 130 Q 112 137 122 130 L 130 122 Q 137 118 142 125 L 145 140 Q 145 160 143 180 L 140 205 L 138 235 L 136 265 Z"
-                                            fill="#FFD700" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="ฝ่ามือ (Palm)" />
-
-                                        <path class="heat-zone" id="RF2"
-                                            d="M 62 75 L 65 60 Q 67 50 68 40 L 70 25 Q 71 18 73 15 Q 76 12 80 15 Q 82 18 83 25 L 84 40 Q 84 55 85 70 L 86 85 Q 84 92 80 91 Q 75 89 70 86 L 64 82 Z"
-                                            fill="#FF6B6B" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="หัวแม่มือ (Thumb)" />
-
-                                        <path class="heat-zone" id="RF3"
-                                            d="M 90 90 L 92 80 Q 93 65 94 50 Q 95 35 96 20 Q 97 10 99 7 Q 102 4 106 7 Q 108 10 109 20 L 110 40 Q 110 60 110 80 L 111 92 Q 109 96 105 96 Q 100 95 95 93 Z"
-                                            fill="#FF8C42" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="นิ้วชี้ (Index)" />
-
-                                        <path class="heat-zone" id="RF4"
-                                            d="M 115 92 L 117 75 Q 118 55 119 35 Q 120 18 121 10 Q 122 4 125 3 Q 129 2 132 5 Q 134 10 135 20 L 136 45 Q 136 65 136 85 L 137 95 Q 134 98 129 98 Q 123 97 118 95 Z"
-                                            fill="#FFC952" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="นิ้วกลาง (Middle)" />
-
-                                        <path class="heat-zone" id="RF5"
-                                            d="M 141 95 L 143 80 Q 144 60 145 40 Q 146 22 147 12 Q 148 5 151 4 Q 155 3 158 7 Q 160 12 160 22 L 160 45 Q 160 70 159 90 Q 157 96 152 96 Q 146 95 142 94 Z"
-                                            fill="#F5F5DC" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="นิ้วนาง (Ring)" />
-
-                                        <ellipse class="heat-zone" id="RF6" cx="160" cy="120" rx="7" ry="20"
-                                            fill="#FFB380" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="นิ้วก้อย (Pinky)" />
-
-                                        <path d="M 70 170 Q 90 165 110 170" fill="none" stroke="#2a2a2a"
-                                            stroke-width="1.5" opacity="0.35" />
-                                        <path d="M 75 195 Q 100 190 125 195" fill="none" stroke="#2a2a2a"
-                                            stroke-width="1.5" opacity="0.35" />
-                                        <path d="M 75 150 Q 102 147 128 152" fill="none" stroke="#2a2a2a"
-                                            stroke-width="1.3" opacity="0.3" />
-                                    </svg>
-                                    <div class="hand-score" id="rightFrontScore">--%</div>
-                                </div>
-                                <div class="hand-card">
-                                    <div class="name"><i class="fa-regular fa-hand"></i> Back (หลังมือ)</div>
-                                    <svg class="hand-svg" viewBox="0 0 200 300" style="transform: scaleX(-1);">
-                                        <!-- Right Hand Back - Same as Left Hand Back, mirrored -->
-                                        <rect x="65" y="265" width="70" height="30" rx="8" fill="#E8D4B8"
-                                            stroke="#2a2a2a" stroke-width="2" />
-
-                                        <path
-                                            d="M 70 265 L 70 230 Q 68 210 65 190 Q 62 175 60 160 L 58 145 Q 56 130 56 115 Q 56 100 58 90 L 62 75 L 65 60 Q 67 50 68 40 L 70 25 Q 71 18 73 15 Q 76 12 80 15 Q 82 18 83 25 L 84 40 Q 84 55 85 70 L 86 85 Q 87 92 90 90 L 92 80 Q 93 65 94 50 Q 95 35 96 20 Q 97 10 99 7 Q 102 4 106 7 Q 108 10 109 20 L 110 40 Q 110 60 110 80 L 111 92 Q 112 95 115 92 L 117 75 Q 118 55 119 35 Q 120 18 121 10 Q 122 4 125 3 Q 129 2 132 5 Q 134 10 135 20 L 136 45 Q 136 65 136 85 L 137 95 Q 138 98 141 95 L 143 80 Q 144 60 145 40 Q 146 22 147 12 Q 148 5 151 4 Q 155 3 158 7 Q 160 12 160 22 L 160 45 Q 160 70 159 90 L 157 110 Q 155 130 152 150 L 148 175 Q 145 195 142 215 L 140 235 L 138 265 Q 138 270 133 270 L 75 270 Q 70 270 70 265 Z"
-                                            fill="#FFF" stroke="#2a2a2a" stroke-width="2.5" stroke-linejoin="round" />
-
-                                        <path class="heat-zone" id="RB1"
-                                            d="M 72 265 L 72 230 Q 70 210 68 190 Q 66 175 65 160 L 64 145 Q 65 135 70 130 L 78 122 Q 85 118 92 122 L 102 130 Q 112 137 122 130 L 130 122 Q 137 118 142 125 L 145 140 Q 145 160 143 180 L 140 205 L 138 235 L 136 265 Z"
-                                            fill="#FF9999" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="หลังมือ (Back)" />
-
-                                        <path class="heat-zone" id="RB2"
-                                            d="M 62 75 L 65 60 Q 67 50 68 40 L 70 25 Q 71 18 73 15 Q 76 12 80 15 Q 82 18 83 25 L 84 40 Q 84 55 85 70 L 86 85 Q 84 92 80 91 Q 75 89 70 86 L 64 82 Z"
-                                            fill="#FFFFFF" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="หัวแม่มือ (Thumb)" />
-
-                                        <ellipse class="heat-zone" id="RB3" cx="102" cy="110" rx="9" ry="12"
-                                            fill="#FF6B6B" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="ข้อนิ้วชี้ (Index Knuckle)" />
-
-                                        <ellipse class="heat-zone" id="RB4" cx="121" cy="105" rx="9" ry="12"
-                                            fill="#F5A9BC" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="ข้อนิ้วกลาง (Middle Knuckle)" />
-
-                                        <ellipse class="heat-zone" id="RB5" cx="140" cy="110" rx="9" ry="12"
-                                            fill="#FFB6C1" stroke="#2a2a2a" stroke-width="1.2"
-                                            data-name="ข้อนิ้วนาง (Ring Knuckle)" />
-                                    </svg>
-
-                                    <div class="hand-score" id="rightBackScore">--%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Legend -->
-                    <div class="hand-legend">
-                        <div class="legend-item">
-                            <div class="legend-dot red"></div> ไม่สะอาด (0-49%)
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot yellow"></div> ปานกลาง (50-79%)
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot green"></div> สะอาด (80-100%)
-                        </div>
-                    </div>
-                    <div class="hand-hint"><i class="fa-solid fa-hand-pointer"></i> Hover บนโซนเพื่อดูคะแนน</div>
-                </div>
-
-                <!-- Mode Bar -->
-                <div class="mode-bar">
-                    <div class="mode-badge" id="modeBadge"><i class="fa-solid fa-chart-bar"></i> <span
-                            id="modeText">Overview</span>
-                    </div>
-                    <div class="sub-filter" id="subFilter">
-                        <label>แยกตาม:</label>
-                        <select id="subGender" onchange="renderDrill()">
-                            <option value="">All</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Drill-down -->
-                <div class="drill-area" id="drillArea">
-                    <div class="chart-header"><i class="fa-solid fa-magnifying-glass-chart"></i>
-                        <h3 id="drillTitle">รายละเอียดเชิงลึก</h3>
-                    </div>
-                    <div class="drill-wrap"><canvas id="drillChart"></canvas></div>
-                </div>
-
-                <!-- Overview Charts -->
-                <div class="charts-grid" id="overviewCharts">
-                    <div class="chart-card">
-                        <div class="chart-header"><i class="fa-solid fa-calendar"></i>
-                            <h3>กิจกรรมตามวัน</h3>
-                        </div>
-                        <div class="chart-wrap"><canvas id="c1"></canvas></div>
-                    </div>
-                    <div class="chart-card">
-                        <div class="chart-header"><i class="fa-solid fa-users"></i>
-                            <h3>ตามช่วงอายุ</h3>
-                        </div>
-                        <div class="chart-wrap"><canvas id="c2"></canvas></div>
-                    </div>
-                    <div class="chart-card">
-                        <div class="chart-header"><i class="fa-solid fa-clock"></i>
-                            <h3>ตามอายุงาน</h3>
-                        </div>
-                        <div class="chart-wrap"><canvas id="c3"></canvas></div>
-                    </div>
-                    <div class="chart-card">
-                        <div class="chart-header"><i class="fa-solid fa-ranking-star"></i>
-                            <h3>อันดับแผนก</h3>
-                        </div>
-                        <div class="chart-wrap"><canvas id="c4"></canvas></div>
+                    <div class="legend-item">
+                        <div class="legend-dot legend-dirty"></div>ไม่สะอาด (0-49%)
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Timeline with Horizontal Scroll -->
+            <div class="card section-timeline">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-chart-line"></i><span id="chart-timeline-label"></span>
+                    </div>
+                </div>
+                <div class="timeline-scroll-container">
+                    <div class="timeline-canvas-wrapper" id="timeline-wrapper">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-charts">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-users"></i><span id="chart-age-label"></span></div>
+                        <div class="gender-toggle" id="age-toggle"><button class="gender-btn active"
+                                data-g="all">All</button><button class="gender-btn" data-g="male">M</button><button
+                                class="gender-btn" data-g="female">F</button></div>
+                    </div>
+                    <div class="chart-container"><canvas id="ageChart"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-briefcase"></i><span id="chart-tenure-label"></span>
+                        </div>
+                        <div class="gender-toggle" id="tenure-toggle"><button class="gender-btn active"
+                                data-g="all">All</button><button class="gender-btn" data-g="male">M</button><button
+                                class="gender-btn" data-g="female">F</button></div>
+                    </div>
+                    <div class="chart-container"><canvas id="tenureChart"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-hospital"></i><span id="chart-dept-label"></span></div>
+                        <div class="gender-toggle" id="dept-toggle"><button class="gender-btn active"
+                                data-g="all">All</button><button class="gender-btn" data-g="male">M</button><button
+                                class="gender-btn" data-g="female">F</button></div>
+                    </div>
+                    <div class="chart-container"><canvas id="deptChart"></canvas></div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script>
-        // Mock Data with 4-view zone scores (Left Front, Left Back, Right Front, Right Back)
-        const genData = n => {
-            const H = ['BDMS ภูเก็ต', 'DBH ดีบุก', 'BSI สิริโรจน์'], D = ['SICU', 'ICU', 'OR', 'ER', 'Imaging', 'Pharmacy', 'Ward 7A', 'Ward 8B', 'Dental', 'Neurology', 'Eye Center', 'Anesthetic', 'Labour Room', 'Nursery', 'Health Promotion'], P = ['RN', 'PN', 'Officer', 'Tech', 'HOD', 'Manager', 'Pharmacist', 'Staff'], G = ['Male', 'Female'], E = ['30 Oct 2025', '31 Oct 2025'];
-            return Array.from({ length: n }, (_, i) => {
-                // Zone scores for each view (6 zones per view)
-                const LF = { LF1: Math.random() * 100, LF2: Math.random() * 100, LF3: Math.random() * 100, LF4: Math.random() * 100, LF5: Math.random() * 100, LF6: Math.random() * 100 };
-                const LB = { LB1: Math.random() * 100, LB2: Math.random() * 100, LB3: Math.random() * 100, LB4: Math.random() * 100, LB5: Math.random() * 100, LB6: Math.random() * 100 };
-                const RF = { RF1: Math.random() * 100, RF2: Math.random() * 100, RF3: Math.random() * 100, RF4: Math.random() * 100, RF5: Math.random() * 100, RF6: Math.random() * 100 };
-                const RB = { RB1: Math.random() * 100, RB2: Math.random() * 100, RB3: Math.random() * 100, RB4: Math.random() * 100, RB5: Math.random() * 100, RB6: Math.random() * 100 };
-                const lfAvg = Object.values(LF).reduce((a, b) => a + b, 0) / 6;
-                const lbAvg = Object.values(LB).reduce((a, b) => a + b, 0) / 6;
-                const rfAvg = Object.values(RF).reduce((a, b) => a + b, 0) / 6;
-                const rbAvg = Object.values(RB).reduce((a, b) => a + b, 0) / 6;
-                return { id: i, event: E[~~(Math.random() * 2)], hospital: H[~~(Math.random() * 3)], dept: D[~~(Math.random() * D.length)], pos: P[~~(Math.random() * P.length)], age: 22 + ~~(Math.random() * 38), tenure: ~~(Math.random() * 30), gender: G[~~(Math.random() * 2)], LF, LB, RF, RB, lfAvg, lbAvg, rfAvg, rbAvg, avg: (lfAvg + lbAvg + rfAvg + rbAvg) / 4 };
-            });
+        const CONFIG = {
+            kpi_avg: "ค่าเฉลี่ยความสะอาดรวม (Hospital-wide Average)",
+            kpi_pass: "อัตราการล้างมือผ่านเกณฑ์ (Pass Rate ≥80%)",
+            chart_timeline: "กิจกรรมตามช่วงเวลา (Activity Timeline)",
+            chart_age: "ประสิทธิภาพตามวัย (Score by Age)",
+            chart_tenure: "ประสิทธิภาพตามประสบการณ์ (Score by Tenure)",
+            chart_dept: "อันดับคุณภาพแผนก (Department Ranking)",
+            viz_hand: "Unclean Zones Analysis"
         };
 
-        const data = genData(200);
-        let filtered = [...data];
-        const charts = {};
-        const zoneScores = {};
+        const HOSPITALS = ["BDMS Phuket", "DBH Dibuk", "BSI Siriroj"];
+        const DEPTS = ["ICU", "ER", "OPD", "Ward A", "Ward B", "OR", "Lab", "Pharmacy"];
+        const POSITIONS = ["แพทย์", "พยาบาล", "ผู้ช่วยพยาบาล", "เจ้าหน้าที่", "เภสัชกร"];
+        const AGE_RANGES = ["20-29", "30-39", "40-49", "50-59", "60+"];
+        const TENURE_RANGES = ["0-1y", "2-5y", "6-10y", "11-20y", "20+y"];
+        const ZONES = ["thumb", "index", "middle", "ring", "pinky", "palm", "wrist"];
 
-        const dL = [...new Set(data.map(d => d.dept))].sort(), pL = [...new Set(data.map(d => d.pos))].sort();
-        document.getElementById('fDept').innerHTML = '<option value="">Dept</option>' + dL.map(d => `<option>${d}</option>`).join('');
-        document.getElementById('fPos').innerHTML = '<option value="">Position</option>' + pL.map(p => `<option>${p}</option>`).join('');
-        Chart.defaults.font.family = 'Prompt'; Chart.defaults.color = '#64748b';
+        // Activity Types for Timeline
+        const ACTIVITIES = [
+            "Morning Round",
+            "Before Patient Contact",
+            "After Fluid Exposure",
+            "Sterile Procedure",
+            "After Patient Contact"
+        ];
 
-        const avg = (a, k) => a.length ? a.reduce((s, x) => s + x[k], 0) / a.length : 0;
-        const avgZone = (a, z) => a.length ? a.reduce((s, x) => s + (x.LF[z] || x.LB[z] || x.RF[z] || x.RB[z] || 0), 0) / a.length : 0;
-        const pass = a => a.length ? a.filter(x => x.avg >= 80).length / a.length * 100 : 0;
-        const grp = (a, fn) => a.reduce((r, x) => { const k = fn(x); (r[k] = r[k] || []).push(x); return r }, {});
-        const ageR = a => a <= 30 ? '20-30' : a <= 40 ? '31-40' : a <= 50 ? '41-50' : '51-60';
-        const tenR = t => t <= 5 ? '0-5y' : t <= 10 ? '6-10y' : t <= 20 ? '11-20y' : '21-30y';
-        const hC = s => s >= 80 ? '#22c55e' : s >= 50 ? '#eab308' : '#ef4444';
-        const sC = s => s >= 80 ? 'high' : s >= 50 ? 'medium' : 'low';
+        function genData(count = 400) {
+            const data = [], today = new Date();
+            for (let i = 0; i < count; i++) {
+                const daysAgo = Math.floor(Math.random() * 30);
+                const date = new Date(today);
+                date.setDate(date.getDate() - daysAgo);
+                // Random hour/minute for timestamp
+                const hour = 7 + Math.floor(Math.random() * 10); // 7AM - 5PM
+                const minute = Math.floor(Math.random() * 60);
+                date.setHours(hour, minute, 0, 0);
 
-        // Tab switching
-        function switchHandTab(hand) {
-            document.querySelectorAll('.hand-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`.hand-tab[data-hand="${hand}"]`).classList.add('active');
-            document.querySelectorAll('.hand-panel').forEach(p => p.classList.remove('active'));
-            document.getElementById(hand + 'Panel').classList.add('active');
-        }
+                const hospital = HOSPITALS[Math.floor(Math.random() * HOSPITALS.length)];
+                const dept = DEPTS[Math.floor(Math.random() * DEPTS.length)];
+                const pos = POSITIONS[Math.floor(Math.random() * POSITIONS.length)];
+                const ageRange = AGE_RANGES[Math.floor(Math.random() * AGE_RANGES.length)];
+                const tenureRange = TENURE_RANGES[Math.floor(Math.random() * TENURE_RANGES.length)];
+                const gender = Math.random() > 0.45 ? "female" : "male";
+                const activity = ACTIVITIES[Math.floor(Math.random() * ACTIVITIES.length)];
 
-        const fIds = ['fEvent', 'fHosp', 'fDept', 'fPos', 'fAge', 'fTenure', 'fGender'], cIds = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7'];
+                let baseScore = 70 + Math.random() * 20;
+                if (dept === "ICU" || dept === "OR") baseScore += 10;
+                if (ageRange === "20-29") baseScore -= 5;
+                if (tenureRange === "11-20y") baseScore += 6;
+                if (activity === "Sterile Procedure") baseScore += 8;
+                baseScore = Math.min(100, Math.max(35, baseScore + (Math.random() - 0.5) * 18));
 
-        function applyFilter() {
-            const f = { event: document.getElementById('fEvent').value, hosp: document.getElementById('fHosp').value, dept: document.getElementById('fDept').value, pos: document.getElementById('fPos').value, age: document.getElementById('fAge').value, tenure: document.getElementById('fTenure').value, gender: document.getElementById('fGender').value };
-            filtered = data.filter(x => (!f.event || x.event === f.event) && (!f.hosp || x.hospital === f.hosp) && (!f.dept || x.dept === f.dept) && (!f.pos || x.pos === f.pos) && (!f.age || ageR(x.age) === f.age) && (!f.tenure || tenR(x.tenure) === f.tenure) && (!f.gender || x.gender === f.gender));
-            fIds.forEach((id, i) => { const el = document.getElementById(cIds[i]); document.getElementById(id).value ? el.classList.add('active') : el.classList.remove('active') });
-            update();
-        }
-        function resetFilters() { fIds.forEach(id => document.getElementById(id).selectedIndex = 0); cIds.forEach(id => document.getElementById(id).classList.remove('active')); applyFilter() }
-        const isDrill = () => document.getElementById('fAge').value || document.getElementById('fTenure').value || document.getElementById('fGender').value;
+                const zones = {};
+                ZONES.forEach(z => {
+                    let s = baseScore + (Math.random() - 0.5) * 25;
+                    if (z === "thumb" || z === "pinky") s -= 10;
+                    zones[z] = Math.min(100, Math.max(0, Math.round(s)));
+                });
 
-        function update() {
-            const total = filtered.length;
-
-            document.getElementById('kpiTotal').textContent = total;
-            document.getElementById('kpiAvg').textContent = avg(filtered, 'avg').toFixed(1) + '%';
-            document.getElementById('kpiPass').textContent = pass(filtered).toFixed(1) + '%';
-
-            // Update hand scores for all 4 views
-            const lfScore = avg(filtered, 'lfAvg'), lbScore = avg(filtered, 'lbAvg');
-            const rfScore = avg(filtered, 'rfAvg'), rbScore = avg(filtered, 'rbAvg');
-
-            const lfs = document.getElementById('leftFrontScore'), lbs = document.getElementById('leftBackScore');
-            const rfs = document.getElementById('rightFrontScore'), rbs = document.getElementById('rightBackScore');
-
-            lfs.textContent = lfScore.toFixed(1) + '%'; lfs.className = 'hand-score ' + sC(lfScore);
-            lbs.textContent = lbScore.toFixed(1) + '%'; lbs.className = 'hand-score ' + sC(lbScore);
-            rfs.textContent = rfScore.toFixed(1) + '%'; rfs.className = 'hand-score ' + sC(rfScore);
-            rbs.textContent = rbScore.toFixed(1) + '%'; rbs.className = 'hand-score ' + sC(rbScore);
-
-            // Update zone colors for all 4 views
-            ['LF', 'LB', 'RF', 'RB'].forEach(view => {
-                for (let i = 1; i <= 6; i++) {
-                    const zoneId = view + i;
-                    const score = filtered.length ? filtered.reduce((s, x) => s + x[view][zoneId], 0) / filtered.length : 0;
-                    zoneScores[zoneId] = score;
-                    const el = document.getElementById(zoneId);
-                    if (el) el.style.fill = hC(score);
-                }
-            });
-
-            const drill = isDrill();
-            document.getElementById('modeBadge').className = drill ? 'mode-badge drill' : 'mode-badge';
-            document.getElementById('modeText').textContent = drill ? 'Drill-down' : 'Overview';
-            document.getElementById('subFilter').className = drill ? 'sub-filter show' : 'sub-filter';
-            document.getElementById('drillArea').className = drill ? 'drill-area show' : 'drill-area';
-            document.getElementById('overviewCharts').style.display = drill ? 'none' : 'grid';
-            drill ? renderDrill() : renderOverview();
-        }
-
-        // Tooltip for zones
-        const tooltip = document.getElementById('tooltip');
-        document.querySelectorAll('.heat-zone').forEach(el => {
-            el.addEventListener('mouseenter', e => {
-                const id = el.id;
-                const name = el.getAttribute('data-name');
-                const score = zoneScores[id] || 0;
-                tooltip.innerHTML = `<strong>${name}</strong><br>${score.toFixed(1)}%`;
-                tooltip.style.display = 'block';
-            });
-            el.addEventListener('mousemove', e => {
-                tooltip.style.left = (e.clientX + 12) + 'px';
-                tooltip.style.top = (e.clientY + 12) + 'px';
-            });
-            el.addEventListener('mouseleave', () => {
-                tooltip.style.display = 'none';
-            });
-        });
-
-        const kill = id => { if (charts[id]) charts[id].destroy() };
-
-        // Modern gradient creator
-        const createGradient = (ctx, color1, color2, vertical = true) => {
-            const gradient = vertical
-                ? ctx.createLinearGradient(0, 0, 0, 200)
-                : ctx.createLinearGradient(0, 0, 300, 0);
-            gradient.addColorStop(0, color1);
-            gradient.addColorStop(1, color2);
-            return gradient;
-        };
-
-        // Modern chart options
-        const modernOpts = (h = false) => ({
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: h ? 'y' : 'x',
-            animation: { duration: 800, easing: 'easeOutQuart' },
-            plugins: {
-                legend: { display: false },
-                datalabels: {
-                    anchor: h ? 'end' : 'end',
-                    align: h ? 'right' : 'top',
-                    color: '#475569',
-                    font: { weight: '700', size: 11, family: 'Prompt' },
-                    formatter: v => v.toFixed(0) + '%',
-                    padding: { left: 4, right: 4 }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: h ? undefined : 100,
-                    grid: { color: 'rgba(148, 163, 184, 0.1)', drawBorder: false },
-                    ticks: { font: { size: 10 }, color: '#94a3b8' }
-                },
-                x: {
-                    grid: { display: false, drawBorder: false },
-                    ticks: { font: { size: 10, weight: '500' }, color: '#64748b' },
-                    max: h ? 100 : undefined
-                }
+                data.push({
+                    id: i + 1,
+                    timestamp: date.getTime(),
+                    date: date.toISOString().split('T')[0],
+                    time: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,
+                    hospital, dept, pos, age: ageRange, tenure: tenureRange, gender,
+                    activity,
+                    score: Math.round(baseScore),
+                    zones
+                });
             }
-        });
+            // Sort by timestamp
+            return data.sort((a, b) => a.timestamp - b.timestamp);
+        }
 
-        function renderOverview() {
-            const ctx1 = document.getElementById('c1').getContext('2d');
-            const eg = grp(filtered, x => x.event);
-            const evtKeys = Object.keys(eg);
-            const evtGradients = evtKeys.map((_, i) => createGradient(ctx1, i === 0 ? '#3b82f6' : '#60a5fa', i === 0 ? '#1d4ed8' : '#3b82f6'));
-            kill('c1'); charts.c1 = new Chart(ctx1, {
-                type: 'bar',
-                data: { labels: evtKeys, datasets: [{ data: evtKeys.map(k => avg(eg[k], 'avg')), backgroundColor: evtGradients, borderRadius: 8, borderSkipped: false }] },
-                options: modernOpts(),
-                plugins: [ChartDataLabels]
-            });
+        let allData = genData(), filteredData = [...allData], isFiltered = false, charts = {}, genderFilters = { age: 'all', tenure: 'all', dept: 'all' };
 
-            const ctx2 = document.getElementById('c2').getContext('2d');
-            const ages = ['20-30', '31-40', '41-50', '51-60'], ag = grp(filtered, x => ageR(x.age));
-            const ageGradient = createGradient(ctx2, '#a855f7', '#7c3aed');
-            kill('c2'); charts.c2 = new Chart(ctx2, {
-                type: 'bar',
-                data: { labels: ages, datasets: [{ data: ages.map(a => avg(ag[a] || [], 'avg')), backgroundColor: ageGradient, borderRadius: 8, borderSkipped: false }] },
-                options: modernOpts(),
-                plugins: [ChartDataLabels]
-            });
+        document.addEventListener('DOMContentLoaded', () => { applyConfig(); populateFilters(); setupListeners(); updateAll(); });
 
-            const ctx3 = document.getElementById('c3').getContext('2d');
-            const tens = ['0-5y', '6-10y', '11-20y', '21-30y'], tg = grp(filtered, x => tenR(x.tenure));
-            const tenGradient = createGradient(ctx3, '#14b8a6', '#0d9488');
-            kill('c3'); charts.c3 = new Chart(ctx3, {
-                type: 'bar',
-                data: { labels: tens, datasets: [{ data: tens.map(t => avg(tg[t] || [], 'avg')), backgroundColor: tenGradient, borderRadius: 8, borderSkipped: false }] },
-                options: modernOpts(),
-                plugins: [ChartDataLabels]
-            });
+        function applyConfig() {
+            document.getElementById('kpi-avg-label').textContent = CONFIG.kpi_avg;
+            document.getElementById('kpi-pass-label').textContent = CONFIG.kpi_pass;
+            document.getElementById('chart-timeline-label').textContent = CONFIG.chart_timeline;
+            document.getElementById('chart-age-label').textContent = CONFIG.chart_age;
+            document.getElementById('chart-tenure-label').textContent = CONFIG.chart_tenure;
+            document.getElementById('chart-dept-label').textContent = CONFIG.chart_dept;
+            document.getElementById('viz-hand-label').textContent = CONFIG.viz_hand;
+        }
 
-            const ctx4 = document.getElementById('c4').getContext('2d');
-            const dg = grp(filtered, x => x.dept), ds = Object.entries(dg).map(([k, v]) => ({ k, v: avg(v, 'avg') })).sort((a, b) => b.v - a.v).slice(0, 8);
-            const deptColors = ds.map(d => {
-                if (d.v >= 80) return createGradient(ctx4, '#10b981', '#059669', false);
-                if (d.v >= 50) return createGradient(ctx4, '#f59e0b', '#d97706', false);
-                return createGradient(ctx4, '#ef4444', '#dc2626', false);
-            });
-            kill('c4'); charts.c4 = new Chart(ctx4, {
-                type: 'bar',
-                data: { labels: ds.map(d => d.k.length > 12 ? d.k.slice(0, 12) + '…' : d.k), datasets: [{ data: ds.map(d => d.v), backgroundColor: deptColors, borderRadius: 6, borderSkipped: false }] },
-                options: modernOpts(true),
-                plugins: [ChartDataLabels]
+        function populateFilters() {
+            const add = (id, arr) => { const el = document.getElementById(id); arr.forEach(v => el.add(new Option(v, v))); };
+            add('filter-hospital', HOSPITALS);
+            add('filter-dept', DEPTS);
+            add('filter-pos', POSITIONS);
+            add('filter-age', AGE_RANGES);
+            add('filter-tenure', TENURE_RANGES);
+            add('filter-activity', ACTIVITIES); // NEW: Activity filter
+        }
+
+        function setupListeners() {
+            ['filter-hospital', 'filter-dept', 'filter-pos', 'filter-age', 'filter-tenure', 'filter-gender', 'filter-date-start', 'filter-date-end', 'filter-activity'].forEach(id =>
+                document.getElementById(id).addEventListener('change', applyFilters)
+            );
+            document.getElementById('btn-reset').addEventListener('click', resetFilters);
+            ['age', 'tenure', 'dept'].forEach(t => {
+                document.querySelectorAll(`#${t}-toggle .gender-btn`).forEach(btn => {
+                    btn.addEventListener('click', e => {
+                        e.target.closest('.gender-toggle').querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        genderFilters[t] = e.target.dataset.g;
+                        updateChart(t);
+                    });
+                });
             });
         }
 
-        function renderDrill() {
-            const fA = document.getElementById('fAge').value, fT = document.getElementById('fTenure').value, subG = document.getElementById('subGender').value;
-            let labels, fn, title;
-            if (fA) { labels = ['20-30', '31-40', '41-50', '51-60']; fn = x => ageR(x.age); title = 'จำนวนตามช่วงอายุ'; }
-            else if (fT) { labels = ['0-5y', '6-10y', '11-20y', '21-30y']; fn = x => tenR(x.tenure); title = 'จำนวนตามอายุงาน'; }
-            else { labels = ['ชาย', 'หญิง']; fn = x => x.gender === 'Male' ? 'ชาย' : 'หญิง'; title = 'จำนวนตามเพศ'; }
-            document.getElementById('drillTitle').textContent = title;
-            let src = filtered; if (subG) src = filtered.filter(x => x.gender === subG);
-            const male = labels.map(l => src.filter(x => (fn(x) === l || (l === 'ชาย' && x.gender === 'Male') || (l === 'หญิง' && x.gender === 'Female')) && x.gender === 'Male').length);
-            const female = labels.map(l => src.filter(x => (fn(x) === l || (l === 'ชาย' && x.gender === 'Male') || (l === 'หญิง' && x.gender === 'Female')) && x.gender === 'Female').length);
+        function applyFilters() {
+            const v = id => document.getElementById(id).value;
+            filteredData = allData.filter(d => {
+                if (v('filter-hospital') && d.hospital !== v('filter-hospital')) return false;
+                if (v('filter-dept') && d.dept !== v('filter-dept')) return false;
+                if (v('filter-pos') && d.pos !== v('filter-pos')) return false;
+                if (v('filter-age') && d.age !== v('filter-age')) return false;
+                if (v('filter-tenure') && d.tenure !== v('filter-tenure')) return false;
+                if (v('filter-gender') && d.gender !== v('filter-gender')) return false;
+                if (v('filter-activity') && d.activity !== v('filter-activity')) return false;
+                if (v('filter-date-start') && d.date < v('filter-date-start')) return false;
+                if (v('filter-date-end') && d.date > v('filter-date-end')) return false;
+                return true;
+            });
+            isFiltered = !!(v('filter-hospital') || v('filter-dept') || v('filter-pos') || v('filter-age') || v('filter-tenure') || v('filter-gender') || v('filter-date-start') || v('filter-date-end') || v('filter-activity'));
+            updateAll();
+        }
 
-            const ctx = document.getElementById('drillChart').getContext('2d');
-            const maleGradient = createGradient(ctx, '#3b82f6', '#1d4ed8');
-            const femaleGradient = createGradient(ctx, '#ec4899', '#db2777');
+        function resetFilters() {
+            ['filter-hospital', 'filter-dept', 'filter-pos', 'filter-age', 'filter-tenure', 'filter-gender', 'filter-activity'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('filter-date-start').value = '';
+            document.getElementById('filter-date-end').value = '';
+            genderFilters = { age: 'all', tenure: 'all', dept: 'all' };
+            ['age', 'tenure', 'dept'].forEach(t => document.querySelectorAll(`#${t}-toggle .gender-btn`).forEach(b => b.classList.toggle('active', b.dataset.g === 'all')));
+            filteredData = [...allData];
+            isFiltered = false;
+            updateAll();
+        }
 
-            kill('drillChart'); charts.drillChart = new Chart(ctx, {
+        function updateAll() {
+            updateKPIs();
+            updateHands();
+            updateTimeline();
+            ['age', 'tenure', 'dept'].forEach(updateChart);
+            ['age', 'tenure', 'dept'].forEach(t => document.getElementById(`${t}-toggle`).classList.toggle('visible', isFiltered));
+        }
+
+        function updateKPIs() {
+            if (!filteredData.length) { document.getElementById('kpi-avg-value').textContent = '--'; document.getElementById('kpi-pass-value').textContent = '--'; return; }
+            const avg = (filteredData.reduce((s, d) => s + d.score, 0) / filteredData.length).toFixed(1);
+            const pass = ((filteredData.filter(d => d.score >= 80).length / filteredData.length) * 100).toFixed(1);
+            document.getElementById('kpi-avg-value').textContent = avg + '%';
+            document.getElementById('kpi-pass-value').textContent = pass + '%';
+            document.getElementById('kpi-pass-value').className = 'kpi-value ' + (parseFloat(pass) >= 80 ? 'success' : 'warning');
+        }
+
+        // UPDATED: Timeline with Individual Events & Horizontal Scroll
+        function updateTimeline() {
+            const ctx = document.getElementById('timelineChart').getContext('2d');
+            if (charts.timeline) charts.timeline.destroy();
+
+            // Take last 100 events max for performance
+            const events = filteredData.slice(-100);
+
+            // Dynamic width based on data points (30px per bar minimum)
+            const minWidth = events.length * 35;
+            const wrapper = document.getElementById('timeline-wrapper');
+            wrapper.style.width = Math.max(minWidth, wrapper.parentElement.clientWidth) + 'px';
+
+            // Format labels: DD/MM HH:mm
+            const labels = events.map(e => {
+                const [y, m, d] = e.date.split('-');
+                return `${d}/${m} ${e.time}`;
+            });
+
+            // Colors based on score
+            const colors = events.map(e => e.score >= 80 ? '#10b981' : e.score >= 50 ? '#f59e0b' : '#ef4444');
+
+            charts.timeline = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels, datasets: [
-                        { label: 'ชาย (Male)', data: male, backgroundColor: maleGradient, borderRadius: 6, borderSkipped: false },
-                        { label: 'หญิง (Female)', data: female, backgroundColor: femaleGradient, borderRadius: 6, borderSkipped: false }
-                    ]
+                    labels,
+                    datasets: [{
+                        data: events.map(e => e.score),
+                        backgroundColor: colors,
+                        borderRadius: 3,
+                        barThickness: 20
+                    }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    animation: { duration: 800, easing: 'easeOutQuart' },
                     plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: { usePointStyle: true, pointStyle: 'circle', padding: 20, font: { size: 12, weight: '500' } }
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'top',
-                            color: '#475569',
-                            font: { weight: '700', size: 12, family: 'Prompt' },
-                            formatter: v => v > 0 ? v + ' คน' : ''
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: (ctx) => events[ctx[0].dataIndex].activity,
+                                label: (ctx) => {
+                                    const e = events[ctx.dataIndex];
+                                    return [
+                                        `Score: ${e.score}%`,
+                                        `Time: ${e.time}`,
+                                        `Date: ${e.date}`
+                                    ];
+                                }
+                            },
+                            titleFont: { weight: 'bold', size: 13 },
+                            bodyFont: { size: 12 },
+                            padding: 10
                         }
                     },
                     scales: {
-                        x: { grid: { display: false, drawBorder: false }, ticks: { font: { size: 11, weight: '500' } } },
-                        y: { beginAtZero: true, grid: { color: 'rgba(148, 163, 184, 0.1)', drawBorder: false }, ticks: { font: { size: 10 } } }
+                        x: {
+                            ticks: { maxRotation: 45, minRotation: 45, font: { size: 10 } }
+                        },
+                        y: { beginAtZero: true, max: 100, title: { display: true, text: 'Score (%)' } }
                     }
-                },
-                plugins: [ChartDataLabels]
+                }
             });
         }
 
-        function doLogin() { if (document.getElementById('pwd').value === 'ic2026') { sessionStorage.setItem('ic', '1'); document.getElementById('login').style.display = 'none'; document.getElementById('dashboard').style.display = 'block'; init(); } else document.getElementById('err').style.display = 'block' }
-        function doLogout() { sessionStorage.removeItem('ic'); location.reload() }
-        function init() { setTimeout(() => { document.getElementById('loading').style.display = 'none'; update() }, 400) }
-        window.onload = () => { if (sessionStorage.getItem('ic')) { document.getElementById('login').style.display = 'none'; document.getElementById('dashboard').style.display = 'block'; init() } };
+        function updateChart(type) {
+            const ctx = document.getElementById(`${type}Chart`).getContext('2d');
+            if (charts[type]) charts[type].destroy();
+            let cats, key;
+            if (type === 'age') { cats = AGE_RANGES; key = 'age'; }
+            else if (type === 'tenure') { cats = TENURE_RANGES; key = 'tenure'; }
+            else { cats = DEPTS; key = 'dept'; }
+
+            let data = filteredData;
+            if (genderFilters[type] !== 'all') data = data.filter(d => d.gender === genderFilters[type]);
+            const grouped = {}; cats.forEach(c => grouped[c] = []);
+            data.forEach(d => { if (grouped[d[key]]) grouped[d[key]].push(d.score); });
+
+            const useCount = isFiltered;
+            let values = useCount ? cats.map(c => grouped[c].length) : cats.map(c => grouped[c].length ? (grouped[c].reduce((a, b) => a + b, 0) / grouped[c].length).toFixed(1) : 0);
+            let labels = [...cats], sorted = [...values];
+            if (type === 'dept') {
+                const pairs = labels.map((l, i) => ({ l, v: parseFloat(sorted[i]) }));
+                pairs.sort((a, b) => b.v - a.v);
+                labels = pairs.slice(0, 6).map(p => p.l);
+                sorted = pairs.slice(0, 6).map(p => p.v);
+            }
+            const isH = type === 'dept';
+            charts[type] = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets: [{ data: sorted, backgroundColor: type === 'dept' ? sorted.map((_, i) => `hsl(${200 - i * 12},60%,50%)`) : 'rgba(16,185,129,0.65)', borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, indexAxis: isH ? 'y' : 'x', plugins: { legend: { display: false } }, scales: { x: isH ? { beginAtZero: true, max: useCount ? undefined : 100 } : {}, y: isH ? {} : { beginAtZero: true, max: useCount ? undefined : 100 } } }
+            });
+        }
+
+        function updateHands() {
+            const avgZ = {}; ZONES.forEach(z => avgZ[z] = []);
+            filteredData.forEach(d => { if (d.zones) ZONES.forEach(z => { if (d.zones[z] !== undefined) avgZ[z].push(d.zones[z]); }); });
+            const scores = {}; ZONES.forEach(z => { const a = avgZ[z]; scores[z] = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 50; });
+            ['hand-lf', 'hand-lb', 'hand-rf', 'hand-rb'].forEach(id => renderHand(id, scores));
+        }
+
+        function getColor(s) { return s >= 80 ? '#10b981' : s >= 50 ? '#f59e0b' : '#ef4444'; }
+
+        function renderHand(id, scores) {
+            const svg = document.getElementById(id);
+            svg.innerHTML = '';
+            const paths = [
+                { zone: 'thumb', d: 'M22,95 C8,82 2,60 10,42 C18,26 32,24 40,36 C46,48 44,68 40,82 C36,92 30,100 24,102 Z' },
+                { zone: 'index', d: 'M40,86 C38,70 36,48 35,28 C34,16 40,8 50,8 C60,8 64,16 64,28 C63,48 60,70 58,86 C57,90 52,92 50,92 C46,92 41,90 40,86 Z' },
+                { zone: 'middle', d: 'M58,86 C57,68 56,42 56,18 C56,6 62,0 72,0 C82,0 86,6 86,18 C86,42 84,68 82,86 C82,90 78,92 72,92 C66,92 59,90 58,86 Z' },
+                { zone: 'ring', d: 'M82,86 C81,70 80,48 80,28 C80,16 84,8 92,8 C100,8 104,16 104,28 C104,48 102,70 100,86 C100,90 96,92 92,92 C88,92 83,90 82,86 Z' },
+                { zone: 'pinky', d: 'M100,86 C100,74 102,58 104,42 C106,32 110,26 116,26 C122,26 124,32 124,42 C124,58 120,74 118,86 C118,90 114,92 110,92 C106,92 101,90 100,86 Z' },
+                { zone: 'palm', d: 'M24,102 C20,112 20,128 26,138 L106,138 C114,128 118,112 114,100 C112,94 108,92 104,92 L46,92 C38,94 28,98 24,102 Z' },
+                { zone: 'wrist', d: 'M26,138 L26,164 C26,168 106,168 106,164 L106,138 Z' }
+            ];
+            paths.forEach(p => {
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', p.d);
+                path.setAttribute('fill', getColor(scores[p.zone]));
+                path.setAttribute('stroke', '#fff');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('class', 'hand-zone');
+                path.dataset.zone = p.zone;
+                path.dataset.score = Math.round(scores[p.zone]);
+                path.addEventListener('mouseenter', showTip);
+                path.addEventListener('mousemove', moveTip);
+                path.addEventListener('mouseleave', hideTip);
+                svg.appendChild(path);
+            });
+        }
+
+        function showTip(e) { const t = document.createElement('div'); t.className = 'zone-tooltip'; t.id = 'zt'; t.textContent = `${e.target.dataset.zone}: ${e.target.dataset.score}%`; document.body.appendChild(t); t.style.left = e.clientX + 12 + 'px'; t.style.top = e.clientY + 12 + 'px'; }
+        function moveTip(e) { const t = document.getElementById('zt'); if (t) { t.style.left = e.clientX + 12 + 'px'; t.style.top = e.clientY + 12 + 'px'; } }
+        function hideTip() { const t = document.getElementById('zt'); if (t) t.remove(); }
+        function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
     </script>
 </body>
 
