@@ -4,13 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hand Hygiene Monitoring System</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <title>ระบบติดตามความสะอาดมือ | Hand Hygiene Monitoring System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            /* Theme Colors */
+            --cyan: #0ea5e9;
+            --cyan-light: #7dd3fc;
+            --cyan-glow: rgba(14, 165, 233, 0.4);
+            --emerald: #10b981;
+            --emerald-light: #6ee7b7;
+            --emerald-glow: rgba(16, 185, 129, 0.4);
+            --rose: #f43f5e;
+            --rose-light: #fda4af;
+            --rose-glow: rgba(244, 63, 94, 0.4);
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --radius-lg: 24px;
+            --radius-xl: 28px;
+            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --shadow-card-hover: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,720 +45,842 @@
 
         body {
             font-family: 'Prompt', sans-serif;
-            background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 50%, #ffffff 100%);
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
+            /* Light Gradient Background - Soft Blue/White */
+            background: linear-gradient(160deg, #f0f9ff 0%, #e0f2fe 25%, #f5f3ff 50%, #fdf2f8 75%, #fefce8 100%);
+            background-attachment: fixed;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
+            flex-direction: column;
+            padding: 0;
         }
 
         .container {
-            max-width: 3000px;
+            max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 0;
         }
 
-        .header {
+        /* ===== HERO HEADER ===== */
+        .hero {
             text-align: center;
-            color: white;
-            margin-bottom: 50px;
-            animation: fadeInDown 0.8s ease;
+            padding: 20px 20px 16px;
+            margin-bottom: 0;
+            flex-shrink: 0;
         }
 
-        .header h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 42px;
+        .hero-logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--cyan) 0%, #0284c7 100%);
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.35);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .hero-logo i {
+            font-size: 32px;
+            color: var(--white);
+        }
+
+        .hero-title {
+            font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            color: var(--gray-800);
+            margin-bottom: 8px;
+            line-height: 1.25;
         }
 
-        .header p {
-            font-size: 18px;
-            opacity: 0.9;
-            font-weight: 400;
+        .hero-title span {
+            background: linear-gradient(135deg, var(--cyan), var(--emerald));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .card-grid {
+        .hero-subtitle {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-subtitle strong {
+            color: var(--gray-700);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 6px 14px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 30px;
+            font-size: 0.78rem;
+            color: #059669;
+            font-weight: 500;
+        }
+
+        .hero-badge i {
+            font-size: 1rem;
+        }
+
+        /* ===== CARDS GRID ===== */
+        .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            animation: fadeInUp 0.8s ease 0.2s backwards;
-            max-width: 100%;
+            margin-bottom: 0;
+            flex: 1;
+            align-content: center;
+            min-height: 0;
         }
 
-        .dashboard-card {
-            background: white;
-            border-radius: 20px;
-            padding: 32px 28px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
+        /* ===== CARD ===== */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
             overflow: hidden;
-            width: 100%;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
         }
 
-        .dashboard-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #1e3a8a, #dc2626);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-        }
-
-        .dashboard-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .dashboard-card:hover {
+        .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        /* Card Header with Color Accent */
+        .card-header-accent {
+            padding: 20px 20px 0;
+            text-align: center;
         }
 
         .card-icon {
             width: 56px;
             height: 56px;
-            background: linear-gradient(135deg, #1e3a8a, #1e40af);
-            border-radius: 14px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 18px;
-            font-size: 28px;
-            color: white;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
+            margin: 0 auto 12px;
+            font-size: 24px;
+            color: var(--white);
+            transition: transform 0.3s ease;
         }
 
-        .dashboard-card:hover .card-icon {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 15px 40px rgba(30, 58, 138, 0.6);
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(-5deg);
         }
 
-        .card-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 12px;
-            line-height: 1.3;
+        .card.cyan .card-icon {
+            background: linear-gradient(135deg, var(--cyan), #0284c7);
+            box-shadow: 0 8px 25px var(--cyan-glow);
         }
 
-        .card-description {
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.7;
-            margin-bottom: 18px;
+        .card.emerald .card-icon {
+            background: linear-gradient(135deg, var(--emerald), #059669);
+            box-shadow: 0 8px 25px var(--emerald-glow);
         }
 
-        .card-features {
-            list-style: none;
-            margin-bottom: 28px;
+        .card.rose .card-icon {
+            background: linear-gradient(135deg, var(--rose), #e11d48);
+            box-shadow: 0 8px 25px var(--rose-glow);
         }
 
-        .card-features li {
-            font-size: 13px;
-            margin-bottom: 10px;
-            padding-left: 24px;
-            position: relative;
-            line-height: 1.6;
-        }
-
-        .card-features li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: #1e40af;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .card-button {
-            width: 100%;
-            padding: 14px 20px;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        /* Card Body */
+        .card-body {
+            padding: 0 20px 16px;
+            flex: 1;
             display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .card-title-th {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 2px;
+        }
+
+        .card-title-en {
+            font-size: 0.78rem;
+            font-weight: 400;
+            color: var(--gray-500);
+            margin-bottom: 10px;
+        }
+
+        .card-target {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 4px 12px;
+            background: var(--gray-100);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+            margin-bottom: 14px;
+            flex: 1;
+        }
+
+        .card-btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 8px;
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: 12px;
             font-family: 'Prompt', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            transition: filter 0.2s, transform 0.2s;
         }
 
-        .card-button:hover {
-            background: linear-gradient(135deg, #1e40af, #2563eb);
-            transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.5);
+        .card.cyan .card-btn {
+            background: linear-gradient(135deg, var(--cyan), #0284c7);
         }
 
-        .card-button i {
-            font-size: 16px;
+        .card.emerald .card-btn {
+            background: linear-gradient(135deg, var(--emerald), #059669);
         }
 
+        .card.rose .card-btn {
+            background: linear-gradient(135deg, var(--rose), #e11d48);
+        }
+
+        .card-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
-            color: white;
-            margin-top: 50px;
-            font-size: 14px;
-            opacity: 0.8;
-            animation: fadeIn 1s ease 0.4s backwards;
+            padding: 16px 20px;
+            color: var(--gray-500);
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
         }
 
-        @keyframes fadeInDown {
+        .footer a {
+            color: var(--cyan);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* =============================================
+           MODAL OVERLAY - Light Theme
+           ============================================= */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        /* Modal Container - Clean White */
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 50px 44px 44px;
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes modalFadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-30px);
+                transform: scale(0.95) translateY(15px);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: scale(1) translateY(0);
             }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Modal Icon - Rounded Square with Soft Glow */
+        .modal-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 38px;
+            color: var(--white);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+        .modal.theme-cyan .modal-icon {
+            background: linear-gradient(135deg, var(--cyan), #0284c7);
+            box-shadow: 0 12px 40px var(--cyan-glow);
         }
 
-        /* ============================================
-           RESPONSIVE DESIGN - 3 Cards In One Row
-           ============================================ */
-
-        /* Large Screens (1600px+) - Spacious & Beautiful */
-        @media (min-width: 1600px) {
-            .container {
-                max-width: 1800px;
-            }
-
-            .card-grid {
-                gap: 15px;
-            }
-
-            .dashboard-card {
-                padding: 24px;
-            }
-
-            .card-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 24px;
-                margin-bottom: 15px;
-            }
-
-            .card-title {
-                font-size: 20px;
-                margin-bottom: 8px;
-            }
-
-            .card-description {
-                font-size: 13px;
-                margin-bottom: 14px;
-            }
-
-            .card-features li {
-                font-size: 12px;
-                margin-bottom: 6px;
-                padding-left: 20px;
-            }
-
-            .card-button {
-                padding: 12px 18px;
-                font-size: 14px;
-            }
+        .modal.theme-emerald .modal-icon {
+            background: linear-gradient(135deg, var(--emerald), #059669);
+            box-shadow: 0 12px 40px var(--emerald-glow);
         }
 
-        /* Medium-Large Screens (1300px-1599px) - Comfortable */
-        @media (min-width: 1300px) and (max-width: 1599px) {
-            .container {
-                max-width: 1500px;
-            }
-
-            .card-grid {
-                gap: 10px;
-            }
-
-            .dashboard-card {
-                padding: 18px;
-            }
-
-            .card-icon {
-                width: 45px;
-                height: 45px;
-                font-size: 22px;
-                margin-bottom: 12px;
-            }
-
-            .card-title {
-                font-size: 18px;
-                margin-bottom: 6px;
-            }
-
-            .card-description {
-                font-size: 12px;
-                margin-bottom: 12px;
-            }
-
-            .card-features li {
-                font-size: 11px;
-                margin-bottom: 5px;
-                padding-left: 18px;
-            }
-
-            .card-button {
-                padding: 11px 16px;
-                font-size: 13px;
-            }
+        .modal.theme-rose .modal-icon {
+            background: linear-gradient(135deg, var(--rose), #e11d48);
+            box-shadow: 0 12px 40px var(--rose-glow);
         }
 
-        /* Compact Screens (1100px-1299px) - Fit 3 Cards Neatly */
-        @media (min-width: 1100px) and (max-width: 1299px) {
-            .container {
-                max-width: 1200px;
-            }
-
-            .card-grid {
-                gap: 6px;
-            }
-
-            .dashboard-card {
-                padding: 15px;
-                border-radius: 16px;
-            }
-
-            .card-icon {
-                width: 42px;
-                height: 42px;
-                font-size: 21px;
-                margin-bottom: 10px;
-                border-radius: 11px;
-            }
-
-            .card-title {
-                font-size: 17px;
-                margin-bottom: 5px;
-            }
-
-            .card-description {
-                font-size: 11px;
-                margin-bottom: 10px;
-                line-height: 1.35;
-            }
-
-            .card-features li {
-                font-size: 10.5px;
-                margin-bottom: 4px;
-                padding-left: 17px;
-            }
-
-            .card-button {
-                padding: 10px 15px;
-                font-size: 12px;
-                margin-top: 12px;
-            }
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 8px;
         }
 
-        /* Tablet & Mobile Responsive Design */
+        .modal-subtitle {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            margin-bottom: 32px;
+        }
 
-        /* Mobile Phones (Portrait) - 320px to 480px */
-        @media (max-width: 480px) {
+        /* Form Group - Soft Gray Input */
+        .form-group {
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 10px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--gray-100);
+            border: 2px solid transparent;
+            border-radius: 14px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
+            color: var(--gray-800);
+            transition: all 0.2s ease;
+        }
+
+        .form-group input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            background: var(--white);
+            border-color: var(--gray-300);
+        }
+
+        .modal.theme-cyan .form-group input:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        .modal.theme-emerald .form-group input:focus {
+            border-color: var(--emerald);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        .modal.theme-rose .form-group input:focus {
+            border-color: var(--rose);
+            box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.1);
+        }
+
+        /* Login Button */
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--white);
+            cursor: pointer;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .modal.theme-cyan .btn-login {
+            background: linear-gradient(135deg, var(--cyan), #0284c7);
+        }
+
+        .modal.theme-emerald .btn-login {
+            background: linear-gradient(135deg, var(--emerald), #059669);
+        }
+
+        .modal.theme-rose .btn-login {
+            background: linear-gradient(135deg, var(--rose), #e11d48);
+        }
+
+        .btn-login:hover:not(:disabled) {
+            filter: brightness(1.08);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-login:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Demo Info Box */
+        .demo-info {
+            margin-top: 28px;
+            padding: 18px;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border: 1px solid #bbf7d0;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .demo-info-title {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #059669;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .demo-info-text {
+            font-size: 0.88rem;
+            color: var(--gray-600);
+        }
+
+        .demo-info-text strong {
+            color: #047857;
+            background: rgba(16, 185, 129, 0.15);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        /* Back Button */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding: 12px 24px;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            background: var(--gray-200);
+            color: var(--gray-800);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+
+            /* Enable scrolling on mobile */
             body {
-                padding: 10px;
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
             }
 
             .container {
-                width: 100%;
+                padding: 30px 20px;
             }
 
-            .header {
-                margin-bottom: 30px;
-            }
-
-            .header h1 {
-                font-size: 24px;
-                line-height: 1.2;
-            }
-
-            .header h1 i {
-                display: block;
-                margin-bottom: 10px;
-                font-size: 32px;
-            }
-
-            .header p {
-                font-size: 13px;
-                line-height: 1.5;
-            }
-
-            .card-grid {
+            .cards-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                max-width: 400px;
+                margin: 20px auto;
+                align-content: start;
             }
 
-            .dashboard-card {
-                padding: 25px 20px;
+            .hero {
+                padding: 30px 16px 20px;
             }
 
-            .card-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 28px;
-                margin-bottom: 20px;
+            .hero-title {
+                font-size: 1.5rem;
             }
 
-            .card-title {
-                font-size: 20px;
-                line-height: 1.3;
-            }
-
-            .card-description {
-                font-size: 13px;
-                line-height: 1.6;
-                margin-bottom: 15px;
-            }
-
-            .card-features li {
-                font-size: 12px;
-                padding: 6px 0;
-                padding-left: 24px;
-            }
-
-            .card-button {
-                padding: 12px;
-                font-size: 14px;
+            .hero-subtitle {
+                font-size: 0.85rem;
             }
 
             .footer {
-                margin-top: 30px;
-                font-size: 11px;
-            }
-
-            .footer p {
-                line-height: 1.6;
+                padding: 20px;
             }
         }
 
-        /* Mobile Phones (Landscape) & Small Tablets - 481px to 768px */
-        @media (min-width: 481px) and (max-width: 768px) {
-            body {
-                padding: 15px;
+        @media (max-width: 480px) {
+            .modal {
+                padding: 40px 28px 32px;
             }
 
-            .header h1 {
-                font-size: 32px;
-            }
-
-            .header p {
-                font-size: 15px;
-            }
-
-            .card-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-
-            .dashboard-card {
-                padding: 35px;
-            }
-
-            .card-icon {
-                width: 70px;
-                height: 70px;
-                font-size: 32px;
-            }
-
-            .card-title {
-                font-size: 24px;
-            }
-
-            .card-description {
-                font-size: 14px;
-            }
-
-            .card-features li {
-                font-size: 13px;
-            }
-        }
-
-        /* Tablets & iPad (Portrait) - 769px to 1024px */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .container {
-                max-width: 750px;
-            }
-
-            .header h1 {
-                font-size: 38px;
-            }
-
-            .header p {
-                font-size: 17px;
-            }
-
-            .card-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-
-            .dashboard-card {
-                padding: 40px;
-            }
-
-            .card-icon {
+            .modal-icon {
                 width: 80px;
                 height: 80px;
+                font-size: 34px;
+                border-radius: 20px;
             }
 
-            .card-title {
-                font-size: 26px;
-            }
-        }
-
-        /* Small Laptops & iPad (Landscape) - 1025px to 1366px */
-        @media (min-width: 1025px) and (max-width: 1366px) {
-            .container {
-                max-width: 900px;
+            .hero-logo {
+                width: 75px;
+                height: 75px;
             }
 
-            .card-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
+            .hero-logo i {
+                font-size: 34px;
             }
-
-            .dashboard-card {
-                padding: 30px;
-            }
-        }
-
-        /* Large Screens (Desktop) - 1367px and above */
-        @media (min-width: 1367px) {
-            .container {
-                max-width: 1400px;
-            }
-
-            .card-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 30px;
-            }
-
-            .header h1 {
-                font-size: 48px;
-            }
-
-            .header p {
-                font-size: 20px;
-            }
-
-            .dashboard-card {
-                padding: 40px 35px;
-            }
-        }
-
-        /* Force 3 columns on all desktop screens 1024px+ */
-        @media (min-width: 1024px) {
-            .card-grid {
-                grid-template-columns: repeat(3, 1fr) !important;
-            }
-        }
-
-        /* Personal Dashboard Accent Color */
-        .dashboard-card.personal .card-icon {
-            background: linear-gradient(135deg, #b91c1c, #dc2626);
-            box-shadow: 0 10px 30px rgba(185, 28, 28, 0.4);
-        }
-
-        .dashboard-card.personal:hover .card-icon {
-            box-shadow: 0 15px 40px rgba(185, 28, 28, 0.6);
-        }
-
-        .dashboard-card.personal .card-button {
-            background: linear-gradient(135deg, #b91c1c, #dc2626);
-        }
-
-        .dashboard-card.personal .card-button:hover {
-            background: linear-gradient(135deg, #991b1b, #b91c1c);
-            box-shadow: 0 8px 25px rgba(185, 28, 28, 0.5);
-        }
-
-        .dashboard-card.personal .card-features li::before {
-            color: #dc2626;
-        }
-
-        /* Department Dashboard Accent Color */
-        .dashboard-card.department .card-icon {
-            background: linear-gradient(135deg, #059669, #10b981);
-            box-shadow: 0 10px 30px rgba(5, 150, 105, 0.4);
-        }
-
-        .dashboard-card.department:hover .card-icon {
-            box-shadow: 0 15px 40px rgba(5, 150, 105, 0.6);
-        }
-
-        .dashboard-card.department .card-button {
-            background: linear-gradient(135deg, #059669, #10b981);
-        }
-
-        .dashboard-card.department .card-button:hover {
-            background: linear-gradient(135deg, #047857, #059669);
-            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.5);
-        }
-
-        .dashboard-card.department .card-features li::before {
-            color: #10b981;
-        }
-
-        /* Language Toggle Button */
-        .language-toggle {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            z-index: 1000;
-            display: flex;
-            gap: 4px;
-            background: white;
-            padding: 8px 16px;
-            border-radius: 50px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Prompt', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            color: #1e3a8a;
-        }
-
-        .language-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
-        }
-
-        .lang-option {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .lang-option.active {
-            color: #1e3a8a;
-            text-decoration: underline;
-            font-weight: 800;
-        }
-
-        .lang-option:not(.active) {
-            color: #94a3b8;
-        }
-
-        .lang-separator {
-            color: #cbd5e1;
-            user-select: none;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="header">
-            <h1><i class="fa-solid fa-hospital-user"></i> <span>ระบบติดตามคุณภาพการล้างมือ (Hand Hygiene Monitoring
-                    System)</span></h1>
-            <p>Bangkok Hospital Phuket</p>
-        </div>
+        <!-- ===== HERO HEADER ===== -->
+        <header class="hero">
+            <div class="hero-logo"><i class="fas fa-hand-sparkles"></i></div>
+            <h1 class="hero-title">
+                ระบบติดตามความสะอาดมือ<br>
+                <span>Hand Hygiene Monitoring System</span>
+            </h1>
+            <p class="hero-subtitle">
+                ระบบบันทึกและวิเคราะห์ความสะอาดมือสำหรับบุคลากรทางการแพทย์
+                <br><strong>ช่วยลดการแพร่กระจายเชื้อโรคในโรงพยาบาล</strong>
+            </p>
+            <div class="hero-badge">
+                <i class="fas fa-shield-virus"></i>
+                งานป้องกันและควบคุมการติดเชื้อ (Infection Control)
+            </div>
+        </header>
 
-        <div class="card-grid">
+        <!-- ===== DASHBOARD CARDS ===== -->
+        <div class="cards-grid">
             <!-- IC Dashboard Card -->
-            <div class="dashboard-card" onclick="location.href='hospital-dashboard.html'">
-                <div class="card-icon">
-                    <i class="fa-solid fa-hospital"></i>
+            <div class="card cyan" onclick="openLoginModal('ic')">
+                <div class="card-header-accent">
+                    <div class="card-icon"><i class="fas fa-hospital"></i></div>
                 </div>
-                <h2 class="card-title">Dashboard แผนก IC (IC Dashboard)</h2>
-                <p class="card-description">ระบบวิเคราะห์เชิงลึกสำหรับทีม Infection Control -
-                    ดูภาพรวมทั้งโรงพยาบาล (For IC Team - Hospital Overview with Department Drill-down)</p>
-                <ul class="card-features">
-                    <li>ค่าเฉลี่ยความสะอาดภาพรวม (Average Cleanliness Score)</li>
-                    <li>เปรียบเทียบค่าเฉลี่ยแต่ละแผนก (Dept Comparison)</li>
-                    <li>วิเคราะห์จุดที่ล้างไม่สะอาด (11 Unclean Zones Analysis)</li>
-                </ul>
-                <button class="card-button">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <span>เข้าสู่ระบบวิเคราะห์ (Enter Analytics)</span>
-                </button>
+                <div class="card-body">
+                    <h2 class="card-title-th">IC Dashboard</h2>
+                    <p class="card-title-en">ภาพรวมโรงพยาบาล (Hospital Overview)</p>
+                    <div class="card-target">
+                        <i class="fas fa-user-shield"></i>
+                        สำหรับ: ผู้ดูแลระบบ / IC Team
+                    </div>
+                    <p class="card-desc">
+                        ดูภาพรวมความสะอาดมือทั้งโรงพยาบาล วิเคราะห์ข้อมูลทุกแผนก ทุกตำแหน่ง พร้อมรายงานสรุป
+                    </p>
+                    <button class="card-btn"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
+                </div>
             </div>
 
             <!-- Department Dashboard Card -->
-            <div class="dashboard-card department" onclick="location.href='department-dashboard.html'">
-                <div class="card-icon">
-                    <i class="fa-solid fa-users"></i>
+            <div class="card emerald" onclick="openLoginModal('department')">
+                <div class="card-header-accent">
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
                 </div>
-                <h2 class="card-title">Dashboard แผนก (Department Dashboard)</h2>
-                <p class="card-description">สำหรับหัวหน้าแผนกและบุคลากร -
-                    ดูข้อมูลเฉพาะแผนก (For Department Heads and Staff - View Your Department Data)
-                </p>
-                <ul class="card-features">
-                    <li>ค่าเฉลี่ยความสะอาดของแผนก (Dept Average Score)</li>
-                    <li>รายชื่อและผลการล้างมือของบุคลากร (Staff List & Results)</li>
-                    <li>กราฟแสดงคะแนนย้อนหลัง (Historical Score Trend)</li>
-                </ul>
-                <button class="card-button">
-                    <i class="fa-solid fa-building"></i>
-                    <span>เข้าสู่ระบบแผนก (Enter Department)</span>
-                </button>
+                <div class="card-body">
+                    <h2 class="card-title-th">Department Dashboard</h2>
+                    <p class="card-title-en">ข้อมูลแผนก (Department View)</p>
+                    <div class="card-target">
+                        <i class="fas fa-user-nurse"></i>
+                        สำหรับ: หัวหน้าแผนก / บุคลากรในแผนก
+                    </div>
+                    <p class="card-desc">
+                        ติดตามผลงานบุคลากรในแผนก ดูแนวโน้มประสิทธิภาพ และจัดอันดับคะแนนความสะอาดมือ
+                    </p>
+                    <button class="card-btn"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
+                </div>
             </div>
 
             <!-- Personal Dashboard Card -->
-            <div class="dashboard-card personal" onclick="location.href='personal-dashboard.html'">
-                <div class="card-icon">
-                    <i class="fa-solid fa-user-doctor"></i>
+            <div class="card rose" onclick="openLoginModal('personal')">
+                <div class="card-header-accent">
+                    <div class="card-icon"><i class="fas fa-user-md"></i></div>
                 </div>
-                <h2 class="card-title">Dashboard ส่วนตัว (Personal Dashboard)</h2>
-                <p class="card-description">ติดตามผลการล้างมือส่วนบุคคล
-                    พร้อมคำแนะนำปรับปรุงจาก AI (Track Your Personal Hand Hygiene with AI Recommendations)</p>
-                <ul class="card-features">
-                    <li>ประวัติการล้างมือที่ผ่านมา (Washing History)</li>
-                    <li>คะแนนการล้างมือแต่ละครั้ง (Score per Session)</li>
-                    <li>วิเคราะห์จุดที่ล้างไม่สะอาด (Frequent Unclean Zones)</li>
-                </ul>
-                <button class="card-button">
-                    <i class="fa-solid fa-arrow-right"></i>
-                    <span>เข้าสู่ระบบส่วนตัว (Enter Personal)</span>
-                </button>
+                <div class="card-body">
+                    <h2 class="card-title-th">Personal Dashboard</h2>
+                    <p class="card-title-en">ข้อมูลส่วนบุคคล (Personal View)</p>
+                    <div class="card-target">
+                        <i class="fas fa-stethoscope"></i>
+                        สำหรับ: แพทย์ / พยาบาล / บุคลากร
+                    </div>
+                    <p class="card-desc">
+                        ดูผลการสแกนมือส่วนตัว และวิเคราะห์โซนที่ต้องปรับปรุง
+                    </p>
+                    <button class="card-btn"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
+                </div>
             </div>
         </div>
 
-        <div class="footer">
-            <p><i class="fa-solid fa-shield-halved"></i> AI-based Hand Hygiene Analysis System | Version 7.1</p>
-            <p style="margin-top: 10px;"><strong>Bangkok Hospital Phuket</strong> © 2026</p>
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+            <p>© 2026 Hand Hygiene Monitoring System • <a href="#">งานป้องกันและควบคุมการติดเชื้อ</a></p>
+        </footer>
+    </div>
+
+    <!-- =============================================
+         DYNAMIC LOGIN MODAL (Light Theme)
+         ============================================= -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="loginModal">
+            <!-- Icon -->
+            <div class="modal-icon" id="modalIcon">
+                <i class="fas fa-hospital"></i>
+            </div>
+
+            <h2 class="modal-title" id="modalTitle">เข้าสู่ระบบ (Login)</h2>
+            <p class="modal-subtitle">กรุณากรอกข้อมูลเพื่อเข้าใช้งาน</p>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div id="inputContainer">
+                    <!-- JavaScript fills input here -->
+                </div>
+
+                <button type="submit" class="btn-login" id="btnLogin">
+                    <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+                </button>
+            </form>
+
+            <div class="demo-info">
+                <div class="demo-info-title"><i class="fas fa-info-circle"></i> ข้อมูลสำหรับทดสอบ</div>
+                <div class="demo-info-text" id="demoInfoText">ใช้รหัส <strong>admin123</strong> สำหรับทดสอบ</div>
+            </div>
+
+            <button type="button" class="btn-back" onclick="closeLoginModal()">
+                <i class="fas fa-arrow-left"></i> กลับหน้าหลัก
+            </button>
         </div>
     </div>
 
-    <!-- No translation system needed - bilingual format built-in -->
+    <script>
+        // =============================================
+        // CONFIG สำหรับแต่ละประเภท Dashboard
+        // =============================================
+        const DASHBOARD_CONFIG = {
+            ic: {
+                url: 'hospital-dashboard.html',
+                title: 'IC Dashboard',
+                theme: 'theme-cyan',
+                icon: 'fa-hospital',
+                inputType: 'password',
+                inputLabel: 'รหัสผ่าน (Password)',
+                inputPlaceholder: 'กรอกรหัสผ่าน',
+                demoValue: 'admin123',
+                demoText: 'ใช้รหัสผ่าน'
+            },
+            department: {
+                url: 'department-dashboard.html',
+                title: 'Department Dashboard',
+                theme: 'theme-emerald',
+                icon: 'fa-users',
+                inputType: 'text',
+                inputLabel: 'รหัสพนักงาน (Employee ID)',
+                inputPlaceholder: 'กรอกรหัสพนักงาน เช่น DEPT001',
+                demoValue: 'DEPT001',
+                demoText: 'ใช้รหัส'
+            },
+            personal: {
+                url: 'personal-dashboard.html',
+                title: 'Personal Dashboard',
+                theme: 'theme-rose',
+                icon: 'fa-user-md',
+                inputType: 'text',
+                inputLabel: 'รหัสพนักงาน (Employee ID)',
+                inputPlaceholder: 'กรอกรหัสพนักงาน เช่น EMP001',
+                demoValue: 'EMP001',
+                demoText: 'ใช้รหัส'
+            }
+        };
+
+        // ตัวแปร Global
+        let currentConfig = null;
+
+        // =============================================
+        // ฟังก์ชันเปิด Login Modal (Dynamic)
+        // =============================================
+        function openLoginModal(type) {
+            const config = DASHBOARD_CONFIG[type];
+            if (!config) return;
+
+            currentConfig = config;
+
+            const overlay = document.getElementById('modalOverlay');
+            const modal = document.getElementById('loginModal');
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const inputContainer = document.getElementById('inputContainer');
+            const demoInfoText = document.getElementById('demoInfoText');
+            const btnLogin = document.getElementById('btnLogin');
+
+            // 1. Set Theme
+            modal.className = 'modal ' + config.theme;
+
+            // 2. Set Icon
+            modalIcon.innerHTML = '<i class="fas ' + config.icon + '"></i>';
+
+            // 3. Set Title
+            modalTitle.textContent = 'เข้าสู่ระบบ ' + config.title;
+
+            // 4. Create Input
+            inputContainer.innerHTML = `
+                <div class="form-group">
+                    <label for="loginInput">${config.inputLabel}</label>
+                    <input 
+                        type="${config.inputType}" 
+                        id="loginInput" 
+                        placeholder="${config.inputPlaceholder}"
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+            `;
+
+            // 5. Update Demo Info
+            demoInfoText.innerHTML = config.demoText + ' <strong>' + config.demoValue + '</strong> สำหรับทดสอบ';
+
+            // 6. Reset Login Button
+            btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ';
+            btnLogin.disabled = false;
+
+            // 7. Show Modal
+            overlay.classList.add('active');
+
+            // 8. Focus Input
+            setTimeout(() => {
+                document.getElementById('loginInput').focus();
+            }, 150);
+        }
+
+        // =============================================
+        // ฟังก์ชันปิด Modal
+        // =============================================
+        function closeLoginModal() {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.remove('active');
+            currentConfig = null;
+        }
+
+        // =============================================
+        // ปิด Modal เมื่อคลิกที่ Backdrop
+        // =============================================
+        document.getElementById('modalOverlay').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeLoginModal();
+            }
+        });
+
+        // =============================================
+        // ปิด Modal ด้วยปุ่ม Escape
+        // =============================================
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+            }
+        });
+
+        // =============================================
+        // Handle Login Form Submit
+        // =============================================
+        function handleLogin(e) {
+            e.preventDefault();
+
+            if (!currentConfig) return;
+
+            const inputValue = document.getElementById('loginInput').value.trim();
+
+            if (inputValue) {
+                const btnLogin = document.getElementById('btnLogin');
+
+                // Show Loading State
+                btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังเข้าสู่ระบบ...';
+                btnLogin.disabled = true;
+
+                // Redirect after 600ms
+                setTimeout(() => {
+                    window.location.href = currentConfig.url;
+                }, 600);
+            }
+        }
+    </script>
 </body>
 
 </html>
