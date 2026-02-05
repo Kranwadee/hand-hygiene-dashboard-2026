@@ -11,8 +11,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #f97316;
-            --primary-dark: #ea580c;
+            /* RED THEME (Transformed from Green) */
+            --primary: #dc2626;
+            --primary-dark: #b91c1c;
+            --primary-light: #f87171;
+            /* Status colors stay the same */
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
@@ -25,10 +28,13 @@
             --gray-600: #4b5563;
             --gray-700: #374151;
             --gray-800: #1f2937;
-            --slate-100: #f1f5f9;
+            --slate-100: #fef2f2;
+            /* Red tint background */
             --radius: 12px;
+            --radius-lg: 20px;
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
         }
 
         * {
@@ -43,150 +49,66 @@
             color: var(--gray-800);
         }
 
+        /* ===== APP LAYOUT ===== */
         .app-layout {
             display: grid;
-            grid-template-rows: auto 1fr;
             grid-template-columns: 280px 1fr;
             height: 100vh;
+            overflow: hidden;
         }
 
-        /* ORANGE/WARM HEADER */
-        .header {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            padding: 14px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .user-avatar {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
-
-        .user-text h1 {
-            font-size: 1.15rem;
-            font-weight: 600;
-        }
-
-        .user-text p {
-            font-size: 0.75rem;
-            opacity: 0.85;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .kpi-row {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .nav-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-family: 'Prompt', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-
-        .nav-btn-ghost {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: var(--white);
-        }
-
-        .nav-btn-ghost:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        .nav-btn-logout {
-            background: #ef4444;
-            border: none;
-            color: var(--white);
-        }
-
-        .nav-btn-logout:hover {
-            background: #dc2626;
-        }
-
-        .kpi-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 12px 22px;
-            min-width: 180px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .kpi-label {
-            font-size: 0.7rem;
-            color: var(--gray-600);
-            margin-bottom: 4px;
-            font-weight: 500;
-        }
-
-        .kpi-value {
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-
-        .kpi-value.success {
-            color: var(--success);
-        }
-
-        .kpi-value.warning {
-            color: var(--warning);
-        }
-
-        .kpi-value.danger {
-            color: var(--danger);
-        }
-
-        /* SIDEBAR */
+        /* ===== SIDEBAR ===== */
         .sidebar {
             background: var(--white);
             border-right: 1px solid var(--gray-200);
-            overflow-y: auto;
-            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            overflow: hidden;
         }
 
-        /* MOTIVATION BANNER */
-        .motivation-banner {
-            border-radius: var(--radius);
+        .sidebar-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
             padding: 20px;
             text-align: center;
+        }
+
+        .sidebar-logo {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 24px;
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .sidebar-dept {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        /* Motivation Banner in Sidebar */
+        .motivation-banner {
+            border-radius: var(--radius);
+            padding: 16px;
             color: var(--white);
+            text-align: center;
+            margin-bottom: 16px;
         }
 
         .motivation-banner.level-perfect {
@@ -210,28 +132,60 @@
         }
 
         .motivation-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            margin-bottom: 8px;
         }
 
         .motivation-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .motivation-text {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             opacity: 0.95;
             line-height: 1.4;
         }
 
-        .filter-section {
-            padding-top: 16px;
-            border-top: 1px solid var(--gray-200);
+        /* KPI Cards in Sidebar */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .sidebar-title {
+        .kpi-card {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            border-radius: var(--radius);
+            padding: 14px;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .kpi-card.full {
+            grid-column: 1 / -1;
+        }
+
+        .kpi-label {
+            font-size: 0.7rem;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .kpi-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Filters */
+        .filter-section {
+            border-top: 1px solid var(--gray-200);
+            padding-top: 16px;
+        }
+
+        .filter-title {
             font-size: 0.85rem;
             font-weight: 600;
             color: var(--gray-700);
@@ -241,7 +195,7 @@
             gap: 8px;
         }
 
-        .sidebar-title i {
+        .filter-title i {
             color: var(--primary);
         }
 
@@ -257,57 +211,127 @@
             font-weight: 500;
         }
 
+        .filter-group select,
         .filter-group input {
             width: 100%;
-            padding: 8px 10px;
+            padding: 10px 12px;
             background: var(--gray-50);
             border: 1px solid var(--gray-300);
-            border-radius: 6px;
+            border-radius: 8px;
             font-family: 'Prompt', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
 
+        .filter-group select:focus,
         .filter-group input:focus {
             outline: none;
             border-color: var(--primary);
         }
 
-        .main-content {
+        .btn-reset {
+            width: 100%;
+            padding: 10px;
+            background: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            color: var(--gray-700);
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .btn-reset:hover {
+            background: var(--gray-200);
+        }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .nav-buttons {
             display: flex;
-            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav-btn-home {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .nav-btn-home:hover {
+            background: var(--gray-200);
+        }
+
+        .nav-btn-logout {
+            background: var(--danger);
+            border: none;
+            color: var(--white);
+        }
+
+        .nav-btn-logout:hover {
+            background: #dc2626;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
             overflow-y: auto;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
             gap: 20px;
             background: var(--slate-100);
         }
 
         .card {
             background: var(--white);
-            border-radius: var(--radius);
+            border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
-            padding: 18px 20px;
+            padding: 20px;
         }
 
         .card-header {
-            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
         }
 
         .card-title {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--gray-700);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .card-title i {
             color: var(--primary);
         }
 
-        /* Hands */
+        /* Hand Section */
         .section-hands {
-            min-height: 300px;
+            min-height: 320px;
         }
 
         .hands-grid {
@@ -315,7 +339,7 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             justify-items: center;
-            padding: 10px 0 16px 0;
+            padding: 10px 0 20px 0;
         }
 
         .hand-wrapper {
@@ -330,8 +354,8 @@
         }
 
         .hand-svg {
-            width: 90px;
-            height: 126px;
+            width: 100px;
+            height: 140px;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
@@ -347,23 +371,24 @@
         .hand-legend {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            padding-top: 12px;
+            gap: 24px;
+            padding-top: 16px;
             border-top: 1px solid var(--gray-200);
+            margin-top: 10px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--gray-600);
         }
 
         .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
         }
 
         .legend-clean {
@@ -378,87 +403,205 @@
             background: var(--danger);
         }
 
-        /* History Chart */
-        .section-history {
-            min-height: 260px;
+        /* Timeline */
+        .section-timeline {
+            min-height: 280px;
         }
 
-        .section-history .chart-container {
-            height: 180px;
+        .timeline-scroll {
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .timeline-wrapper {
+            min-width: 100%;
+            height: 200px;
+        }
+
+        /* ===== BOTTOM GRID - LEADERBOARD LAYOUT ===== */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 65fr 35fr;
+            gap: 20px;
+            height: 450px;
+        }
+
+        /* Chart Section */
+        .section-chart {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .section-chart .card-header {
+            flex-shrink: 0;
+        }
+
+        .section-chart .chart-container {
+            flex: 1;
+            min-height: 0;
+            position: relative;
         }
 
         .chart-container {
             position: relative;
+            height: 100%;
         }
 
-        /* Recommendations */
-        .section-recs {}
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
 
-        .rec-list {
+        /* ===== LEADERBOARD SECTION (History Log) ===== */
+        .section-leaderboard {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            height: 100%;
+            min-height: 0;
+            overflow: hidden;
         }
 
-        .rec-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 12px 14px;
-            background: var(--gray-50);
-            border-radius: 8px;
-            border-left: 4px solid var(--danger);
-        }
-
-        .rec-item.good {
-            border-left-color: var(--success);
-        }
-
-        .rec-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: var(--white);
+        .section-leaderboard .card-header {
             flex-shrink: 0;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 12px;
         }
 
-        .rec-icon.bad {
-            background: var(--danger);
-        }
-
-        .rec-icon.good {
-            background: var(--success);
-        }
-
-        .rec-text {
+        .leaderboard-container {
             flex: 1;
+            overflow-y: auto;
+            min-height: 0;
         }
 
-        .rec-title {
-            font-size: 0.85rem;
+        /* Thin scrollbar for leaderboard */
+        .leaderboard-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .leaderboard-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .leaderboard-container::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+        }
+
+        .leaderboard-container::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        /* Leaderboard Table */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table thead {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 1;
+        }
+
+        .leaderboard-table th {
+            padding: 10px 8px;
+            text-align: left;
+            font-size: 0.7rem;
             font-weight: 600;
-            color: var(--gray-700);
-            margin-bottom: 2px;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        .rec-desc {
-            font-size: 0.75rem;
+        .leaderboard-table td {
+            padding: 10px 8px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--gray-100);
+            vertical-align: middle;
+        }
+
+        .leaderboard-table tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        .leaderboard-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Date/Time Column */
+        .history-date {
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .history-time {
+            font-size: 0.7rem;
             color: var(--gray-500);
         }
 
+        /* Score Columns */
+        .score-cell {
+            font-weight: 600;
+        }
+
+        .score-cell.pass {
+            color: var(--success);
+        }
+
+        .score-cell.fail {
+            color: var(--danger);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+        }
+
+        .status-badge.pass {
+            background: rgba(16, 185, 129, 0.15);
+            color: #059669;
+        }
+
+        .status-badge.fail {
+            background: rgba(239, 68, 68, 0.15);
+            color: #dc2626;
+        }
+
+        /* Tooltip */
         .zone-tooltip {
             position: fixed;
             background: var(--gray-800);
             color: var(--white);
             padding: 6px 12px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 0.8rem;
             z-index: 1000;
             pointer-events: none;
+        }
+
+        @media (max-width: 1024px) {
+            .bottom-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .section-chart {
+                min-height: 320px;
+            }
+
+            .section-leaderboard {
+                min-height: 380px;
+            }
         }
 
         @media (max-width: 900px) {
@@ -475,79 +618,73 @@
             .sidebar {
                 display: none;
             }
-
-            .header {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .kpi-row {
-                width: 100%;
-            }
-
-            .kpi-card {
-                flex: 1;
-                min-width: auto;
-            }
         }
     </style>
 </head>
 
 <body>
+
+    <!-- APP LAYOUT -->
     <div class="app-layout">
-        <!-- WARM HEADER -->
-        <header class="header">
-            <div class="user-section">
-                <div class="user-avatar"><i class="fas fa-user-md"></i></div>
-                <div class="user-text">
-                    <h1 id="user-name">Dr. Somchai</h1>
-                    <p>พยาบาลวิชาชีพ • ICU</p>
-                </div>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo"><i class="fas fa-user-nurse"></i></div>
+                <div class="sidebar-title">Personal Dashboard</div>
+                <div class="sidebar-dept" id="sidebar-dept">Loading...</div>
             </div>
-            <div class="header-right">
-                <div class="kpi-row">
-                    <div class="kpi-card">
-                        <div class="kpi-label">คะแนนเฉลี่ย (My Average)</div>
+            <div class="sidebar-content">
+                <!-- Motivation Banner -->
+                <div class="motivation-banner level-good" id="motivation-banner">
+                    <div class="motivation-icon" id="motivation-icon">🌟</div>
+                    <div class="motivation-title" id="motivation-title">ยอดเยี่ยม!</div>
+                    <div class="motivation-text" id="motivation-text">คุณกำลังทำได้ดีมาก รักษามาตรฐานนี้ต่อไป!</div>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card full">
+                        <div class="kpi-label">คะแนนเฉลี่ย (My Avg)</div>
                         <div class="kpi-value" id="kpi-avg">--</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label">จำนวนครั้ง (Total Scans)</div>
-                        <div class="kpi-value success" id="kpi-total">--</div>
+                        <div class="kpi-label">จำนวนครั้ง</div>
+                        <div class="kpi-value" id="kpi-total">--</div>
                     </div>
                     <div class="kpi-card">
-                        <div class="kpi-label">อัตราผ่าน (Pass Rate)</div>
+                        <div class="kpi-label">ผ่านเกณฑ์</div>
                         <div class="kpi-value" id="kpi-pass">--</div>
                     </div>
+                    <div class="kpi-card full">
+                        <div class="kpi-label">ล่าสุด (Last Scan)</div>
+                        <div class="kpi-value" id="kpi-last" style="font-size: 1.1rem;">--</div>
+                    </div>
                 </div>
+
+                <!-- Filters -->
+                <div class="filter-section">
+                    <div class="filter-title"><i class="fas fa-calendar"></i> ช่วงเวลา</div>
+                    <div class="filter-group"><label>วันที่เริ่มต้น</label><input type="date" id="filter-date-start">
+                    </div>
+                    <div class="filter-group"><label>วันที่สิ้นสุด</label><input type="date" id="filter-date-end"></div>
+                    <button class="btn-reset" id="btn-reset"><i class="fas fa-redo"></i> รีเซ็ต</button>
+                </div>
+            </div>
+            <div class="sidebar-footer">
                 <div class="nav-buttons">
-                    <a href="index.html" class="nav-btn nav-btn-ghost"><i class="fas fa-home"></i> Home</a>
+                    <a href="index.html" class="nav-btn nav-btn-home"><i class="fas fa-home"></i> Home</a>
                     <button class="nav-btn nav-btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i>
                         Logout</button>
                 </div>
-            </div>
-        </header>
-
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="motivation-banner level-good" id="motivation-banner">
-                <div class="motivation-icon">🌟</div>
-                <div class="motivation-title" id="motivation-title">ยอดเยี่ยม!</div>
-                <div class="motivation-text" id="motivation-text">คุณกำลังทำได้ดีมาก ให้ความสำคัญกับโซนนิ้วโป้งมากขึ้น
-                </div>
-            </div>
-            <div class="filter-section">
-                <div class="sidebar-title"><i class="fas fa-calendar"></i> ช่วงเวลา</div>
-                <div class="filter-group"><label>วันที่เริ่มต้น</label><input type="date" id="filter-date-start"></div>
-                <div class="filter-group"><label>วันที่สิ้นสุด</label><input type="date" id="filter-date-end"></div>
             </div>
         </aside>
 
         <!-- MAIN CONTENT -->
         <main class="main-content">
-            <!-- 1. My Unclean Zones -->
+            <!-- 1. Hand Visualization -->
             <div class="card section-hands">
                 <div class="card-header">
-                    <div class="card-title"><i class="fas fa-hand-paper"></i> My Unclean Zones</div>
+                    <div class="card-title"><i class="fas fa-hand-sparkles"></i> My Unclean Zones Analysis</div>
                 </div>
                 <div class="hands-grid">
                     <div class="hand-wrapper">
@@ -580,33 +717,84 @@
                 </div>
             </div>
 
-            <!-- 2. My History Log -->
-            <div class="card section-history">
+            <!-- 2. Timeline -->
+            <div class="card section-timeline">
                 <div class="card-header">
-                    <div class="card-title"><i class="fas fa-history"></i> My History Log</div>
+                    <div class="card-title"><i class="fas fa-chart-line"></i> Activity Timeline</div>
                 </div>
-                <div class="chart-container"><canvas id="historyChart"></canvas></div>
+                <div class="timeline-scroll">
+                    <div class="timeline-wrapper" id="timeline-wrapper"><canvas id="timelineChart"></canvas></div>
+                </div>
             </div>
 
-            <!-- 3. Improvement Recommendations -->
-            <div class="card section-recs">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-lightbulb"></i> Improvement Recommendations</div>
+            <!-- 3. Bottom Grid -->
+            <div class="bottom-grid">
+                <!-- My Trend Chart -->
+                <div class="card section-chart">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-chart-area"></i> My Score Trend (30 Days)</div>
+                    </div>
+                    <div class="chart-container"><canvas id="trendChart"></canvas></div>
                 </div>
-                <div class="rec-list" id="rec-list"></div>
+                <!-- History Log (Leaderboard Style) -->
+                <div class="card section-leaderboard">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-history"></i> History Log</div>
+                    </div>
+                    <div class="leaderboard-container">
+                        <table class="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Palm%</th>
+                                    <th>Back%</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-body"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
     <script>
+        // =============================================
+        // MOCK DATABASE
+        // =============================================
         const ZONES = ["thumb", "index", "middle", "ring", "pinky", "palm", "wrist"];
-        const ZONE_NAMES = { thumb: "นิ้วโป้ง", index: "นิ้วชี้", middle: "นิ้วกลาง", ring: "นิ้วนาง", pinky: "นิ้วก้อย", palm: "ฝ่ามือ", wrist: "ข้อมือ" };
+        const ZONE_NAMES = {
+            thumb: "นิ้วโป้ง", index: "นิ้วชี้", middle: "นิ้วกลาง",
+            ring: "นิ้วนาง", pinky: "นิ้วก้อย", palm: "ฝ่ามือ", wrist: "ข้อมือ"
+        };
 
-        function genData(count = 30) {
-            const data = [], today = new Date();
+        const EMPLOYEES = {
+            'EMP001': { name: 'สมชาย ใจดี', dept: 'ER', pos: 'แพทย์' },
+            'EMP002': { name: 'สมหญิง รักเรียน', dept: 'ICU', pos: 'พยาบาล' },
+            'EMP003': { name: 'วิชัย มานะ', dept: 'OPD', pos: 'แพทย์' },
+            'EMP004': { name: 'นภา สดใส', dept: 'Ward A', pos: 'พยาบาล' }
+        };
+
+        // =============================================
+        // GLOBAL VARIABLES
+        // =============================================
+        let currentUser = null;
+        let allData = [];
+        let filteredData = [];
+        let charts = {};
+
+        // =============================================
+        // DATA GENERATOR
+        // =============================================
+        function generateData(count = 50) {
+            const data = [];
+            const today = new Date();
+
             for (let i = 0; i < count; i++) {
                 const daysAgo = Math.floor(i / 2);
-                const date = new Date(today); date.setDate(date.getDate() - daysAgo);
+                const date = new Date(today);
+                date.setDate(date.getDate() - daysAgo);
                 const hour = 7 + Math.floor(Math.random() * 10);
                 const minute = Math.floor(Math.random() * 60);
                 date.setHours(hour, minute, 0, 0);
@@ -623,26 +811,47 @@
                     zones[z] = Math.min(100, Math.max(0, Math.round(s)));
                 });
 
+                // Calculate palm% and back%
+                const palmScore = Math.round((zones.palm + zones.thumb + zones.index + zones.middle + zones.ring + zones.pinky) / 6);
+                const backScore = Math.round((zones.wrist + zones.palm) / 2 + (Math.random() - 0.5) * 10);
+
                 data.push({
                     id: i + 1,
                     timestamp: date.getTime(),
                     date: date.toISOString().split('T')[0],
                     time: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,
                     score: Math.round(baseScore),
+                    palmScore: Math.min(100, Math.max(0, palmScore)),
+                    backScore: Math.min(100, Math.max(0, backScore)),
                     zones
                 });
             }
+
             return data.sort((a, b) => a.timestamp - b.timestamp);
         }
 
-        let allData = genData(), filteredData = [...allData], chart = null;
+        // =============================================
+        // INITIALIZATION
+        // =============================================
+        function initDashboard(empId, userName, dept, pos) {
+            currentUser = { id: empId, name: userName, dept, pos };
 
-        document.addEventListener('DOMContentLoaded', () => { setupListeners(); updateAll(); });
+            // Update sidebar
+            const sidebarDept = document.getElementById('sidebar-dept');
+            if (sidebarDept) sidebarDept.textContent = `${userName} • ${pos}`;
+
+            // Generate data
+            allData = generateData(50);
+            filteredData = [...allData];
+
+            setupListeners();
+            updateAll();
+        }
 
         function setupListeners() {
-            ['filter-date-start', 'filter-date-end'].forEach(id =>
-                document.getElementById(id).addEventListener('change', applyFilters)
-            );
+            document.getElementById('filter-date-start').addEventListener('change', applyFilters);
+            document.getElementById('filter-date-end').addEventListener('change', applyFilters);
+            document.getElementById('btn-reset').addEventListener('click', resetFilters);
         }
 
         function applyFilters() {
@@ -656,90 +865,237 @@
             updateAll();
         }
 
-        function updateAll() { updateKPIs(); updateMotivation(); updateHands(); updateHistory(); updateRecommendations(); }
-
-        function updateKPIs() {
-            if (!filteredData.length) { document.getElementById('kpi-avg').textContent = '--'; document.getElementById('kpi-total').textContent = '--'; document.getElementById('kpi-pass').textContent = '--'; return; }
-            const avg = (filteredData.reduce((s, d) => s + d.score, 0) / filteredData.length).toFixed(1);
-            const pass = ((filteredData.filter(d => d.score >= 80).length / filteredData.length) * 100).toFixed(1);
-            document.getElementById('kpi-avg').textContent = avg + '%';
-            document.getElementById('kpi-avg').className = 'kpi-value ' + (parseFloat(avg) >= 80 ? 'success' : parseFloat(avg) >= 50 ? 'warning' : 'danger');
-            document.getElementById('kpi-total').textContent = filteredData.length;
-            document.getElementById('kpi-pass').textContent = pass + '%';
-            document.getElementById('kpi-pass').className = 'kpi-value ' + (parseFloat(pass) >= 80 ? 'success' : 'warning');
+        function resetFilters() {
+            document.getElementById('filter-date-start').value = '';
+            document.getElementById('filter-date-end').value = '';
+            filteredData = [...allData];
+            updateAll();
         }
 
+        function updateAll() {
+            updateKPIs();
+            updateMotivation();
+            updateHands();
+            updateTimeline();
+            updateTrendChart();
+            updateHistory();
+        }
+
+        // =============================================
+        // KPIs
+        // =============================================
+        function updateKPIs() {
+            const kpiAvg = document.getElementById('kpi-avg');
+            const kpiTotal = document.getElementById('kpi-total');
+            const kpiPass = document.getElementById('kpi-pass');
+            const kpiLast = document.getElementById('kpi-last');
+
+            if (filteredData.length === 0) {
+                kpiAvg.textContent = '--';
+                kpiTotal.textContent = '0';
+                kpiPass.textContent = '0';
+                kpiLast.textContent = '--';
+                return;
+            }
+
+            const avg = (filteredData.reduce((s, d) => s + d.score, 0) / filteredData.length).toFixed(0);
+            const passCount = filteredData.filter(d => d.score >= 80).length;
+            const last = filteredData[filteredData.length - 1];
+
+            kpiAvg.textContent = avg + '%';
+            kpiTotal.textContent = filteredData.length;
+            kpiPass.textContent = passCount;
+            kpiLast.textContent = `${last.date.substring(5)} ${last.time}`;
+        }
+
+        // =============================================
+        // MOTIVATION
+        // =============================================
         function updateMotivation() {
             const avg = filteredData.length ? filteredData.reduce((s, d) => s + d.score, 0) / filteredData.length : 0;
             const banner = document.getElementById('motivation-banner');
+            const icon = document.getElementById('motivation-icon');
             const title = document.getElementById('motivation-title');
             const text = document.getElementById('motivation-text');
 
-            let level, icon, titleTxt, textTxt;
-            if (avg >= 95) { level = 'perfect'; icon = '🏆'; titleTxt = 'Perfect!'; textTxt = 'คุณเป็นตัวอย่างที่ดีให้ทีม มือสะอาดหมดจด!'; }
-            else if (avg >= 85) { level = 'excellent'; icon = '🌟'; titleTxt = 'ยอดเยี่ยม!'; textTxt = 'ผลงานดีมาก รักษามาตรฐานนี้ต่อไป!'; }
-            else if (avg >= 75) { level = 'good'; icon = '👍'; titleTxt = 'ดีมาก!'; textTxt = 'กำลังพัฒนาได้ดี เน้นโซนนิ้วโป้งและนิ้วก้อยเพิ่ม'; }
-            else if (avg >= 60) { level = 'improve'; icon = '💪'; titleTxt = 'ต้องปรับปรุง'; textTxt = 'มาทำให้ดีขึ้นกันนะ! ดูคำแนะนำด้านล่าง'; }
-            else { level = 'warning'; icon = '⚠️'; titleTxt = 'ต้องใส่ใจ!'; textTxt = 'คะแนนต่ำเกินไป กรุณาทบทวนวิธีการล้างมือ'; }
+            let level, iconText, titleText, textContent;
+            if (avg >= 95) {
+                level = 'perfect'; iconText = '🏆'; titleText = 'Perfect!'; textContent = 'คุณเป็นตัวอย่างที่ดีให้ทีม มือสะอาดหมดจด!';
+            } else if (avg >= 85) {
+                level = 'excellent'; iconText = '🌟'; titleText = 'ยอดเยี่ยม!'; textContent = 'ผลงานดีมาก รักษามาตรฐานนี้ต่อไป!';
+            } else if (avg >= 75) {
+                level = 'good'; iconText = '👍'; titleText = 'ดีมาก!'; textContent = 'กำลังพัฒนาได้ดี เน้นโซนนิ้วโป้งเพิ่ม';
+            } else if (avg >= 60) {
+                level = 'improve'; iconText = '💪'; titleText = 'ต้องปรับปรุง'; textContent = 'มาทำให้ดีขึ้นกันนะ!';
+            } else {
+                level = 'warning'; iconText = '⚠️'; titleText = 'ต้องใส่ใจ!'; textContent = 'คะแนนต่ำเกินไป กรุณาทบทวนวิธีล้างมือ';
+            }
 
             banner.className = 'motivation-banner level-' + level;
-            banner.querySelector('.motivation-icon').textContent = icon;
-            title.textContent = titleTxt;
-            text.textContent = textTxt;
+            icon.textContent = iconText;
+            title.textContent = titleText;
+            text.textContent = textContent;
         }
 
-        function updateHistory() {
-            const ctx = document.getElementById('historyChart').getContext('2d');
-            if (chart) chart.destroy();
+        // =============================================
+        // TIMELINE CHART
+        // =============================================
+        function updateTimeline() {
+            const wrapper = document.getElementById('timeline-wrapper');
+            const canvas = document.getElementById('timelineChart');
+            if (!canvas) return;
 
-            const events = filteredData.slice(-20);
-            const labels = events.map(e => { const [y, m, d] = e.date.split('-'); return `${d}/${m} ${e.time}`; });
-            const colors = events.map(e => e.score >= 80 ? '#10b981' : e.score >= 50 ? '#f59e0b' : '#ef4444');
+            if (charts.timeline) charts.timeline.destroy();
 
-            chart = new Chart(ctx, {
+            if (filteredData.length === 0) return;
+
+            const events = filteredData.slice(-30);
+            const minWidth = Math.max(600, events.length * 35);
+            wrapper.style.width = minWidth + 'px';
+
+            const ctx = canvas.getContext('2d');
+            charts.timeline = new Chart(ctx, {
                 type: 'bar',
-                data: { labels, datasets: [{ data: events.map(e => e.score), backgroundColor: colors, borderRadius: 4, barThickness: 18 }] },
+                data: {
+                    labels: events.map(e => { const [y, m, d] = e.date.split('-'); return `${d}/${m}`; }),
+                    datasets: [{
+                        data: events.map(e => e.score),
+                        backgroundColor: events.map(e => e.score >= 80 ? '#10b981' : e.score >= 50 ? '#f59e0b' : '#ef4444'),
+                        borderRadius: 4,
+                        barThickness: 20
+                    }]
+                },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { callbacks: { title: ctx => `Session ${ctx[0].dataIndex + 1}`, label: ctx => `Score: ${events[ctx.dataIndex].score}%` } } },
-                    scales: { x: { ticks: { maxRotation: 45, font: { size: 9 } } }, y: { beginAtZero: true, max: 100 } }
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { maxRotation: 45, font: { size: 10 } } },
+                        y: { beginAtZero: true, max: 100 }
+                    }
                 }
             });
         }
 
-        function updateRecommendations() {
-            const avgZ = {}; ZONES.forEach(z => avgZ[z] = []);
-            filteredData.forEach(d => { if (d.zones) ZONES.forEach(z => { if (d.zones[z] !== undefined) avgZ[z].push(d.zones[z]); }); });
-            const scores = {}; ZONES.forEach(z => { const a = avgZ[z]; scores[z] = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 50; });
+        // =============================================
+        // TREND CHART
+        // =============================================
+        function updateTrendChart() {
+            const canvas = document.getElementById('trendChart');
+            if (!canvas) return;
 
-            const sorted = ZONES.map(z => ({ zone: z, score: scores[z] })).sort((a, b) => a.score - b.score);
-            const recs = sorted.slice(0, 3).map(item => {
-                const isGood = item.score >= 80;
-                return `
-            <div class="rec-item ${isGood ? 'good' : ''}">
-                <div class="rec-icon ${isGood ? 'good' : 'bad'}"><i class="fas ${isGood ? 'fa-check' : 'fa-exclamation'}"></i></div>
-                <div class="rec-text">
-                    <div class="rec-title">${ZONE_NAMES[item.zone]} (${Math.round(item.score)}%)</div>
-                    <div class="rec-desc">${isGood ? 'ทำได้ดี! รักษาระดับนี้ต่อไป' : 'ต้องเน้นล้างบริเวณนี้ให้มากขึ้น ใช้เวลาถู 20 วินาที'}</div>
-                </div>
-            </div>
-        `;
+            if (charts.trend) charts.trend.destroy();
+
+            if (filteredData.length === 0) return;
+
+            // Group by date
+            const byDate = {};
+            filteredData.forEach(d => {
+                if (!byDate[d.date]) byDate[d.date] = [];
+                byDate[d.date].push(d.score);
             });
-            document.getElementById('rec-list').innerHTML = recs.join('');
+
+            const labels = Object.keys(byDate).sort();
+            const data = labels.map(dt => {
+                const scores = byDate[dt];
+                return (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+            });
+
+            const ctx = canvas.getContext('2d');
+            charts.trend = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels.map(d => d.substring(5)),
+                    datasets: [{
+                        label: 'Avg Score',
+                        data,
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#dc2626'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
+            });
         }
 
+        // =============================================
+        // HISTORY LOG
+        // =============================================
+        function updateHistory() {
+            const tbody = document.getElementById('history-body');
+            if (!tbody) return;
+
+            if (filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#6b7280;padding:30px;">ไม่พบข้อมูล</td></tr>';
+                return;
+            }
+
+            // Show last 25 sessions, newest first
+            const sessions = [...filteredData].reverse().slice(0, 25);
+
+            tbody.innerHTML = sessions.map(s => {
+                const [y, m, d] = s.date.split('-');
+                const isPass = s.score >= 80;
+                const palmClass = s.palmScore >= 80 ? 'pass' : 'fail';
+                const backClass = s.backScore >= 80 ? 'pass' : 'fail';
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="history-date">${d}/${m}</div>
+                            <div class="history-time">${s.time}</div>
+                        </td>
+                        <td class="score-cell ${palmClass}">${s.palmScore}%</td>
+                        <td class="score-cell ${backClass}">${s.backScore}%</td>
+                        <td>
+                            <span class="status-badge ${isPass ? 'pass' : 'fail'}">
+                                <i class="fas ${isPass ? 'fa-check' : 'fa-times'}"></i>
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // =============================================
+        // HAND VISUALIZATION
+        // =============================================
         function updateHands() {
-            const avgZ = {}; ZONES.forEach(z => avgZ[z] = []);
-            filteredData.forEach(d => { if (d.zones) ZONES.forEach(z => { if (d.zones[z] !== undefined) avgZ[z].push(d.zones[z]); }); });
-            const scores = {}; ZONES.forEach(z => { const a = avgZ[z]; scores[z] = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 50; });
+            const avgZ = {};
+            ZONES.forEach(z => avgZ[z] = []);
+
+            filteredData.forEach(d => {
+                if (d.zones) ZONES.forEach(z => {
+                    if (d.zones[z] !== undefined) avgZ[z].push(d.zones[z]);
+                });
+            });
+
+            const scores = {};
+            ZONES.forEach(z => {
+                const a = avgZ[z];
+                scores[z] = a.length ? a.reduce((x, y) => x + y, 0) / a.length : 50;
+            });
+
             ['hand-lf', 'hand-lb', 'hand-rf', 'hand-rb'].forEach(id => renderHand(id, scores));
         }
 
-        function getColor(s) { return s >= 80 ? '#10b981' : s >= 50 ? '#f59e0b' : '#ef4444'; }
+        function getColor(s) {
+            return s >= 80 ? '#10b981' : s >= 50 ? '#f59e0b' : '#ef4444';
+        }
 
         function renderHand(id, scores) {
             const svg = document.getElementById(id);
+            if (!svg) return;
             svg.innerHTML = '';
+
             const paths = [
                 { zone: 'thumb', d: 'M22,95 C8,82 2,60 10,42 C18,26 32,24 40,36 C46,48 44,68 40,82 C36,92 30,100 24,102 Z' },
                 { zone: 'index', d: 'M40,86 C38,70 36,48 35,28 C34,16 40,8 50,8 C60,8 64,16 64,28 C63,48 60,70 58,86 C57,90 52,92 50,92 C46,92 41,90 40,86 Z' },
@@ -749,6 +1105,7 @@
                 { zone: 'palm', d: 'M24,102 C20,112 20,128 26,138 L106,138 C114,128 118,112 114,100 C112,94 108,92 104,92 L46,92 C38,94 28,98 24,102 Z' },
                 { zone: 'wrist', d: 'M26,138 L26,164 C26,168 106,168 106,164 L106,138 Z' }
             ];
+
             paths.forEach(p => {
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 path.setAttribute('d', p.d);
@@ -765,10 +1122,85 @@
             });
         }
 
-        function showTip(e) { const t = document.createElement('div'); t.className = 'zone-tooltip'; t.id = 'zt'; t.textContent = `${ZONE_NAMES[e.target.dataset.zone]}: ${e.target.dataset.score}%`; document.body.appendChild(t); t.style.left = e.clientX + 12 + 'px'; t.style.top = e.clientY + 12 + 'px'; }
-        function moveTip(e) { const t = document.getElementById('zt'); if (t) { t.style.left = e.clientX + 12 + 'px'; t.style.top = e.clientY + 12 + 'px'; } }
-        function hideTip() { const t = document.getElementById('zt'); if (t) t.remove(); }
-        function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+        function showTip(e) {
+            const t = document.createElement('div');
+            t.className = 'zone-tooltip';
+            t.id = 'zt';
+            t.textContent = `${ZONE_NAMES[e.target.dataset.zone]}: ${e.target.dataset.score}%`;
+            document.body.appendChild(t);
+            t.style.left = e.clientX + 12 + 'px';
+            t.style.top = e.clientY + 12 + 'px';
+        }
+
+        function moveTip(e) {
+            const t = document.getElementById('zt');
+            if (t) {
+                t.style.left = e.clientX + 12 + 'px';
+                t.style.top = e.clientY + 12 + 'px';
+            }
+        }
+
+        function hideTip() {
+            const t = document.getElementById('zt');
+            if (t) t.remove();
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // =============================================
+        // MAIN ENTRY POINT
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function () {
+            let empId = null;
+            let userName = 'Personal User';
+            let dept = 'Unknown';
+            let pos = 'Staff';
+
+            // 1. Check URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            const empIdFromUrl = urlParams.get('empId');
+            if (empIdFromUrl && EMPLOYEES[empIdFromUrl.toUpperCase()]) {
+                const emp = EMPLOYEES[empIdFromUrl.toUpperCase()];
+                empId = empIdFromUrl.toUpperCase();
+                userName = emp.name;
+                dept = emp.dept;
+                pos = emp.pos;
+            }
+
+            // 2. Check sessionStorage
+            if (!empId) {
+                const saved = sessionStorage.getItem('personalUser');
+                if (saved) {
+                    try {
+                        const userData = JSON.parse(saved);
+                        empId = userData.id;
+                        userName = userData.name || 'Personal User';
+                        dept = userData.dept || 'Unknown';
+                        pos = userData.pos || 'Staff';
+                    } catch (e) {
+                        console.warn('[WARN] Failed to parse sessionStorage');
+                    }
+                }
+            }
+
+            // 3. Default (Demo mode)
+            if (!empId) {
+                empId = 'EMP001';
+                const emp = EMPLOYEES[empId];
+                userName = emp.name;
+                dept = emp.dept;
+                pos = emp.pos;
+            }
+
+            // Save to session
+            sessionStorage.setItem('personalUser', JSON.stringify({ id: empId, name: userName, dept, pos }));
+
+            // Initialize
+            initDashboard(empId, userName, dept, pos);
+        });
     </script>
 </body>
 
