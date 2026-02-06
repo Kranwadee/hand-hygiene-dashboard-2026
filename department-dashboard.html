@@ -744,14 +744,17 @@
 
     <script>
         // =============================================
-        // MOCK DATABASE
+        // API & CONFIGURATION
         // =============================================
+        const API_URL = "http://localhost:3000/api/scan-logs";
+
         const DEPTS = ["ER", "ICU", "OPD", "Ward A", "Ward B", "OR", "Lab"];
         const POSITIONS = ["แพทย์", "พยาบาล", "ผู้ช่วยพยาบาล", "เจ้าหน้าที่"];
         const ZONES = ["thumb", "index", "middle", "ring", "pinky", "palm", "wrist"];
-        const NAMES = ["สมชาย ใจดี", "สมหญิง รักเรียน", "วิชัย มานะ", "นภา สดใส", "พิชัย เก่งกาจ", "รัตนา สุขสันต์", "ธนา พากเพียร", "มณี จริงใจ", "ชัยวัฒน์ มุ่งมั่น", "อารีย์ อ่อนโยน", "ประสิทธิ์ แข็งแกร่ง", "จันทรา สว่างใส"];
+        const AGE_RANGES = ["20-29", "30-39", "40-49", "50-59", "60+"];
+        const TENURE_RANGES = ["0-1y", "2-5y", "6-10y", "11-20y", "20+y"];
 
-        // Employee Database
+        // Employee Database (สำหรับ lookup ข้อมูลเพิ่มเติม)
         const EMPLOYEES = {
             'EMP001': { name: 'สมชาย ใจดี', dept: 'ER', pos: 'แพทย์' },
             'EMP002': { name: 'สมหญิง รักเรียน', dept: 'ICU', pos: 'พยาบาล' },
@@ -759,6 +762,20 @@
             'EMP004': { name: 'นภา สดใส', dept: 'Ward A', pos: 'พยาบาล' },
             'EMP005': { name: 'พิชัย เก่งกาจ', dept: 'OR', pos: 'แพทย์' },
             'DEPT001': { name: 'Department User', dept: 'ER', pos: 'พยาบาล' }
+        };
+
+        // Employee Master Data (Mock - สำหรับข้อมูลเพิ่มเติมที่ API ไม่ส่งมา)
+        const EMPLOYEE_MASTER_DATA = {
+            "620913": { dob: "1998-05-20", startDate: "2023-01-15", gender: "female" },
+            "620914": { dob: "1985-11-08", startDate: "2015-06-01", gender: "male" },
+            "620915": { dob: "1992-03-25", startDate: "2019-09-10", gender: "female" },
+            "620916": { dob: "1978-07-14", startDate: "2008-02-20", gender: "male" }
+        };
+
+        const DEFAULT_EMPLOYEE = {
+            dob: null,
+            startDate: null,
+            gender: "female"
         };
 
         // =============================================
@@ -771,9 +788,130 @@
         let charts = {};
 
         // =============================================
-        // DATA GENERATOR
+        // HELPER FUNCTIONS
         // =============================================
-        function generateData(targetDept, count = 200) {
+
+        /**
+         * คำนวณช่วงอายุจากวันเกิด
+         */
+        function calculateAge(dob) {
+            if (!dob) return "30-39";
+            const today = new Date();
+            const birthDate = new Date(dob);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if (age < 20) return "20-29";
+            if (age < 30) return "20-29";
+            if (age < 40) return "30-39";
+            if (age < 50) return "40-49";
+            if (age < 60) return "50-59";
+            return "60+";
+        }
+
+        /**
+         * คำนวณช่วงประสบการณ์จากวันเริ่มงาน
+         */
+        function calculateTenure(startDate) {
+            if (!startDate) return "0-1y";
+            const today = new Date();
+            const start = new Date(startDate);
+            const years = (today - start) / (1000 * 60 * 60 * 24 * 365.25);
+            if (years <= 1) return "0-1y";
+            if (years <= 5) return "2-5y";
+            if (years <= 10) return "6-10y";
+            if (years <= 20) return "11-20y";
+            return "20+y";
+        }
+
+        /**
+         * แปลง Dirty Zones ภาษาไทยเป็น Object คะแนน
+         */
+        function parseDirtyZones(thaiString) {
+            const zoneScores = {
+                thumb: 100, index: 100, middle: 100,
+                ring: 100, pinky: 100, palm: 100, wrist: 100
+            };
+            if (!thaiString || thaiString.trim() === "" || thaiString === "-") {
+                return zoneScores;
+            }
+            const text = thaiString.toLowerCase();
+            const thaiZoneMap = {
+                'นิ้วโป้ง': 'thumb', 'โป้ง': 'thumb', 'thumb': 'thumb',
+                'นิ้วชี้': 'index', 'ชี้': 'index', 'index': 'index',
+                'นิ้วกลาง': 'middle', 'กลาง': 'middle', 'middle': 'middle',
+                'นิ้วนาง': 'ring', 'นาง': 'ring', 'ring': 'ring',
+                'นิ้วก้อย': 'pinky', 'ก้อย': 'pinky', 'pinky': 'pinky',
+                'ฝ่ามือ': 'palm', 'ฝามือ': 'palm', 'palm': 'palm',
+                'ข้อมือ': 'wrist', 'ขอมือ': 'wrist', 'wrist': 'wrist',
+                'หลังมือ': 'palm', 'ซอกนิ้ว': 'palm'
+            };
+            for (const [thaiWord, zone] of Object.entries(thaiZoneMap)) {
+                if (text.includes(thaiWord)) {
+                    zoneScores[zone] = 40;
+                }
+            }
+            return zoneScores;
+        }
+
+        /**
+         * รวม zones จาก FrontDirtyZones และ BackDirtyZones
+         */
+        function combineZones(frontZones, backZones) {
+            const frontScores = parseDirtyZones(frontZones);
+            const backScores = parseDirtyZones(backZones);
+            const combined = {};
+            ZONES.forEach(zone => {
+                combined[zone] = Math.min(frontScores[zone], backScores[zone]);
+            });
+            return combined;
+        }
+
+        /**
+         * Map ข้อมูลจาก API เป็นรูปแบบที่ Dashboard ใช้
+         */
+        function mapApiDataToDashboard(apiData) {
+            return apiData.map((item, index) => {
+                const empId = String(item.EmployeeID || "");
+                const masterData = EMPLOYEE_MASTER_DATA[empId] || DEFAULT_EMPLOYEE;
+
+                const timestamp = new Date(item.Timestamp);
+                const date = timestamp.toISOString().split('T')[0];
+                const time = `${String(timestamp.getHours()).padStart(2, '0')}:${String(timestamp.getMinutes()).padStart(2, '0')}`;
+
+                const frontScore = parseFloat(item.FrontScore) || 0;
+                const backScore = parseFloat(item.BackScore) || 0;
+                const avgScore = Math.round((frontScore + backScore) / 2);
+
+                const zones = combineZones(item.FrontDirtyZones || "", item.BackDirtyZones || "");
+
+                return {
+                    id: index + 1,
+                    timestamp: timestamp.getTime(),
+                    date: date,
+                    time: time,
+                    dept: item.Department || "OPD",
+                    pos: item.Position || "เจ้าหน้าที่",
+                    name: item.EmployeeName || "Unknown",
+                    gender: masterData.gender || "female",
+                    age: calculateAge(masterData.dob),
+                    tenure: calculateTenure(masterData.startDate),
+                    score: avgScore,
+                    zones: zones,
+                    employeeId: empId,
+                    activity: item.ActivityName || "General Hygiene"
+                };
+            });
+        }
+
+        /**
+         * สร้าง Mock Data สำรองกรณี API ล้มเหลว
+         */
+        function generateFallbackData(targetDept, count = 100) {
+            console.warn("⚠️ Using fallback mock data");
+            const NAMES = ["สมชาย ใจดี", "สมหญิง รักเรียน", "วิชัย มานะ", "นภา สดใส", "พิชัย เก่งกาจ", "รัตนา สุขสันต์"];
             const data = [];
             const today = new Date();
 
@@ -785,7 +923,6 @@
                 const minute = Math.floor(Math.random() * 60);
                 date.setHours(hour, minute, 0, 0);
 
-                // สุ่ม Department (บางส่วนเป็น targetDept, บางส่วนเป็นอื่น)
                 const dept = Math.random() > 0.3 ? targetDept : DEPTS[Math.floor(Math.random() * DEPTS.length)];
                 const pos = POSITIONS[Math.floor(Math.random() * POSITIONS.length)];
                 const name = NAMES[Math.floor(Math.random() * NAMES.length)];
@@ -807,27 +944,22 @@
                     timestamp: date.getTime(),
                     date: date.toISOString().split('T')[0],
                     time: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,
-                    dept,
-                    pos,
-                    name,
-                    gender,
+                    dept, pos, name, gender,
                     score: Math.round(baseScore),
                     zones
                 });
             }
-
             return data.sort((a, b) => a.timestamp - b.timestamp);
         }
 
         // =============================================
         // INITIALIZATION (หลัก!)
         // =============================================
-        function initDashboard(deptId, userName = 'Department User') {
+        async function initDashboard(deptId, userName = 'Department User') {
             console.log('[DEBUG] initDashboard called with:', deptId, userName);
 
             if (!deptId) {
                 console.error('[ERROR] No department ID provided!');
-                // ใช้ default dept
                 deptId = 'ER';
             }
 
@@ -845,12 +977,37 @@
                 deptSelect.innerHTML = `<option value="${deptId}">${deptId}</option>`;
             }
 
-            // Generate & filter data for THIS department only
-            const rawData = generateData(deptId, 300);
-            allData = rawData.filter(d => d.dept === deptId);
-            filteredData = [...allData];
+            // Fetch data from API
+            try {
+                console.log("📡 Fetching data from API:", API_URL);
+                const response = await fetch(API_URL);
 
-            console.log('[DEBUG] Generated', rawData.length, 'records, filtered to', allData.length, 'for dept:', deptId);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const apiData = await response.json();
+                console.log(`✅ Received ${apiData.length} records from API`);
+
+                // Map API data to dashboard format
+                const mappedData = mapApiDataToDashboard(apiData);
+
+                // Filter for THIS department only
+                allData = mappedData.filter(d => d.dept === deptId);
+                console.log(`[DEBUG] Filtered to ${allData.length} records for dept: ${deptId}`);
+
+            } catch (error) {
+                console.error("❌ API Fetch Error:", error.message);
+                console.warn("⚠️ Switching to fallback mock data...");
+
+                // Use fallback mock data
+                const rawData = generateFallbackData(deptId, 200);
+                allData = rawData.filter(d => d.dept === deptId);
+            }
+
+            // Sort by timestamp
+            allData.sort((a, b) => a.timestamp - b.timestamp);
+            filteredData = [...allData];
 
             // เช็คว่ามีข้อมูลไหม
             if (allData.length === 0) {
