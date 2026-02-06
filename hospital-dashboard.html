@@ -616,6 +616,9 @@
             viz_hand: "Unclean Zones Analysis"
         };
 
+        // API Endpoint
+        const API_URL = "http://localhost:3000/api/scan-logs";
+
         const HOSPITALS = ["BDMS Phuket", "DBH Dibuk", "BSI Siriroj"];
         const DEPTS = ["ICU", "ER", "OPD", "Ward A", "Ward B", "OR", "Lab", "Pharmacy"];
         const POSITIONS = ["แพทย์", "พยาบาล", "ผู้ช่วยพยาบาล", "เจ้าหน้าที่", "เภสัชกร"];
@@ -632,14 +635,164 @@
             "After Patient Contact"
         ];
 
-        function genData(count = 400) {
+        // ============================================================
+        // EMPLOYEE MASTER DATA (Mock - ใช้เมื่อ API ไม่ส่งข้อมูลมา)
+        // ============================================================
+        const EMPLOYEE_MASTER_DATA = {
+            "620913": { hospital: "BDMS Phuket", dob: "1998-05-20", startDate: "2023-01-15", gender: "female" },
+            "620914": { hospital: "DBH Dibuk", dob: "1985-11-08", startDate: "2015-06-01", gender: "male" },
+            "620915": { hospital: "BSI Siriroj", dob: "1992-03-25", startDate: "2019-09-10", gender: "female" },
+            "620916": { hospital: "BDMS Phuket", dob: "1978-07-14", startDate: "2008-02-20", gender: "male" }
+        };
+
+        // Default values when employee not found in master data
+        const DEFAULT_EMPLOYEE = {
+            hospital: "BDMS Phuket",
+            dob: null, // Will calculate as 30 years old
+            startDate: null, // Will calculate as 1 year tenure
+            gender: "female"
+        };
+
+        // ============================================================
+        // HELPER FUNCTIONS
+        // ============================================================
+
+        /**
+         * คำนวณช่วงอายุจากวันเกิด
+         * @param {string|null} dob - วันเกิด format: YYYY-MM-DD
+         * @returns {string} - ช่วงอายุ เช่น "20-29", "30-39"
+         */
+        function calculateAge(dob) {
+            if (!dob) {
+                // Default: 30 years old -> "30-39"
+                return "30-39";
+            }
+            const today = new Date();
+            const birthDate = new Date(dob);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            if (age < 20) return "20-29";
+            if (age < 30) return "20-29";
+            if (age < 40) return "30-39";
+            if (age < 50) return "40-49";
+            if (age < 60) return "50-59";
+            return "60+";
+        }
+
+        /**
+         * คำนวณช่วงประสบการณ์จากวันเริ่มงาน
+         * @param {string|null} startDate - วันเริ่มงาน format: YYYY-MM-DD
+         * @returns {string} - ช่วงประสบการณ์ เช่น "0-1y", "2-5y"
+         */
+        function calculateTenure(startDate) {
+            if (!startDate) {
+                // Default: 1 year tenure -> "0-1y"
+                return "0-1y";
+            }
+            const today = new Date();
+            const start = new Date(startDate);
+            const years = (today - start) / (1000 * 60 * 60 * 24 * 365.25);
+
+            if (years <= 1) return "0-1y";
+            if (years <= 5) return "2-5y";
+            if (years <= 10) return "6-10y";
+            if (years <= 20) return "11-20y";
+            return "20+y";
+        }
+
+        /**
+         * แปลง Dirty Zones ภาษาไทยเป็น Object คะแนนแต่ละโซน
+         * ถ้าเจอคำในโซน = 40, ถ้าไม่เจอ = 100
+         * @param {string} thaiString - ข้อความภาษาไทย เช่น "นิ้วโป้ง,ฝ่ามือ"
+         * @returns {Object} - คะแนนแต่ละโซน { thumb: 40, index: 100, ... }
+         */
+        function parseDirtyZones(thaiString) {
+            const zoneScores = {
+                thumb: 100,
+                index: 100,
+                middle: 100,
+                ring: 100,
+                pinky: 100,
+                palm: 100,
+                wrist: 100
+            };
+
+            if (!thaiString || thaiString.trim() === "" || thaiString === "-") {
+                return zoneScores;
+            }
+
+            const text = thaiString.toLowerCase();
+
+            // Thai to Zone mapping
+            const thaiZoneMap = {
+                'นิ้วโป้ง': 'thumb',
+                'โป้ง': 'thumb',
+                'thumb': 'thumb',
+                'นิ้วชี้': 'index',
+                'ชี้': 'index',
+                'index': 'index',
+                'นิ้วกลาง': 'middle',
+                'กลาง': 'middle',
+                'middle': 'middle',
+                'นิ้วนาง': 'ring',
+                'นาง': 'ring',
+                'ring': 'ring',
+                'นิ้วก้อย': 'pinky',
+                'ก้อย': 'pinky',
+                'pinky': 'pinky',
+                'ฝ่ามือ': 'palm',
+                'ฝามือ': 'palm',
+                'palm': 'palm',
+                'ข้อมือ': 'wrist',
+                'ขอมือ': 'wrist',
+                'wrist': 'wrist',
+                'หลังมือ': 'palm', // Map to palm as general
+                'ซอกนิ้ว': 'palm' // Map to palm as general
+            };
+
+            for (const [thaiWord, zone] of Object.entries(thaiZoneMap)) {
+                if (text.includes(thaiWord)) {
+                    zoneScores[zone] = 40;
+                }
+            }
+
+            return zoneScores;
+        }
+
+        /**
+         * รวม zones จาก FrontDirtyZones และ BackDirtyZones
+         * @param {string} frontZones - ข้อความโซนด้านหน้า
+         * @param {string} backZones - ข้อความโซนด้านหลัง
+         * @returns {Object} - คะแนนรวมแต่ละโซน
+         */
+        function combineZones(frontZones, backZones) {
+            const frontScores = parseDirtyZones(frontZones);
+            const backScores = parseDirtyZones(backZones);
+
+            const combined = {};
+            ZONES.forEach(zone => {
+                // ถ้าโซนใดโซนหนึ่งสกปรก (40) ให้ใช้ค่าต่ำสุด
+                combined[zone] = Math.min(frontScores[zone], backScores[zone]);
+            });
+
+            return combined;
+        }
+
+        /**
+         * สร้าง Mock Data สำรองกรณี API ล้มเหลว
+         */
+        function generateFallbackData(count = 50) {
+            console.warn("⚠️ Using fallback mock data due to API failure");
             const data = [], today = new Date();
             for (let i = 0; i < count; i++) {
                 const daysAgo = Math.floor(Math.random() * 30);
                 const date = new Date(today);
                 date.setDate(date.getDate() - daysAgo);
-                // Random hour/minute for timestamp
-                const hour = 7 + Math.floor(Math.random() * 10); // 7AM - 5PM
+                const hour = 7 + Math.floor(Math.random() * 10);
                 const minute = Math.floor(Math.random() * 60);
                 date.setHours(hour, minute, 0, 0);
 
@@ -676,13 +829,103 @@
                     zones
                 });
             }
-            // Sort by timestamp
             return data.sort((a, b) => a.timestamp - b.timestamp);
         }
 
-        let allData = genData(), filteredData = [...allData], isFiltered = false, charts = {}, genderFilters = { age: 'all', tenure: 'all', dept: 'all' };
+        /**
+         * Map ข้อมูลจาก API เป็นรูปแบบที่ Dashboard ใช้
+         * @param {Array} apiData - ข้อมูลจาก API
+         * @returns {Array} - ข้อมูลที่ map แล้ว
+         */
+        function mapApiDataToDashboard(apiData) {
+            return apiData.map((item, index) => {
+                // ดึงข้อมูลจาก Master Data หรือใช้ Default
+                const empId = String(item.EmployeeID || "");
+                const masterData = EMPLOYEE_MASTER_DATA[empId] || DEFAULT_EMPLOYEE;
 
-        document.addEventListener('DOMContentLoaded', () => { applyConfig(); populateFilters(); setupListeners(); updateAll(); });
+                // Parse Timestamp
+                const timestamp = new Date(item.Timestamp);
+                const date = timestamp.toISOString().split('T')[0];
+                const time = `${String(timestamp.getHours()).padStart(2, '0')}:${String(timestamp.getMinutes()).padStart(2, '0')}`;
+
+                // คำนวณ avgScore จาก FrontScore และ BackScore
+                const frontScore = parseFloat(item.FrontScore) || 0;
+                const backScore = parseFloat(item.BackScore) || 0;
+                const avgScore = Math.round((frontScore + backScore) / 2);
+
+                // รวม Dirty Zones
+                const zones = combineZones(item.FrontDirtyZones || "", item.BackDirtyZones || "");
+
+                return {
+                    id: index + 1,
+                    timestamp: timestamp.getTime(),
+                    date: date,
+                    time: time,
+                    hospital: masterData.hospital,
+                    dept: item.Department || "OPD",
+                    pos: item.Position || "เจ้าหน้าที่",
+                    age: calculateAge(masterData.dob),
+                    tenure: calculateTenure(masterData.startDate),
+                    gender: masterData.gender,
+                    activity: item.ActivityName || "General Hygiene",
+                    score: avgScore,
+                    zones: zones,
+                    // เก็บข้อมูล original ไว้ด้วย
+                    employeeId: empId,
+                    employeeName: item.EmployeeName || "Unknown"
+                };
+            });
+        }
+
+        // ============================================================
+        // GLOBAL STATE
+        // ============================================================
+        let allData = [], filteredData = [], isFiltered = false, charts = {}, genderFilters = { age: 'all', tenure: 'all', dept: 'all' };
+
+        // ============================================================
+        // INITIALIZATION & DATA FETCHING
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            applyConfig();
+            populateFilters();
+            setupListeners();
+            fetchDataAndUpdateAll(); // Fetch from API on initial load
+        });
+
+        /**
+         * ดึงข้อมูลจาก API และอัพเดท Dashboard
+         * ถ้า API ล้มเหลวจะใช้ Mock Data สำรอง
+         */
+        async function fetchDataAndUpdateAll() {
+            try {
+                console.log("📡 Fetching data from API:", API_URL);
+                const response = await fetch(API_URL);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const apiData = await response.json();
+                console.log(`✅ Received ${apiData.length} records from API`);
+
+                // Map API data to dashboard format
+                allData = mapApiDataToDashboard(apiData);
+
+                // Sort by timestamp
+                allData.sort((a, b) => a.timestamp - b.timestamp);
+
+            } catch (error) {
+                console.error("❌ API Fetch Error:", error.message);
+                console.warn("⚠️ Switching to fallback mock data...");
+
+                // Use fallback mock data
+                allData = generateFallbackData(50);
+            }
+
+            // Update filtered data and redraw
+            filteredData = [...allData];
+            updateAll();
+        }
 
         function applyConfig() {
             document.getElementById('kpi-avg-label').textContent = CONFIG.kpi_avg;
@@ -701,7 +944,7 @@
             add('filter-pos', POSITIONS);
             add('filter-age', AGE_RANGES);
             add('filter-tenure', TENURE_RANGES);
-            add('filter-activity', ACTIVITIES); // NEW: Activity filter
+            add('filter-activity', ACTIVITIES);
         }
 
         function setupListeners() {
@@ -750,6 +993,9 @@
             updateAll();
         }
 
+        /**
+         * อัพเดท Dashboard ทั้งหมด (KPIs, Hand Viz, Charts)
+         */
         function updateAll() {
             updateKPIs();
             updateHands();
