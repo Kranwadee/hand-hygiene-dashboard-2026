@@ -861,18 +861,26 @@
                     timestamp: timestamp.getTime(),
                     date: date,
                     time: time,
-                    hospital: masterData.hospital,
+                    hospital: item.Hospital || masterData.hospital,
                     dept: item.Department || "OPD",
                     pos: item.Position || "เจ้าหน้าที่",
-                    age: calculateAge(masterData.dob),
-                    tenure: calculateTenure(masterData.startDate),
+                    age: item.Age || calculateAge(masterData.dob),
+                    tenure: item.Tenure || calculateTenure(masterData.startDate),
                     gender: masterData.gender,
                     activity: item.ActivityName || "General Hygiene",
                     score: avgScore,
                     zones: zones,
                     // เก็บข้อมูล original ไว้ด้วย
                     employeeId: empId,
-                    employeeName: item.EmployeeName || "Unknown"
+                    employeeName: item.EmployeeName || "Unknown",
+                    // NEW: เพิ่ม fields ใหม่จาก API v2.0
+                    frontScore: frontScore,
+                    backScore: backScore,
+                    frontSpots: parseInt(item.FrontSpots) || 0,
+                    backSpots: parseInt(item.BackSpots) || 0,
+                    status: item.Status || (avgScore >= 80 ? 'PASS' : 'WARNING'),
+                    frontDirtyZones: item.FrontDirtyZones || "-",
+                    backDirtyZones: item.BackDirtyZones || "-"
                 };
             });
         }
