@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Logs Viewer | Hand Hygiene Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2canvas for Screenshot Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), #0284c7);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 22px;
+        }
+
+        .header-title h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .header-title p {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 10px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            background: var(--gray-200);
+        }
+
+        /* Screenshot Buttons */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-screenshot {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border: none;
+            border-radius: 10px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-screenshot:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-screenshot:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-capture-icon {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 8px;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .btn-capture-icon:hover {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: var(--white);
+        }
+
+        .section-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        /* Capture Toast Notification */
+        .capture-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+            z-index: 9999;
+            animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .stat-card.pass .stat-value {
+            color: var(--success);
+        }
+
+        .stat-card.warning .stat-value {
+            color: var(--danger);
+        }
+
+        /* Table Container */
+        .table-container {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .table-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        /* Search & Filter */
+        .filter-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 10px 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.9rem;
+            width: 220px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.9rem;
+            background: var(--white);
+            cursor: pointer;
+        }
+
+        /* Table */
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        th {
+            background: var(--gray-50);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+        }
+
+        tr:hover {
+            background: #f0f9ff;
+        }
+
+        /* Status Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.pass {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .badge.warning {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        /* Score */
+        .score {
+            font-weight: 600;
+        }
+
+        .score.high {
+            color: var(--success);
+        }
+
+        .score.medium {
+            color: var(--warning);
+        }
+
+        .score.low {
+            color: var(--danger);
+        }
+
+        .dirty-zones {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            max-width: 180px;
+        }
+
+        /* Loading & Empty */
+        .loading,
+        .empty {
+            padding: 60px;
+            text-align: center;
+            color: var(--gray-500);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="dashboard-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="header-icon"><i class="fas fa-table"></i></div>
+                <div class="header-title">
+                    <h1>Scan Logs Viewer</h1>
+                    <p>ข้อมูลจาก scan_logs.json</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-screenshot" onclick="captureSection('dashboard-container', 'dashboard-overview')">
+                    <i class="fas fa-camera"></i> 📸 Save Full Dashboard
+                </button>
+                <a href="index.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> กลับหน้าหลัก
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="stats-section">
+            <div class="stat-card">
+                <div class="stat-label">รายการทั้งหมด (Total Records)</div>
+                <div class="stat-value" id="totalRecords">-</div>
+            </div>
+            <div class="stat-card pass">
+                <div class="stat-label">ผ่านเกณฑ์ (PASS)</div>
+                <div class="stat-value" id="passCount">-</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-label">ไม่ผ่านเกณฑ์ (WARNING)</div>
+                <div class="stat-value" id="warningCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">คะแนนเฉลี่ย (Avg Score)</div>
+                <div class="stat-value" id="avgScore">-</div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container" id="table-section">
+            <div class="table-header">
+                <div class="section-header-row">
+                    <div class="table-title"><i class="fas fa-list"></i> รายการสแกนทั้งหมด</div>
+                    <button class="btn-capture-icon" onclick="captureSection('table-section', 'scan-logs-table')"
+                        title="Capture Table">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+                <div class="filter-group">
+                    <input type="text" class="search-input" id="searchInput" placeholder="ค้นหาชื่อ / รหัส...">
+                    <select class="filter-select" id="deptFilter">
+                        <option value="">ทุกแผนก</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">ทุกสถานะ</option>
+                        <option value="PASS">PASS</option>
+                        <option value="WARNING">WARNING</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Timestamp</th>
+                            <th>รหัส</th>
+                            <th>ชื่อ-สกุล</th>
+                            <th>แผนก</th>
+                            <th>ตำแหน่ง</th>
+                            <th>Front Score</th>
+                            <th>Front Dirty Zones</th>
+                            <th>Back Score</th>
+                            <th>Back Dirty Zones</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="11" class="loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>กำลังโหลดข้อมูล...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global data
+        let allData = [];
+
+        // Fetch data from JSON file
+        async function loadData() {
+            try {
+                const response = await fetch('data/scan_logs.json');
+                if (!response.ok) throw new Error('Failed to load data');
+                allData = await response.json();
+
+                // Populate filters and render
+                populateDeptFilter();
+                updateStats();
+                renderTable(allData);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('tableBody').innerHTML = `
+                    <tr>
+                        <td colspan="11" class="empty">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>ไม่สามารถโหลดข้อมูลได้: ${error.message}</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Populate department filter
+        function populateDeptFilter() {
+            const depts = [...new Set(allData.map(d => d.Department))].sort();
+            const select = document.getElementById('deptFilter');
+            depts.forEach(dept => {
+                const opt = document.createElement('option');
+                opt.value = dept;
+                opt.textContent = dept;
+                select.appendChild(opt);
+            });
+        }
+
+        // Update stats
+        function updateStats() {
+            const total = allData.length;
+            const passCount = allData.filter(d => d.Status === 'PASS').length;
+            const warningCount = allData.filter(d => d.Status === 'WARNING').length;
+            const avgFront = allData.reduce((sum, d) => sum + d.FrontScore, 0) / total;
+            const avgBack = allData.reduce((sum, d) => sum + d.BackScore, 0) / total;
+            const avgScore = ((avgFront + avgBack) / 2).toFixed(1);
+
+            document.getElementById('totalRecords').textContent = total;
+            document.getElementById('passCount').textContent = passCount;
+            document.getElementById('warningCount').textContent = warningCount;
+            document.getElementById('avgScore').textContent = avgScore + '%';
+        }
+
+        // Get score class
+        function getScoreClass(score) {
+            if (score >= 85) return 'high';
+            if (score >= 70) return 'medium';
+            return 'low';
+        }
+
+        // Render table
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="11" class="empty">
+                            <p>ไม่พบข้อมูลที่ตรงกับเงื่อนไข</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = data.map((row, idx) => `
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td>${row.Timestamp}</td>
+                    <td>${row.EmployeeID}</td>
+                    <td>${row.EmployeeName}</td>
+                    <td>${row.Department}</td>
+                    <td>${row.Position}</td>
+                    <td>
+                        <span class="score ${getScoreClass(row.FrontScore)}">${row.FrontScore.toFixed(1)}%</span>
+                        <small>(${row.FrontSpots} spots)</small>
+                    </td>
+                    <td class="dirty-zones">${row.FrontDirtyZones || '-'}</td>
+                    <td>
+                        <span class="score ${getScoreClass(row.BackScore)}">${row.BackScore.toFixed(1)}%</span>
+                        <small>(${row.BackSpots} spots)</small>
+                    </td>
+                    <td class="dirty-zones">${row.BackDirtyZones || '-'}</td>
+                    <td>
+                        <span class="badge ${row.Status.toLowerCase()}">
+                            <i class="fas ${row.Status === 'PASS' ? 'fa-check' : 'fa-exclamation-triangle'}"></i>
+                            ${row.Status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Filter function
+        function filterData() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const dept = document.getElementById('deptFilter').value;
+            const status = document.getElementById('statusFilter').value;
+
+            const filtered = allData.filter(row => {
+                const matchSearch = !search ||
+                    row.EmployeeName.toLowerCase().includes(search) ||
+                    row.EmployeeID.toLowerCase().includes(search);
+                const matchDept = !dept || row.Department === dept;
+                const matchStatus = !status || row.Status === status;
+                return matchSearch && matchDept && matchStatus;
+            });
+
+            renderTable(filtered);
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', filterData);
+        document.getElementById('deptFilter').addEventListener('change', filterData);
+        document.getElementById('statusFilter').addEventListener('change', filterData);
+
+        // Initialize
+        loadData();
+
+        // =============================================
+        // Screenshot / Export Image Functions
+        // =============================================
+
+        /**
+         * Capture a section of the dashboard and download as PNG
+         * @param {string} elementId - The ID of the element to capture
+         * @param {string} fileName - The name of the downloaded file (without extension)
+         */
+        async function captureSection(elementId, fileName) {
+            const element = document.getElementById(elementId);
+            if (!element) {
+                console.error('Element not found:', elementId);
+                return;
+            }
+
+            // Find the button that triggered this and disable it
+            const buttons = document.querySelectorAll('.btn-screenshot, .btn-capture-icon');
+            buttons.forEach(btn => btn.disabled = true);
+
+            try {
+                // Capture the element
+                const canvas = await html2canvas(element, {
+                    backgroundColor: '#f0f9ff',
+                    scale: 2, // Higher resolution
+                    useCORS: true,
+                    logging: false,
+                    scrollX: 0,
+                    scrollY: -window.scrollY
+                });
+
+                // Create download link
+                const link = document.createElement('a');
+                link.download = `${fileName}-${getTimestamp()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                // Show success toast
+                showToast('📸 บันทึกภาพสำเร็จ!');
+
+            } catch (error) {
+                console.error('Capture failed:', error);
+                showToast('❌ เกิดข้อผิดพลาด กรุณาลองใหม่', true);
+            } finally {
+                // Re-enable buttons
+                buttons.forEach(btn => btn.disabled = false);
+            }
+        }
+
+        /**
+         * Get timestamp for filename
+         */
+        function getTimestamp() {
+            const now = new Date();
+            return now.toISOString().slice(0, 19).replace(/[T:]/g, '-');
+        }
+
+        /**
+         * Show toast notification
+         */
+        function showToast(message, isError = false) {
+            // Remove existing toast
+            const existing = document.querySelector('.capture-toast');
+            if (existing) existing.remove();
+
+            // Create new toast
+            const toast = document.createElement('div');
+            toast.className = 'capture-toast';
+            if (isError) {
+                toast.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+            }
+            toast.innerHTML = `<i class="fas ${isError ? 'fa-times-circle' : 'fa-check-circle'}"></i> ${message}`;
+            document.body.appendChild(toast);
+
+            // Auto remove after 3s
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+
+</html>
