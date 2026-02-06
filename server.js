@@ -92,8 +92,8 @@ function randomPick(arr) {
 }
 
 function generateEmployeeId() {
-    // Use fixed employees 70% of the time for consistency
-    if (Math.random() < 0.7) {
+    // Use fixed employees 95% of the time for more data per employee
+    if (Math.random() < 0.95) {
         const ids = Object.keys(EMPLOYEE_DATABASE);
         return randomPick(ids);
     }
