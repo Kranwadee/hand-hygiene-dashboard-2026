@@ -869,7 +869,14 @@
                     frontDirty: item.FrontDirtyZones || "-",
                     backDirty: item.BackDirtyZones || "-",
                     zones: zones,
-                    activity: item.ActivityName || "General Hygiene"
+                    activity: item.ActivityName || "General Hygiene",
+                    // NEW: เพิ่ม fields ใหม่จาก API v2.0
+                    hospital: item.Hospital || "BDMS Phuket",
+                    age: item.Age || 0,
+                    tenure: item.Tenure || 0,
+                    frontSpots: parseInt(item.FrontSpots) || 0,
+                    backSpots: parseInt(item.BackSpots) || 0,
+                    status: item.Status || (avgScore >= 80 ? 'PASS' : 'WARNING')
                 };
             });
         }
@@ -1180,9 +1187,13 @@
 
             tbody.innerHTML = sessions.map(s => {
                 const [y, m, d] = s.date.split('-');
-                const isPass = s.score >= 80;
+                const isPass = s.status === 'PASS';
                 const palmClass = s.palmScore >= 80 ? 'pass' : 'fail';
                 const backClass = s.backScore >= 80 ? 'pass' : 'fail';
+
+                // Tooltip with spot counts
+                const palmTitle = `${s.palmScore}% (${s.frontSpots} จุด)`;
+                const backTitle = `${s.backScore}% (${s.backSpots} จุด)`;
 
                 return `
                     <tr>
@@ -1190,10 +1201,10 @@
                             <div class="history-date">${d}/${m}</div>
                             <div class="history-time">${s.time}</div>
                         </td>
-                        <td class="score-cell ${palmClass}">${s.palmScore}%</td>
-                        <td class="score-cell ${backClass}">${s.backScore}%</td>
+                        <td class="score-cell ${palmClass}" title="${palmTitle}">${s.palmScore}%</td>
+                        <td class="score-cell ${backClass}" title="${backTitle}">${s.backScore}%</td>
                         <td>
-                            <span class="status-badge ${isPass ? 'pass' : 'fail'}">
+                            <span class="status-badge ${isPass ? 'pass' : 'fail'}" title="${s.status}">
                                 <i class="fas ${isPass ? 'fa-check' : 'fa-times'}"></i>
                             </span>
                         </td>
